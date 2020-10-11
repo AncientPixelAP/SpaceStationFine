@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="./lib/phaser.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+
+<body>
+    <script>
+        const CONSTANT = {
+            FOO: 0,
+            BAR: 1
+        }
+        const PLAYERSTATES = {
+            NORMAL: 0,
+            HUG: 1,
+            PUSH: 2
+        };
+
+        function getNegDir(_dir) {
+            let d = _dir + 2;
+            if (d > 3) {
+                d -= 4;
+            }
+            return d;
+        }
+
+        var socket = io.connect("http://10.0.0.2:3000");
+    </script>
+    <script type="module">
+        import Preloader from './src/preloader.js'; import ScnMain from './src/scnMain.js'; var config = { type: Phaser.AUTO, width: 256, height: 256, render: { antialias: false, roundPixels: true, pixelArt: true }, scale: { autoCenter: true, mode: Phaser.Scale.FIT
+        }, seed: ["hugging"], scene: [ Preloader(), ScnMain ] }; var game = new Phaser.Game(config);
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+{
+    "title": "Wakey - wakey!",
+    "conversation":[
+        {
+            "id": 0,
+            "character": "unknown",
+            "text": "Wakey - wakey!",
+            "answers": [
+                {
+                    "target": 1,
+                    "text": "Hmm?\n..."
+                }
+            ]
+        },{
+            "id": 1,
+            "character": "barkeeper",
+            "text": "Another shot?",
+            "answers": [
+                {
+                    "target": 2,
+                    "text": "No thanks, i still need to drive home..."
+                },{
+                    "target": 3,
+                    "text": "Yes please."
+                }
+            ]
+        },{
+            "id": 2,
+            "character": "barkeeper",
+            "text": "Something else, then?",
+            "answers": [
+                {
+                    "target": 3,
+                    "text": "Give me an espresso shot then."
+                }
+            ]
+        },{
+            "id": 3,
+            "character": "barkeeper",
+            "text": "Rightaway.",
+            "answers":[{
+                "target": -1,
+                "actions": ["END"],
+                "text": "leave"
+            }]
+        }
+    ]
+}
