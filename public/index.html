@@ -26,7 +26,9 @@
             return d;
         }
 
-       var socket = io("https://starstationfine.herokuapp.com/");//io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
+        console.log("waaaaah!");
+
+       var socket = io("https://starstationfine.herokuapp.com");//io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
     </script>
     <script type="module">
         import Preloader from './src/preloader.js'; import ScnMain from './src/scnMain.js'; var config = { type: Phaser.AUTO, width: 256, height: 256, render: { antialias: false, roundPixels: true, pixelArt: true }, scale: { autoCenter: true, mode: Phaser.Scale.FIT
