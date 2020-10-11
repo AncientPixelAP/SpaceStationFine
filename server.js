@@ -2,12 +2,10 @@ var port = process.env.PORT || 3000;
 var express = require('express');
 //var path = require('path');
 var app = express();
-let server = app.listen(port);
-//var server = require("http").createServer(app);
-
-server.listen(port, function() {
+let server = app.listen(port, () => {
     console.log("running on port " + String(port));
 });
+//var server = require("http").createServer(app);
 
 //app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname  + "/public"));
