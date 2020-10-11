@@ -1,15 +1,16 @@
-var port = 3000;
+var port = process.env.PORT || 3000;
 var express = require('express');
-var path = require('path');
+//var path = require('path');
 var app = express();
 let server = app.listen(port);
 //var server = require("http").createServer(app);
 
-/*server.listen(port, function() {
+server.listen(port, function() {
     console.log("running on port " + String(port));
-});*/
+});
 
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname  + "/public"));
 
 let socket = require("socket.io");
 let io = socket(server);
