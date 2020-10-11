@@ -4,6 +4,7 @@
   "description": "simple socket emergent game",
   "main": "server.js",
   "scripts": {
+	"start":"server server.js",
     "test": "test"
   },
   "author": "Sebastian Merkl",
