@@ -30,7 +30,7 @@ export default class Transporter {
             }
         });
 
-        this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "REFRESH", false, () => {
+        this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "LIST", false, () => {
             socket.emit("requestPlayersAtLocation", {
                 id: this.scene.locationData.id
             });
