@@ -38,11 +38,12 @@
             }
             return d;
         }
-        //192.168.80.1
-        var socket = io("192.168.80.1:3000");
+        //192.168.80.1 //switch between local url for testing and heroko url for deployment
+        //var socket = io("192.168.80.1:3000");
+        var socket = io("https://starstationfine.herokuapp.com");
         
-        //var socket = io("https://starstationfine.herokuapp.com");
-       //io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
+        //io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
+        
     </script>
     <script type="module">
         import Preloader from './src/preloader.js'; 
