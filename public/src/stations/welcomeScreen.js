@@ -5,7 +5,10 @@ export default class Welcome {
         this.dismissed = false;
         this.title = this.scene.add.bitmapText(this.scene.left + 43, this.scene.top + 13, "pixelmix", "Welcome!", 8, 1).setOrigin(0, 0.5);
 
-        this.description = this.scene.add.bitmapText(0, 0, "pixelmix", "Click on any of the stations on the left side of the screen to get started!", 8, 1).setOrigin(0.5);
+        let txt = "Welcome!\n";
+        txt += "\nYour are on the " + this.scene.locationData.type + " " + this.scene.locationData.id + " in sector " + this.scene.locationData.sector.x + "," + this.scene.locationData.sector.y + "," + this.scene.locationData.sector.z + "\n";
+        txt += "\nClick on any of the stations on the left side of the screen to get started!";
+        this.description = this.scene.add.bitmapText(0, 0, "pixelmix", txt, 8, 1).setOrigin(0.5);
         this.description.maxWidth = 180;
         
     }

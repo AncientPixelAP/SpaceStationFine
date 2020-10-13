@@ -1,4 +1,5 @@
 import Button from "../lcars/button.js";
+import Numpad from "../lcars/numpad.js";
 
 export default class Navigation{
     constructor(_scene, _data) {
@@ -76,13 +77,13 @@ export default class Navigation{
         this.pipWarpRight = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsBtnRight48");
         this.pipWarpRight.setTintFill(LCARSCOLOR.offOrange);
         this.sectorXTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong64", this.sectorCoords.x, true, () => {
-            this.setForInput(this.sectorXTxt);
+            this.numpad.setForInput(this.sectorXTxt, this.sectorCoords.x);
         });
         this.sectorYTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", this.sectorCoords.y, true, () => {
-            this.setForInput(this.sectorYTxt);
+            this.numpad.setForInput(this.sectorYTxt, this.sectorCoords.y);
         });
         this.sectorZTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", this.sectorCoords.z, true, () => {
-            this.setForInput(this.sectorZTxt);
+            this.numpad.setForInput(this.sectorZTxt, this.sectorCoords.z);
         });
 
         //HEADING
@@ -96,16 +97,35 @@ export default class Navigation{
         this.pipHeadingRight = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsBtnRight48");
         this.pipHeadingRight.setTintFill(LCARSCOLOR.offOrange);
         this.headingXTxt = new Button(this.scene, {x: 0, y: 0}, "sprLcarsBtnLong64", this.headingCoords.x, true, () => {
-            this.setForInput(this.headingXTxt);
+            this.numpad.setForInput(this.headingXTxt, this.headingCoords.x);
+            this.headingYTxt.active = false;
         });
         this.headingYTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", this.headingCoords.y, true, () => {
-            this.setForInput(this.headingYTxt);
+            this.numpad.setForInput(this.headingYTxt, this.headingCoords.y);
+            this.headingXTxt.active = false;
         });
 
-        this.calculatorLTop = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48").setScale(1, -1);
-        this.calculatorLTop.setTintFill(LCARSCOLOR.offOrange);
-        this.calculatorLBot = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48");
-        this.calculatorLBot.setTintFill(LCARSCOLOR.offOrange);
+        this.numpad = new Numpad(this.scene, {x: this.pos.x, y: this.pos.y});
+        this.numpad.setFunc = () => {
+            this.heading = Phaser.Math.Angle.Between(0, 0, this.headingCoords.x, this.headingCoords.y);
+            this.setCourse();
+        };
+        this.numpad.clrFunc = () => {
+            this.headingCoords.x = 0;
+            this.headingCoords.y = 0;
+            this.headingCoords.z = 0;
+        }
+        this.numpad.pointFunc = () => {
+            this.numpad.setFunc();
+            if(this.headingXTxt.active === true){
+                this.headingXTxt.active = false;
+                this.headingYTxt.simulateClick();
+            }else{
+                this.headingYTxt.active = false;
+                this.headingXTxt.simulateClick();
+            }
+        }
+
         this.headingLTopR = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL64").setScale(-1, -1);
         this.headingLTopR.setTintFill(LCARSCOLOR.gold);
         this.headingLTopL = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL64").setScale(1, -1);
@@ -118,69 +138,7 @@ export default class Navigation{
         this.simpleHeading = this.scene.add.sprite(this.pos.x, this.pos.y, "sprPinkSimpleHeading01");
 
         this.headingCoordsTxt = this.scene.add.bitmapText(0, 0, "pixelmix", this.heading, 8, 1).setOrigin(0.5);
-        this.calculatorInput = 0;
-        this.currentField = null;
         this.currentCoord = "x"
-        this.btnsHeading = [];
-        for(let i = 0 ; i < 9 ; i++)
-{           this.btnsHeading.push( new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnMono16", String(i+1), false, () => {
-                let str = this.calculatorInput.toString();
-                str += String(i+1);
-                this.calculatorInput = parseInt(str);
-                this.updateInput();
-            }));
-        }
-        this.btnHeadingZero = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnMono16", "0", false, () => {
-            let str = this.calculatorInput.toString();
-            str += "0";
-            this.calculatorInput = parseInt(str);
-            this.updateInput();
-        });
-        this.btnHeadingPoint = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnMono16", ",", false, () => {
-            /*if(this.currentCoord === "x"){
-                this.headingCoords.x = this.calculatorInput;
-                this.calculatorInput = 0;
-                this.currentCoord = "y";
-            }else{
-                this.headingCoords.y = this.calculatorInput;
-                this.calculatorInput = 0;
-                this.currentCoord = "x";
-            }*/
-        });
-        this.btnHeadingDelete = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnMono16", "C", false, () => {
-            this.headingCoords.x = 0;
-            this.headingCoords.y = 0;
-            this.headingCoords.z = 0;
-            this.calculatorInput = 0;
-        });
-        this.btnHeadingNegate = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnRight48", "NEG", false, () => {
-            this.calculatorInput *= -1;
-            this.updateInput();
-        });
-        this.btnHeadingBackspace = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnRight48", "DEL", false, () => {
-            let str = this.calculatorInput.toString();
-            if(str.length > 1){
-                str = str.slice(0, str.length-1);
-                if(str === "-"){
-                    str = "0";
-                }
-            }else{
-                str = "0";
-            }
-            this.calculatorInput = parseInt(str);
-            this.updateInput();
-        });
-        this.btnHeadingSetHeading = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnRight48", "SET", false, () => {
-            this.heading = Phaser.Math.Angle.Between(0, 0, this.headingCoords.x, this.headingCoords.y);
-            this.setCourse();
-            this.calculatorInput = 0;
-        });
-        this.btnHeadingClear = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnRight48", "CLR", false, () => {
-            this.headingCoords.x = 0;
-            this.headingCoords.y = 0;
-            this.headingCoords.z = 0;
-            this.calculatorInput = 0;
-        });
         
     }
 
@@ -197,16 +155,26 @@ export default class Navigation{
         this.sectorYTxt.update();
         this.sectorZTxt.update();
 
-        for(let b of this.btnsHeading){
-            b.update();
+        this.numpad.update();
+        switch (this.numpad.currentField) {
+            case this.sectorXTxt:
+                this.sectorCoords.x = this.numpad.input;
+                break;
+            case this.sectorYTxt:
+                this.sectorCoords.y = this.numpad.input;
+                break;
+            case this.sectorZTxt:
+                this.sectorCoords.z = this.numpad.input;
+                break;
+            case this.headingXTxt:
+                this.headingCoords.x = this.numpad.input;
+                break;
+            case this.headingYTxt:
+                this.headingCoords.y = this.numpad.input;
+                break;
+            default:
+                break;
         }
-        this.btnHeadingZero.update();
-        this.btnHeadingPoint.update();
-        this.btnHeadingDelete.update();
-        this.btnHeadingNegate.update();
-        this.btnHeadingBackspace.update();
-        this.btnHeadingSetHeading.update();
-        this.btnHeadingClear.update();
 
         this.headingXTxt.txt.setText(this.headingCoords.x);
         this.headingYTxt.txt.setText(this.headingCoords.y);
@@ -234,28 +202,13 @@ export default class Navigation{
         this.sectorYTxt.move(this.pos.x + 30, this.pos.y - 116);
         this.sectorZTxt.move(this.pos.x + 80, this.pos.y - 116);
 
-        for(let [i, b] of this.btnsHeading.entries()){
-            let xx = 18 * (i%3);
-            let yy = 18 * (Math.floor(i/3));
-            b.move(this.pos.x + xx + 64, this.pos.y - yy - 26);
-        }
-        this.btnHeadingZero.move(this.pos.x + 64, this.pos.y - 8);
-        this.btnHeadingPoint.move(this.pos.x + 82, this.pos.y - 8);
-        this.btnHeadingDelete.move(this.pos.x + 100, this.pos.y - 8);
-        this.btnHeadingBackspace.move(this.pos.x + 134, this.pos.y - 62);
-        this.btnHeadingNegate.move(this.pos.x + 134, this.pos.y - 44);
-        this.btnHeadingClear.move(this.pos.x + 134, this.pos.y - 26);
-        this.btnHeadingSetHeading.move(this.pos.x + 134, this.pos.y - 8); 
+        this.numpad.move(this.pos.x + 82, this.pos.y - 44);
 
         this.pipHeadingLeft.x = this.pos.x - 94;
         this.pipHeadingLeft.y = this.pos.y - 89;
         this.pipHeadingRight.x = this.pos.x + 134;
         this.pipHeadingRight.y = this.pos.y - 80;
 
-        this.calculatorLTop.x = this.pos.x + 30;
-        this.calculatorLTop.y = this.pos.y - 53;
-        this.calculatorLBot.x = this.pos.x + 30;
-        this.calculatorLBot.y = this.pos.y - 17;
         this.headingLTopR.x = this.pos.x - 28;
         this.headingLTopR.y = this.pos.y - 53;
         this.headingLTopL.x = this.pos.x - 94;
@@ -286,58 +239,6 @@ export default class Navigation{
             heading: this.heading,
             headingCoords: this.headingCoords
         });
-    }
-
-    setForInput(_button){
-        this.currentField = _button;
-        if(this.sectorXTxt !== _button){
-            this.sectorXTxt.active = false;
-        }else{
-            this.calculatorInput = this.sectorCoords.x;
-        }
-        if (this.sectorYTxt !== _button) {
-            this.sectorYTxt.active = false;
-        } else {
-            this.calculatorInput = this.sectorCoords.y;
-        }
-        if (this.sectorZTxt !== _button) {
-            this.sectorZTxt.active = false;
-        } else {
-            this.calculatorInput = this.sectorCoords.z;
-        }
-
-        if (this.headingXTxt !== _button) {
-            this.headingXTxt.active = false;
-        } else {
-            this.calculatorInput = this.headingCoords.x;
-        }
-        if (this.headingYTxt !== _button) {
-            this.headingYTxt.active = false;
-        } else {
-            this.calculatorInput = this.headingCoords.y;
-        }
-    }
-
-    updateInput(){
-        switch(this.currentField){
-            case this.sectorXTxt:
-                this.sectorCoords.x = this.calculatorInput;
-            break;
-            case this.sectorYTxt:
-                this.sectorCoords.y = this.calculatorInput;
-            break;
-            case this.sectorZTxt:
-                this.sectorCoords.z = this.calculatorInput;
-            break;
-            case this.headingXTxt:
-                this.headingCoords.x = this.calculatorInput;
-            break;
-            case this.headingYTxt:
-                this.headingCoords.y = this.calculatorInput;
-            break;
-            default:
-            break;
-        }
     }
 
     synchronize(){

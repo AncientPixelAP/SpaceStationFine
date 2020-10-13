@@ -62,6 +62,19 @@ export default class Button{
         }
     }
 
+    simulateClick(){
+        if (this.togglebutton === true) {
+            if (this.active === false) {
+                this.active = true;
+                this.func();
+            } else {
+                this.active = false;
+            }
+        } else {
+            this.func();
+        }
+    }
+
     switchState(_state){
         if (this.state !== _state) {
             this.state = _state;

@@ -1,5 +1,11 @@
 import Astronometry from "./astronometry.js";
 import Navigation from "./navigation.js";
+import Weapons from "./weapons.js";
+import Communications from "./communications.js";
+import Engineering from "./engineering.js";
+import Transporter from "./transporter.js";
+import Storage from "./storage.js";
+import Hangar from "./hangar.js";
 
 export default class GenericStation{
     constructor(_scene, _data) {
@@ -42,6 +48,24 @@ export default class GenericStation{
             break;
             case "Navigation":
                 this.station = new Navigation(this.scene, this.data);
+                break;
+            case "Weapons":
+                this.station = new Weapons(this.scene, this.data);
+                break;
+            case "Communications":
+                this.station = new Communications(this.scene, this.data);
+                break;
+            case "Engineering":
+                this.station = new Engineering(this.scene, this.data);
+                break;
+            case "Transporter":
+                this.station = new Transporter(this.scene, this.data);
+                break;
+            case "Storage":
+                this.station = new Storage(this.scene, this.data);
+                break;
+            case "Hangar":
+                this.station = new Hangar(this.scene, this.data);
                 break;
             default:
             break;

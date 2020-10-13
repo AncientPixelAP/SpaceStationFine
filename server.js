@@ -59,6 +59,13 @@ io.on("connection", socket => {
         }
     });
 
+    socket.on("requestPlayersAtLocation", (_data) => {
+        let players = getPlayersAtLocation(_data.id);
+        if(players.length > 0){
+            io.to(id).emit("getPlayersAtLocation", players);
+        }
+    });
+
     socket.on("requestSectorLocations", (_data) => {
         let locs = getLocationsInSector({x: _data.sector.x, y: _data.sector.y, z: _data.sector.z});
         if(locs.length > 0){
@@ -101,6 +108,15 @@ function getLocationById(_id){
 
 function getLocationsInSector(_sector){
     let arr = gameData.locations.filter((loc) => { return loc.sector.x === _sector.x && loc.sector.y === _sector.y && loc.sector.z === _sector.z });
+    if(arr.length > 0){
+        return arr;
+    }else{
+        return [];
+    }
+}
+
+function getPlayersAtLocation(_id){
+    let arr = gameData.players.filter((p) => {return p.locationId === _id});
     if(arr.length > 0){
         return arr;
     }else{

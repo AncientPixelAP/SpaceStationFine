@@ -26,6 +26,7 @@ export default function() {
             this.load.image("sprLcarsL64thin", "sprites/lcarsL64thin.png");
             this.load.image("sprLcarsL48", "sprites/lcarsL48.png");
             this.load.image("sprLcarsL64", "sprites/lcarsL64.png");
+            this.load.image("sprLcarsCrosspadBg", "sprites/lcarsCrosspadBg04.png")
             
             this.load.image("sprLcarsBtnMono16", "sprites/lcarsBtnMono16.png");
             this.load.image("sprLcarsBtnLong64", "sprites/lcarsBtnLong64.png");

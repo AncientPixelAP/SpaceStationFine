@@ -56,9 +56,9 @@ export default class Astronometry{
             follow: null,
             txt: this.scene.add.bitmapText(99990, 0, "pixelmix", "0,0", 8, 1).setOrigin(0.5)
         }
+        
+        
         this.locations = [];
-
-
         socket.on("getSectorLocations", (_data) => {
             console.log(_data);
 

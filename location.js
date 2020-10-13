@@ -14,6 +14,7 @@ class Location {
             y: 0,
             z: 0
         }
+        this.players = [];
 
         this.stations = [];
         for(let s of _stations){
@@ -43,6 +44,17 @@ class Location {
         this.coords.y += Math.sin(this.heading) * this.spd;
         if (this.coords.y < -1) { this.coords.y += 2 };
         if (this.coords.y > 1) { this.coords.y -= 2 };
+    }
+
+    removePlayer(_player){
+        let arr = this.players.filter((p) => {return p.id !== _id});
+        if(arr.length > 0){
+            this.players = arr;
+        }
+    }
+
+    addPlayer(_player){
+        this.players.push(_player);
     }
 }
 module.exports = Location;

@@ -29,7 +29,9 @@
     <char id="57" x="2" y="334" width="20" height="28" xoffset="0" yoffset="4" xadvance="24" page="0" chnl="15"/>
     <char id="58" x="32" y="18" width="4" height="20" xoffset="0" yoffset="8" xadvance="8" page="0" chnl="15"/>
     <char id="59" x="2" y="364" width="8" height="24" xoffset="0" yoffset="8" xadvance="12" page="0" chnl="15"/>
+<char id="60" x="644" y="2" width="16" height="28" xoffset="0" yoffset="4" xadvance="16" page="0" chnl="15"/>
     <char id="61" x="2" y="390" width="20" height="12" xoffset="0" yoffset="12" xadvance="24" page="0" chnl="15"/>
+<char id="62" x="662" y="2" width="16" height="28" xoffset="0" yoffset="4" xadvance="16" page="0" chnl="15"/>
     <char id="63" x="2" y="404" width="16" height="28" xoffset="0" yoffset="4" xadvance="20" page="0" chnl="15"/>
     <char id="65" x="2" y="434" width="20" height="28" xoffset="0" yoffset="4" xadvance="24" page="0" chnl="15"/>
     <char id="66" x="20" y="404" width="20" height="28" xoffset="0" yoffset="4" xadvance="24" page="0" chnl="15"/>
