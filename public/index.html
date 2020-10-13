@@ -39,8 +39,12 @@
             return d;
         }
         //192.168.80.1 //switch between local url for testing and heroko url for deployment
-        //var socket = io("192.168.80.1:3000");
-        var socket = io("https://starstationfine.herokuapp.com");
+        var socket = io("192.168.80.1:3000");
+        if(socket.connected === false){
+            console.log("fallforward to online build");
+            socket = io("https://starstationfine.herokuapp.com");
+        }
+        console.log(socket);
         
         //io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
         
