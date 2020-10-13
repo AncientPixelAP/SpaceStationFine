@@ -59,6 +59,7 @@ export default function() {
             this.cameras.main.setBackgroundColor(0x000000);
             this.load.off("progress", this.update_progress_display, this);
 
+            this.cache.bitmapFont.get("pixelmix").data.lineHeight = 40;
             this.scene.start("ScnMain");
         },
 

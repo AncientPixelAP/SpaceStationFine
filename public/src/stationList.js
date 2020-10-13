@@ -1,15 +1,16 @@
 import Button from "./lcars/button.js";
+import Welcome from "./stations/welcomeScreen.js";
 
 export default class StationList {
     constructor(_scene, _stations) {
         this.scene = _scene;
-        
+
         this.offset = {
             x: 0,
             y: 0
         }
 
-        this.station = null;
+        this.station = new Welcome(this.scene);
 
         this.data = {
             name: "stationlist",
@@ -43,6 +44,7 @@ export default class StationList {
                 //move desired station in 
                 s.moveIn();
                 this.scene.currentStation = s;
+                this.station.dismiss();
             }));
         }
 
@@ -60,6 +62,8 @@ export default class StationList {
         for (let b of this.buttons) {
             b.update();
         }
+
+        this.station.update();
     }
 
     moveIn() {
