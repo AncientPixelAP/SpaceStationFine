@@ -1,100 +1,135 @@
+let Player = require("./player");
+let Location = require("./location");
+
 class GameData {
     constructor() {
-        this.states = {
-            NORMAL: 0,
-            HUG: 1,
-            PUSH: 2
-        };
         this.players = [];
-        this.level = {balls: [{
-                id: 0,
-                pos: {
-                    x: 48,
-                    y: 16
-                },
-                vel: {
-                    x: 0,
-                    y: 0
-                }
-            }],
-            crates: [],
-            buttons: [],
-            glowies: [],
-            glowTree: {
-                dust: 0
+        this.locations = [];
+
+        this.locations.push(new Location(
+            "Enterprise",
+            "ship",
+            ["Alpha"],
+             [{
+                name: "Astronometry",
+                short: "AST",
+                type: 0
+            }, {
+                name: "Navigation",
+                short: "NAV",
+                type: 0
+            }, {
+                name: "Weapons",
+                short: "WPN",
+                type: 0
+            }, {
+                name: "Communications",
+                short: "COM",
+                type: 0
+            }, {
+                name: "Engineering",
+                short: "ENG",
+                type: 0
+            }, {
+                name: "Transporter",
+                short: "TRS",
+                type: 0
+            },{
+                name: "Storage",
+                short: "STG",
+                type: 2
+            },{
+                name: "Hangar",
+                short: "HNG",
+                type: 0
+            }],{
+                x: 192,
+                y: 168,
+                z: 0
+            },{
+                x: 0.25,
+                y: 0.6,
+                z: 0.5
             }
+        ));
+
+        this.locations.push(new Location(
+            "Deep Station Fine",
+            "station",
+            ["DS9"],
+             [{
+                name: "Astronometry",
+                short: "AST",
+                type: 0
+            }, {
+                name: "Communications",
+                short: "COM",
+                type: 0
+            }, {
+                name: "Engineering",
+                short: "ENG",
+                type: 0
+            }, {
+                name: "Transporter",
+                short: "TRS",
+                type: 0
+            }, {
+                name: "Storage",
+                short: "STG",
+                type: 2
+            }, {
+                name: "Hangar",
+                short: "HNG",
+                type: 0
+            }, {
+                name: "Bar",
+                short: "BAR",
+                type: 0
+            }, {
+                name: "Merchant",
+                short: "MRC",
+                type: 0
+            }], {
+                x: 192,
+                y: 168,
+                z: 0
+            }, {
+                x: -0.5,
+                y: -0.4,
+                z: 0.5
+            }
+        ));
+    }
+
+    update(){
+        for(let l of this.locations){
+            l.update();
         }
     }
 
-    createPlayer(_x, _y, _id){
-        this.players.push({
-            pos: {
-                x: _x,
-                y: _y
-            },
-            id: _id,
-            state: this.states.NORMAL
-        })
+    addPlayer(_id, _start){
+        this.players.push(new Player(_id));
+        let start = null
+        let arr = this.locations.filter((loc) => { return loc.id === _start });
+        if (arr.length > 0) {
+            start = arr[0];
+            this.players[this.players.length-1].setLocation(start);
+        }
     }
 
-    kickPlayer(_id){
-        for(let i = this.players.length-1 ; i >= 0 ; i--){
-            if(this.players[i].id === _id){
+    removePlayer(_id) {
+        for (let i = this.players.length - 1; i >= 0; i--) {
+            if (this.players[i].id === _id) {
                 this.players.splice(i, 1);
             }
         }
     }
 
-    setPosition(_id, _x, _y){
-        for(let p of this.players){
-            if(p.id === _id){
-                p.pos.x = _x;
-                p.pos.y = _y;
-            }
+    /*spawnShip(_type, _name){
+        switch(_type){
+            case SHIPTYPE.GALAXYCLASS:
+            break;
         }
-    }
-
-    setPlayer(_data){
-        for (let p of this.players) {
-            if (p.id === _data.id) {
-                p.pos.x = _data.pos.x;
-                p.pos.y = _data.pos.y;
-                p.state = _data.state;
-            }
-        }
-    }
-
-    getPosition(_id){
-        let ret = {
-            x: 0,
-            y: 0
-        }
-        let arr = this.players.filter((p) => {return p.id === _id});
-        if(arr.length > 0){
-            ret.x = arr[0].pos.x;
-            ret.y = arr[0].pos.y;
-            //console.log(arr[0]);
-        }
-        return ret;
-    }
-
-    addDustTree(_dust){
-        this.level.glowTree.dust += _dust;
-    }
-
-    setBall(_data) {
-        /*for (let b of this.level.players) {
-            if (p.id === _data.id) {
-                p.pos.x = _data.pos.x;
-                p.pos.y = _data.pos.y;
-                p.state = _data.state;
-            }
-        }*/
-        let arr = this.level.balls.filter((o) => {return o.id === _data.id});
-        if(arr.length > 0){
-            arr[0].pos.x = _data.pos.x;
-            arr[0].pos.y = _data.pos.y;
-        }
-    }
+    }*/
 }
 module.exports = GameData;

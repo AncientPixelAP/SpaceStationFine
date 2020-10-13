@@ -18,42 +18,32 @@ export default function() {
             //this.load.audio('decisionLeft', 'audio/decision.wav');
             //this.load.atlas("tilesGrass", "sprites/tiles/grassDirt.png", "sprites/tiles/tilesGround_atlas.json");
 
-            this.load.image("sprCat00Front", "sprites/cat00Front.png");
-            this.load.image("sprCat00Belly", "sprites/cat00Belly.png");
-            this.load.image("sprCat00Back", "sprites/cat00Back.png");
-
-            this.load.image("sprHugtronaut", "sprites/hugtronaut00.png");
-            this.load.image("sprHugtronautArms", "sprites/hugtronaut01.png");
-            this.load.image("sprHugtronautBlue", "sprites/otherHugtronaut00.png");
-            this.load.image("sprHugtronautBlueArms", "sprites/otherHugtronaut01.png");
-
-            this.load.image("sprHeartBlue", "sprites/heartBlue00.png");
-            this.load.image("sprBall", "sprites/ball00.png");
-            this.load.image("sprBallShadow", "sprites/ball01.png");
-
-            this.load.image("sprTile00", "sprites/tile00.png");
-            this.load.image("sprTile01", "sprites/tile01.png");
-
-            this.load.image("sprWallHalfFront", "sprites/wallHalf00.png");
-            this.load.image("sprWallHalfCorner", "sprites/wallHalf01.png");
-            this.load.image("sprWallHalfTop", "sprites/wallHalf02.png");
-            //TREE
-            this.load.image("sprTreeBase", "sprites/treeBase.png");
-            this.load.image("sprTreeTrunk", "sprites/treeTrunk.png");
-            this.load.spritesheet("sprTreeTop", "sprites/treeTop00.png", {
-                frameWidth: 16,
-                frameHeight: 16
-            });
-
-
-            this.load.spritesheet("sprFlowersBlue", "sprites/flowersBlue.png", {
-                frameWidth: 8,
-                frameHeight: 8
-            });
-
-            this.load.json("000wakeup", "jsons/000wakeup.json");
-
             this.load.bitmapFont("pixelmix", "fonts/pixelmix.png", "fonts/pixelmix.xml");
+
+            this.load.image("sprLcarsPipLeft16", "sprites/lcarsPipLeft16.png");
+            this.load.image("sprLcarsPipRight16", "sprites/lcarsPipRight16.png");
+            this.load.image("sprLcarsPillar32", "sprites/lcarsPillar32.png");
+            this.load.image("sprLcarsL64thin", "sprites/lcarsL64thin.png");
+            this.load.image("sprLcarsL48", "sprites/lcarsL48.png");
+            this.load.image("sprLcarsL64", "sprites/lcarsL64.png");
+            
+            this.load.image("sprLcarsBtnMono16", "sprites/lcarsBtnMono16.png");
+            this.load.image("sprLcarsBtnLong64", "sprites/lcarsBtnLong64.png");
+            this.load.image("sprLcarsBtnLong32", "sprites/lcarsBtnLong32.png");
+            this.load.image("sprLcarsBtnLong48", "sprites/lcarsBtnLong48.png");
+            this.load.image("sprLcarsBtnLeft32", "sprites/lcarsBtnLeft32.png");
+            this.load.image("sprLcarsBtnLeft48", "sprites/lcarsBtnLeft48.png");
+            this.load.image("sprLcarsBtnLeft64", "sprites/lcarsBtnLeft64.png");
+            this.load.image("sprLcarsBtnRight48", "sprites/lcarsBtnRight48.png");
+
+            this.load.image("sprSectorGrid3d", "sprites/sectorGrid3d.png");
+            this.load.image("sprGoldTarget", "sprites/goldTarget.png");
+            this.load.image("sprPinkCircle", "sprites/pinkCircle.png");
+            this.load.image("sprPinkSimpleHeading", "sprites/pinkSimpleHeading.png");
+            this.load.image("sprPinkSimpleHeading01", "sprites/pinkSimpleHeading01.png");
+            this.load.image("sprSymbolUnknown", "sprites/symbolUnknown.png");
+            this.load.image("sprSymbolFriendlyShip", "sprites/symbolFriendlyShip.png");
+            this.load.image("sprSymbolFriendlyStation", "sprites/symbolFriendlyStation.png");
 
             // Display loading progress
             var game_config = this.game.config

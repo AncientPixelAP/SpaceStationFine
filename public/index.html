@@ -6,7 +6,7 @@
     <script src="/socket.io/socket.io.js"></script>
 </head>
 
-<body>
+<body style="margin: 0px; background-color: black;">
     <script>
         const CONSTANT = {
             FOO: 0,
@@ -17,6 +17,19 @@
             HUG: 1,
             PUSH: 2
         };
+        const LCARSCOLOR = {
+            offBlue: 0x969bce,
+            blue: 0x909dff,
+            offPink: 0xda99cc,
+            pink: 0xe66599,
+            red: 0xe76364,
+            offOrange: 0xff9460,
+            orange: 0xff9300,
+            gold: 0xffc95e,
+            white: 0xffffff,
+            black: 0x000000,
+            deepBlue: 0x16009c
+        }
 
         function getNegDir(_dir) {
             let d = _dir + 2;
@@ -25,14 +38,36 @@
             }
             return d;
         }
-
-        console.log("waaaaah!");
-
-       var socket = io("https://starstationfine.herokuapp.com");//io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
+        //192.168.80.1
+        var socket = io("192.168.80.1:3000");
+        
+        //var socket = io("https://starstationfine.herokuapp.com");
+       //io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
     </script>
     <script type="module">
-        import Preloader from './src/preloader.js'; import ScnMain from './src/scnMain.js'; var config = { type: Phaser.AUTO, width: 256, height: 256, render: { antialias: false, roundPixels: true, pixelArt: true }, scale: { autoCenter: true, mode: Phaser.Scale.FIT
-        }, seed: ["hugging"], scene: [ Preloader(), ScnMain ] }; var game = new Phaser.Game(config);
+        import Preloader from './src/preloader.js'; 
+        import ScnMain from './src/scnMain.js'; 
+        
+        var config = { 
+            type: Phaser.AUTO, 
+            width: 512, 
+            height: 320, 
+            render: { 
+                antialias: false, 
+                roundPixels: true, 
+                pixelArt: true 
+            }, 
+            scale: { 
+                autoCenter: true, 
+                mode: Phaser.Scale.FIT
+            }, 
+            seed: ["hugging"], 
+            scene: [ 
+                Preloader(), 
+                ScnMain 
+            ] 
+        }; 
+        var game = new Phaser.Game(config);
 
     </script>
 </body>

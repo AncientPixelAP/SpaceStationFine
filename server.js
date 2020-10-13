@@ -1,13 +1,10 @@
 var port = process.env.PORT || 3000;
 var express = require('express');
-//var path = require('path');
 var app = express();
 let server = app.listen(port, () => {
     console.log("running on port " + String(port));
 });
-//var server = require("http").createServer(app);
 
-//app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname  + "/public"));
 
 let socket = require("socket.io");
@@ -15,6 +12,21 @@ let io = socket(server);
 
 let GameData = require("./gameData");
 let gameData = new GameData();
+
+let tick = setInterval(() => { 
+    gameData.update();
+
+    for(let p of gameData.players){
+        //let ploc = getLocationById(p.location.id);
+        let secD = getLocationsInSector({x: p.location.sector.x, y: p.location.sector.y, z: p.location.sector.z});
+        if(secD.length > 0){
+            io.to(p.id).emit("sectorUpdate", {
+                sectorData: secD
+            });
+        }
+    }
+    //io.emit("pongTest", {data: "tick"});
+}, 1000);
 
 io.on("connection", socket => {
     console.log(socket.id);
@@ -35,114 +47,63 @@ io.on("connection", socket => {
 
     //PLAYERS
     socket.on("joinPlayer", (_data) => {
-        gameData.createPlayer(_data.pos.x, _data.pos.y, socket.id);
-        io.to(socket.id).emit("joinGame", {
-            players: gameData.players,
-            level: gameData.level,
-            you: socket.id
-        })
+        //add freshly joined Player in GameData and send back the GameData for setup in phaser
+        gameData.addPlayer(id, "Enterprise");
+        let player = gameData.players.filter((p) => {return p.id === id});
+        if (player.length > 0){
+            let location = gameData.locations.filter((loc) => { return loc.id === player[0].location.id })
+            io.to(id).emit("getLocation", {
+                playerData: player[0],
+                locationData: location[0]
+            })
+        }
     });
 
-    socket.on("updateBall", (_data) => {
-        gameData.setBall({
-            id: _data.id,
-            pos: {
-                x: _data.pos.x,
-                y: _data.pos.y
+    socket.on("requestSectorLocations", (_data) => {
+        let locs = getLocationsInSector({x: _data.sector.x, y: _data.sector.y, z: _data.sector.z});
+        if(locs.length > 0){
+            for (let p of gameData.players) {
+                if (p.location.id === _data.id) {
+                    io.to(p.id).emit("getSectorLocations", locs);
+                }
             }
-        })
+        }
     });
 
-    socket.on("updateTree", (_data) => {
-        gameData.addDustTree(_data.dust);
-    })
-
-    socket.on("updatePlayer", (_data) => {
-        gameData.setPlayer({
-            id: id,
-            pos: {
-                x: _data.pos.x,
-                y: _data.pos.y
-            },
-            state: _data.state,
-            dust: _data.dust
-        });
-    })
-
-    socket.on("requestUpdate", () => {
-        io.to(socket.id).emit("getUpdate", {
-            players: gameData.players,
-            level: gameData.level
-        });
+    socket.on("setCourse", (_data) => {
+        let ship = getLocationById(_data.id);
+        if(ship !== null){
+            ship.impulseFactor = _data.impulseFactor;
+            ship.spd = _data.spd;
+            ship.heading = _data.heading;
+            ship.headingCoords = _data.headingCoords;
+        }
     });
-   
 
     //DISCONNECT
     socket.on("disconnect", () => {
         console.log("disconnected a client "+ id);
-        gameData.kickPlayer(id);
+        gameData.removePlayer(id);
         io.emit("kickPlayer", {
             id: id
         })
     })
 });
 
+function getLocationById(_id){
+    let arr = gameData.locations.filter((loc) => { return loc.id === _id });
+    if (arr.length > 0){
+        return arr[0];
+    }else{
+        return null;
+    }
+}
 
-/*
-
-let port = 3000;
-
-var express = require('express');
-var path = require('path');
-var app = express();
-let server = app.listen(port);
-app.use(express.static(path.join(__dirname, 'public')));
-
-let socket = require("socket.io");
-let io = socket(server);
-
-let Ship = require("./ship");
-let ship = new Ship();
-
-io.on("connection", socket => {
-    
-    console.log(socket.id);
-
-    //TEST
-    socket.on("ping", (_data) => {
-        console.log("ping!");
-        io.emit("pong", _data);
-    });
-
-    //CHAT
-    socket.on("chatSend", (_data) => {
-        io.emit("chatReceive", _data);
-    });
-
-    //GET SHIP
-    socket.on("getShip", () => {
-        io.emit("setShip", ship);
-    });
-
-    //NAV
-    socket.on("navSetPosition", (_data) => {
-        ship.position.x = _data.x;
-        ship.position.y = _data.y;
-        ship.position.z = _data.z;
-        ship.ressources.deuterium -= _data.deuterium;
-        io.emit("setShip", ship);
-    });
-    socket.on("navSetCourse", (_data) => {
-        io.emit("setCourse", _data);
-    });
-
-    socket.on("opsAddDeuterium", (_data) => {
-        ship.ressources.deuterium += _data.deuterium;
-        io.emit("setDeuterium", {
-            deuterium: ship.ressources.deuterium
-        })
-    })
-
-});
-
-*/
+function getLocationsInSector(_sector){
+    let arr = gameData.locations.filter((loc) => { return loc.sector.x === _sector.x && loc.sector.y === _sector.y && loc.sector.z === _sector.z });
+    if(arr.length > 0){
+        return arr;
+    }else{
+        return [];
+    }
+}
