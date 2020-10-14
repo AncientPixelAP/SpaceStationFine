@@ -87,4 +87,18 @@ export default class StationList {
     move() {
 
     }
+
+    destroy(){
+        this.station.destroy();
+        this.leftLTop.destroy();
+        this.rightLTop.destroy();
+        this.leftLLower.destroy();
+        this.leftPillar.destroy();
+        this.leftPillarMid.destroy();
+        this.locationTxt.destroy();
+
+        for(let b of this.buttons){
+            b.destroy();
+        }
+    }
 }

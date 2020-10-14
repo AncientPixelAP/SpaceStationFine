@@ -59,4 +59,13 @@ export default class CrossPad{
         this.currentField = _button;
         this.input = _defaultInput;
     }
+
+    destroy(){
+        this.bg.destroy();
+
+        this.btnMinusOne.destroy();
+        this.btnPlusTen.destroy();
+        this.btnPlusOne.destroy();
+        this.btnMinusTen.destroy();
+    }
 }

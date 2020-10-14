@@ -23,4 +23,8 @@ export default class Storage {
     synchronize(){
         
     }
+
+    destroy() {
+
+    }
 }

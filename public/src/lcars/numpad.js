@@ -122,4 +122,20 @@ export default class Numpad{
         this.currentField = _button;
         this.input = _defaultInput;
     }
+
+    destroy() {
+        for (let [i, b] of this.btnsNumber.entries()) {
+            b.destroy();
+        }
+        this.btnNumberZero.destroy();
+        this.btnPoint.destroy();
+        this.btnC.destroy();
+        this.btnSet.destroy();
+        this.btnDelete.destroy();
+        this.btnNegate.destroy();
+        this.btnClear.destroy();
+
+        this.numpadLTop.destroy();
+        this.numpadLBot.destroy();
+    }
 }

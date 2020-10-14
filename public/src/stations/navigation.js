@@ -227,8 +227,8 @@ export default class Navigation{
         this.headingTxt.x = this.pos.x + 80;
         this.headingTxt.y = this.pos.y - 80;
 
-        this.headingCoordsTxt.x = this.pos.x + 80;
-        this.headingCoordsTxt.y = this.pos.y - 98;
+        this.headingCoordsTxt.x = this.pos.x - 62;
+        this.headingCoordsTxt.y = this.pos.y - 35;
     }
 
     setCourse(){
@@ -278,5 +278,39 @@ export default class Navigation{
             this.headingCoords.y = this.scene.locationData.headingCoords.y;
         }
         this.headingCoords.z = this.scene.locationData.headingCoords.z;
+    }
+
+    destroy() {
+        this.btnsImpulse[0].destroy();
+        this.btnsImpulse[1].destroy();
+        this.btnsImpulse[2].destroy();
+        this.btnsImpulse[3].destroy();
+        this.btnsImpulse[4].destroy();
+
+        this.btnWarp.destroy();
+        this.pipWarpLeft.destroy();
+        this.pipWarpRight.destroy();
+        this.sectorXTxt.destroy();
+        this.sectorYTxt.destroy();
+        this.sectorZTxt.destroy();
+
+        this.numpad.destroy();
+
+        this.pipHeadingLeft.destroy();
+        this.pipHeadingRight.destroy();
+
+        this.headingLTopR.destroy();
+        this.headingLTopL.destroy();
+        this.headingLBotR.destroy();
+        this.headingLBotL.destroy();
+
+        this.simpleHeading.destroy();
+
+        this.headingXTxt.destroy();
+        this.headingYTxt.destroy();
+
+        this.headingTxt.destroy();
+
+        this.headingCoordsTxt.destroy();
     }
 }

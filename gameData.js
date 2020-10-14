@@ -24,7 +24,7 @@ const ESTATION = {
     storage: "storage",
     hangar: "hangar",
     bar: "bar",
-    merchant: "merchant",
+    shop: "shop",
     map: "map"
 
 }
@@ -62,6 +62,34 @@ class GameData{
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
             this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"]),
+            this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
+            this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
+        ]);
+
+        //create Deep Space Nine
+        spawnLocation = this.createLocation("Deep Space Fine", ELOCATION.station, { x: -0.5, y: -0.4, z: 0.5 });
+        spawnSector.addLocations([spawnLocation]);
+        spawnRoom = this.createRoom("OPS");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.astronometry, "Astrometrics", "AST", ["dsfine"]),
+            this.createStation(ESTATION.communications, "Communications", "COM", ["dsfine"]),
+            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["dsfine"]),
+        ]);
+        spawnRoom = this.createRoom("Promenade");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.bar, "Quirks", "BAR", ["alpha"]),
+            this.createStation(ESTATION.shop, "Derrek", "SHP", ["alpha"]),
+            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["dsfine"]),
+        ]);
+        spawnRoom = this.createRoom("Machinery");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
             this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);

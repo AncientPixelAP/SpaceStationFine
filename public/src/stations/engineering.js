@@ -23,4 +23,8 @@ export default class Engineering {
     synchronize(){
         
     }
+
+    destroy() {
+
+    }
 }

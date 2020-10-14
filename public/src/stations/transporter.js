@@ -1,6 +1,7 @@
 import Button from "../lcars/button.js";
 import Numpad from "../lcars/numpad.js";
 import CrossPad from "../lcars/crossPad.js";
+import ListButton from "../lcars/listButton.js";
 
 export default class Transporter {
     constructor(_scene, _data) {
@@ -17,16 +18,18 @@ export default class Transporter {
             console.log(_data);
             //remove old images
             for(let p of this.players){
-                p.txt.destroy();
-                p.pip.destroy();
+                //p.txt.destroy();
+                //p.pip.destroy();
+                p.destroy();
             }
             this.players = [];
             //fill new players
             for(let [i, p] of _data.entries()){
-                this.players.push({
+                /*this.players.push({
                     pip: this.scene.add.sprite(0, i * 18, "sprLcarsPipLeft16").setTintFill(LCARSCOLOR.gold),
                     txt: this.scene.add.bitmapText(0, i * 18, "pixelmix", p.id, 8, 1).setOrigin(0, 0.5)
-                });
+                });*/
+                this.players.push(new ListButton(this.scene, { x: this.pos.x - 168, y: this.pos.y - 116 + (i * 18) }, p.id, false, () => {}));
             }
         });
 
@@ -110,10 +113,11 @@ export default class Transporter {
         this.headingYTxt.update();
 
         for(let [i, p] of this.players.entries()){
-            p.pip.x = this.pos.x - 168;
+            /*p.pip.x = this.pos.x - 168;
             p.pip.y = this.pos.y - 116 + (i * 18);
             p.txt.x = this.pos.x - 158;
-            p.txt.y = this.pos.y -116 + (i * 18);
+            p.txt.y = this.pos.y -116 + (i * 18);*/
+            p.update();
         }
     }
 
@@ -121,21 +125,36 @@ export default class Transporter {
         this.btnScanSector.move(this.pos.x + 222, this.pos.y - 116);
 
         this.numpad.move(this.pos.x - 100, this.pos.y + 114);
-
         this.crossPad.move(this.pos.x + 32, this.pos.y + 105);
 
         this.headingXTxt.move(this.pos.x - 100, this.pos.y + 60);
         this.headingYTxt.move(this.pos.x - 48, this.pos.y + 60);
 
         for (let [i, p] of this.players.entries()) {
-            p.pip.x = this.pos.x - 168;
+            /*p.pip.x = this.pos.x - 168;
             p.pip.y = this.pos.y - 116 + (i * 18);
             p.txt.x = this.pos.x - 158;
-            p.txt.y = this.pos.y - 116 + (i * 18);
+            p.txt.y = this.pos.y -116 + (i * 18);*/
+            p.move(this.pos.x - 168, this.pos.y - 116 + (i * 18));
         }
     }
 
     synchronize(){
         
+    }
+
+    destroy() {
+        this.btnScanSector.destroy();
+        this.numpad.destroy();
+        this.crossPad.destroy();
+        this.headingXTxt.destroy();
+        this.headingYTxt.destroy();
+
+        for (let [i, p] of this.players.entries()) {
+            //p.pip.destroy();
+            //p.txt.destroy();
+            p.destroy();
+        }
+        this.players = [];
     }
 }

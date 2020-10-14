@@ -17,20 +17,11 @@ let tick = setInterval(() => {
     gameData.update();
 
     for(let p of gameData.players){
-        //let ploc = getLocationById(p.location.id);
-        /*let secD = getLocationsInSector({x: p.location.sector.x, y: p.location.sector.y, z: p.location.sector.z});
-        if(secD.length > 0){
-            io.to(p.id).emit("sectorUpdate", {
-                sectorData: secD
-            });
-        }*/
-
         //get sector update
         io.to(p.id).emit("sectorUpdate", {
             sectorData: p.sector
         });
     }
-    //io.emit("pongTest", {data: "tick"});
 }, 1000);
 
 io.on("connection", socket => {
@@ -52,16 +43,6 @@ io.on("connection", socket => {
 
     //PLAYERS
     socket.on("joinPlayer", (_data) => {
-        //add freshly joined Player in GameData and send back the GameData for setup in phaser
-        /*gameData.addPlayer(id, "Enterprise");
-        let player = gameData.players.filter((p) => {return p.id === id});
-        if (player.length > 0){
-            let location = gameData.locations.filter((loc) => { return loc.id === player[0].location.id })
-            io.to(id).emit("getLocation", {
-                playerData: player[0],
-                locationData: location[0]
-            })
-        }*/
         gameData.spawnPlayer(id);
         let loc = gameData.sectors[0].locations[0];
         gameData.players[gameData.players.length-1].setLocation(loc);
@@ -80,14 +61,6 @@ io.on("connection", socket => {
     });
 
     socket.on("requestSectorLocations", (_data) => {
-        /*let locs = getLocationsInSector({x: _data.sector.x, y: _data.sector.y, z: _data.sector.z});
-        if(locs.length > 0){
-            for (let p of gameData.players) {
-                if (p.location.id === _data.id) {
-                    io.to(p.id).emit("getSectorLocations", locs);
-                }
-            }
-        }*/
         for (let p of gameData.players) {
             if (p.location.id === _data.id) {
                 io.to(p.id).emit("getSectorLocations", p.sector);
@@ -96,12 +69,12 @@ io.on("connection", socket => {
     });
 
     socket.on("setCourse", (_data) => {
-        let ship = getLocationById(_data.id);
-        if(ship !== null){
-            ship.impulseFactor = _data.impulseFactor;
-            ship.spd = _data.spd;
-            ship.heading = _data.heading;
-            ship.headingCoords = _data.headingCoords;
+        let player = getPlayerById(id);
+        if(player !== null){
+            player.location.impulseFactor = _data.impulseFactor;
+            player.location.spd = _data.spd;
+            player.location.heading = _data.heading;
+            player.location.headingCoords = _data.headingCoords;
         }
     });
 
@@ -115,14 +88,42 @@ io.on("connection", socket => {
     })
 });
 
-function getLocationById(_id){
-    let arr = gameData.locations.filter((loc) => { return loc.id === _id });
-    if (arr.length > 0){
+
+function getPlayerById(_id){
+    let arr = gameData.players.filter((p) => {return p.id === _id});
+    if(arr.length > 0){
         return arr[0];
     }else{
         return null;
     }
 }
+
+function getLocationById(_id){
+    let found = [];
+    for(let s of gameData.sectors){
+        let arr = s.locations.filter((loc) => { return loc.id === _id });
+        if (arr.length > 0){
+            found.push(arr[0]);
+        }
+    }
+    return found;
+}
+
+function getPlayersAtLocation(_id) {
+    let found = [];
+    let loc = getLocationById(_id);
+    if(loc.length > 0){
+        let arr = gameData.players.filter((p) => { return p.locationId === _id });
+        if (arr.length > 0) {
+            for(let a of arr){
+                found.push(a);
+            }
+        }
+    }
+    return found;    
+}
+
+
 
 function getLocationsInSector(_sector){
     let arr = gameData.locations.filter((loc) => { return loc.sector.x === _sector.x && loc.sector.y === _sector.y && loc.sector.z === _sector.z });
@@ -133,11 +134,3 @@ function getLocationsInSector(_sector){
     }
 }
 
-function getPlayersAtLocation(_id){
-    let arr = gameData.players.filter((p) => {return p.locationId === _id});
-    if(arr.length > 0){
-        return arr;
-    }else{
-        return [];
-    }
-}

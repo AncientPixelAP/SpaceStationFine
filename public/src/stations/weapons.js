@@ -23,4 +23,8 @@ export default class Weapons {
     synchronize(){
         
     }
+
+    destroy() {
+
+    }
 }

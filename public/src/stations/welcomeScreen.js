@@ -32,4 +32,8 @@ export default class Welcome {
             this.description.destroy();
         }
     }
+
+    destroy() {
+        this.dismiss();
+    }
 }

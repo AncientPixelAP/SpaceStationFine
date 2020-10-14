@@ -6,6 +6,7 @@ import Engineering from "./engineering.js";
 import Transporter from "./transporter.js";
 import Storage from "./storage.js";
 import Hangar from "./hangar.js";
+import Turbolift from "./turbolift.js";
 
 export default class GenericStation{
     constructor(_scene, _data) {
@@ -33,6 +34,9 @@ export default class GenericStation{
 
     createStation(){
         switch(this.data.type){
+            case "map":
+                this.station = new Turbolift(this.scene, this.data);
+            break;
             case "astronometry":
                 this.station = new Astronometry(this.scene, this.data);
             break;
@@ -86,6 +90,13 @@ export default class GenericStation{
             this.station.pos.x = this.offset.x;
             this.station.pos.y = this.offset.y;
             this.station.move();
+        }
+    }
+
+    destroy(){
+        this.txt.destroy();
+        if(this.station !== null){
+            this.station.destroy();
         }
     }
 }

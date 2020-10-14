@@ -72,8 +72,7 @@ export default class ScnMain extends Phaser.Scene {
             this.playerData = _data.playerData;
 
             this.createStations(_data.locationData.rooms[0].stations);
-            this.stations.push(new StationList(this, this.stations));
-            this.currentStation = this.stations[this.stations.length-1];
+            
 
             this.synchronize();
         });
@@ -89,9 +88,17 @@ export default class ScnMain extends Phaser.Scene {
     }
 
     createStations(_stations){
+        for(let s of this.stations){
+            s.destroy();
+        }
+        this.stations = [];
+
         for (let [i, s] of _stations.entries()) {
             this.stations.push(new GenericStation(this, s));
         }
+
+        this.stations.push(new StationList(this, this.stations));
+        this.currentStation = this.stations[this.stations.length - 1];
     }
 
     update() {

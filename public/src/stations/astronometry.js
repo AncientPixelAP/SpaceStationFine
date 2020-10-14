@@ -181,4 +181,20 @@ export default class Astronometry{
     synchronize(){
 
     }
+
+    destroy(){
+        this.btnScanSector.destroy();
+        this.btnDetails.destroy();
+        this.btnVector.destroy();
+
+        this.details.destroy();
+
+        this.sectorMap.destroy();
+        this.sectorHeading.destroy();
+        this.target.sprite.destroy();
+
+        for (let l of this.locations) {
+            l.sprite.destroy();
+        }
+    }
 }
