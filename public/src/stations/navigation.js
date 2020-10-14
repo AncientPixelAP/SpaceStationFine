@@ -268,9 +268,9 @@ export default class Navigation{
         }
         this.spd = this.scene.locationData.spd;
         this.warping = this.scene.locationData.warping;
-        this.sectorCoords.x = this.scene.locationData.sector.x;
-        this.sectorCoords.y = this.scene.locationData.sector.y;
-        this.sectorCoords.z = this.scene.locationData.sector.z;
+        this.sectorCoords.x = this.scene.locationData.sectorCoords.x;
+        this.sectorCoords.y = this.scene.locationData.sectorCoords.y;
+        this.sectorCoords.z = this.scene.locationData.sectorCoords.z;
         if(this.headingXTxt.active === false){
             this.headingCoords.x = this.scene.locationData.headingCoords.x;
         }

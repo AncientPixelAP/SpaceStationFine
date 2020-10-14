@@ -11,7 +11,9 @@ class Sector{
     }
 
     update(){
-
+        for(let l of this.locations){
+            l.update();
+        }
     }
 
     setName(_name){
@@ -19,9 +21,14 @@ class Sector{
     }
 
     addLocations(_locations){
-        for(let l of this.locations){
+        for(let l of _locations){
+            l.sectorCoords = {
+                x: this.pos.x,
+                y: this.pos.y,
+                z: this.pos.z
+            };
+            l.sectorId = this.name;
             this.locations.push(l);
-            l.sector = this;
         }
     }
 
@@ -34,5 +41,7 @@ class Sector{
             }
         }
     }
+
+    
 }
 module.exports = Sector;

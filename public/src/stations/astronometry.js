@@ -20,6 +20,7 @@ export default class Astronometry{
         this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "SCAN", false, () => {
             console.log("scanning");
             socket.emit("requestSectorLocations", {
+                player: this.scene.playerData,
                 id: this.scene.locationData.id,
                 sector: this.scene.locationData.sector
             });
@@ -68,7 +69,7 @@ export default class Astronometry{
             }
             this.locations = [];
             //fill new locations
-            for(let l of _data){
+            for(let l of _data.locations){
                 let asset = "sprSymbolUnkown";
                 switch(l.type){
                     case "ship":
@@ -123,11 +124,11 @@ export default class Astronometry{
 
         //update locations with sectorData
         if(this.scene.sectorData !== null){
-            for(let sd of this.scene.sectorData){
+            for(let sl of this.scene.sectorData.locations){
                 for(let l of this.locations){
                     //console.log(sd);
-                    if(sd.id === l.data.id){
-                        l.data = sd;
+                    if(sl.id === l.data.id){
+                        l.data = sl;
                     }
                 }
             }

@@ -32,39 +32,29 @@ export default class GenericStation{
     }
 
     createStation(){
-        switch(this.data.name){
-            case "Astronometry":
-                switch(this.data.type){
-                    case 0:
-                        this.station = new Astronometry(this.scene, this.data);
-                    break;
-                    case 1:
-                        //TODO other astronometry class with diff layout, eg withourt warp for shuttle
-                        this.station = new Astronometry(this.scene, this.data);
-                    break;    
-                    default:
-                    break;
-                }
+        switch(this.data.type){
+            case "astronometry":
+                this.station = new Astronometry(this.scene, this.data);
             break;
-            case "Navigation":
+            case "navigation":
                 this.station = new Navigation(this.scene, this.data);
                 break;
-            case "Weapons":
+            case "weapons":
                 this.station = new Weapons(this.scene, this.data);
                 break;
-            case "Communications":
+            case "communications":
                 this.station = new Communications(this.scene, this.data);
                 break;
-            case "Engineering":
+            case "engineering":
                 this.station = new Engineering(this.scene, this.data);
                 break;
-            case "Transporter":
+            case "transporter":
                 this.station = new Transporter(this.scene, this.data);
                 break;
-            case "Storage":
+            case "storage":
                 this.station = new Storage(this.scene, this.data);
                 break;
-            case "Hangar":
+            case "hangar":
                 this.station = new Hangar(this.scene, this.data);
                 break;
             default:
