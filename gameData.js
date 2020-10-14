@@ -125,6 +125,12 @@ class GameData {
         }
     }
 
+    warpLocation(_location, _fromSector, _toSector){
+        _toSector.addLocation(_location);
+        _fromSector.removeLocation(_location);
+        //how to move theplayer
+    }
+
     /*spawnShip(_type, _name){
         switch(_type){
             case SHIPTYPE.GALAXYCLASS:
