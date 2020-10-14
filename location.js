@@ -35,6 +35,8 @@ class Location {
             type: 0,
             health: 100
         }
+
+        this.rooms = [];
     }
 
     update(){

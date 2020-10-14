@@ -18,16 +18,21 @@ class Sector{
         this.name = _name;
     }
 
-    addLocation(_location){
-        this.locations.push(_location);
-        _location.sector = this;
+    addLocations(_locations){
+        for(let l of this.locations){
+            this.locations.push(l);
+            l.sector = this;
+        }
     }
 
-    removeLocationById(_location){
+    removeLocations(_locations){
         for(let i = this.locations.length-1 ; i >= 0 ; i--){
-            if(this.locations[i] === _location){
-                this.locations.splice(i, 1);
+            for(let l of _locations){
+                if(this.locations[i].id === l.id){
+                    this.locations.splice(i, 1);
+                }
             }
         }
     }
 }
+module.exports = Sector;
