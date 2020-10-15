@@ -30,11 +30,12 @@ export default class Astronometry{
             let vx = this.sectorMap.x + this.target.sprite.x;
             let vy = this.sectorMap.y + this.target.sprite.y;
             this.details.setText("target: " + String(vx.toFixed(0)) + "," + String(vy.toFixed(0)));
+
+            console.log(this.locations);
         });
 
         this.btnDetails = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "DETL", false, () => {
             if(this.target.follow !== null){
-                console.log(this.target.follow.data);
                 let txt = this.target.follow.data.type;
                 txt += "\nid: " + this.target.follow.data.id;
                 txt += "\ncourse: " + this.target.follow.data.headingCoords.x + "," + this.target.follow.data.headingCoords.y + "\nat " + this.target.follow.data.spd + "km/s";
@@ -148,7 +149,6 @@ export default class Astronometry{
                 l.sprite.x = this.sectorMap.x + (xx * 128);
                 l.sprite.y = this.sectorMap.y + (yy * 128);
             }
-            
         }
 
         this.sectorHeading.setRotation(this.scene.locationData.heading);
@@ -179,7 +179,35 @@ export default class Astronometry{
     }
 
     synchronize(){
+        if(this.scene.sectorData !== null){
+            for(let ol of this.scene.sectorData.locations){
 
+                let found = false;
+                for(let l of this.locations){
+                    if(ol.id === l.data.id){
+                        l.data = ol;
+                        found = true;
+                    }
+                }
+                if(found === false){
+                    let asset = "sprSymbolUnkown";
+                    switch (ol.type) {
+                        case "ship":
+                            asset = "sprSymbolFriendlyShip";
+                            break;
+                        case "station":
+                            asset = "sprSymbolFriendlyStation";
+                            break;
+                        default:
+                            break;
+                    }
+                    this.locations.push({
+                        data: ol,
+                        sprite: this.scene.add.sprite(this.sectorMap.x + (ol.coords.x * 128), this.sectorMap.y + (ol.coords.y * 128), asset)
+                    });
+                }
+            }
+        }
     }
 
     destroy(){
@@ -192,9 +220,12 @@ export default class Astronometry{
         this.sectorMap.destroy();
         this.sectorHeading.destroy();
         this.target.sprite.destroy();
+        this.target.txt.destroy();
 
         for (let l of this.locations) {
             l.sprite.destroy();
         }
+
+        socket.off("getSectorLocations");
     }
 }

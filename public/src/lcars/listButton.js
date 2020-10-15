@@ -88,12 +88,15 @@ export default class ListButton {
         switch (this.state) {
             case this.states.out:
                 this.sprite.setTintFill(this.colors.out);
+                this.txt.setTintFill(0xffffff);
                 break;
             case this.states.over:
                 this.sprite.setTintFill(this.colors.over);
+                this.txt.setTintFill(LCARSCOLOR.blue);
                 break;
             case this.states.on:
                 this.sprite.setTintFill(this.colors.on);
+                this.txt.setTintFill(0xffffff);
                 break;
             default:
                 break;

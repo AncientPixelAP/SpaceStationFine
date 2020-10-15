@@ -53,8 +53,11 @@ export default class StationList {
         this.leftLLower.setTintFill(LCARSCOLOR.gold);
         this.leftPillar = this.scene.add.sprite(this.scene.left + 50, this.scene.bottom-34, "sprLcarsPillar32");
         this.leftPillar.setTintFill(LCARSCOLOR.gold);
-        this.leftPillarMid = this.scene.add.sprite(this.scene.left + 50, (this.leftLLower.y + 8 + this.leftPillar.y - 16) * 0.5, "sprLcarsPillar32");
-        this.leftPillarMid.setTintFill(LCARSCOLOR.gold);
+
+        this.leftPillarMid = this.scene.add.graphics(0, 0);
+        this.leftPillarMid.fillStyle(LCARSCOLOR.gold);
+        let h = this.leftPillar.y - this.leftLLower.y ;
+        this.leftPillarMid.fillRect(this.leftLLower.x, this.leftLLower.y, 32, h);
 
         this.locationTxt = this.scene.add.bitmapText(this.scene.left + 16, (this.leftPillar.y+this.leftLLower.y) * 0.5, "pixelmix", this.scene.locationData.id, 8, 1).setOrigin(0.5);
         this.locationTxt.angle = -90;

@@ -1,5 +1,5 @@
 class Location {
-    constructor(_id, _type, _coords) {
+    constructor(_id, _type, _coords, _blueprint) {
         this.sectorCoords = {
             x: 0,
             y: 0,
@@ -19,18 +19,7 @@ class Location {
             y: 0,
             z: 0
         }
-
-        /*this.stations = [];
-        for(let s of stations){
-            this.stations.push({
-                name: s.name,
-                short: s.short,
-                type: s.type,
-                power: 1,
-                inventory: [],
-                passkey: ["alpha"]
-            });
-        }*/
+        this.blueprint = _blueprint;
 
         this.shields = {
             up: false,

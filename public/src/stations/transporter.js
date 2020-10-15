@@ -2,6 +2,7 @@ import Button from "../lcars/button.js";
 import Numpad from "../lcars/numpad.js";
 import CrossPad from "../lcars/crossPad.js";
 import ListButton from "../lcars/listButton.js";
+import { SliderVertical } from "../lcars/slider.js";
 
 export default class Transporter {
     constructor(_scene, _data) {
@@ -13,23 +14,54 @@ export default class Transporter {
             y: 0
         }
 
+        this.beamRange = 0.22;
+
+        this.pipListNameLeft = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsPipLeft16");
+        this.pipListNameLeft.setTintFill(LCARSCOLOR.offOrange);
+        this.pipListNameRight = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsBtnRight32");
+        this.pipListNameRight.setTintFill(LCARSCOLOR.offOrange);
+        this.listNameTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y, "pixelmix", "Locations", 8, 1).setOrigin(0, 0.5);
+
+        this.list = {
+            locations: 0,
+            players: 1
+        }
+        this.listview = this.list.locations;
+        this.showDestinations = false;
+
+        this.lastPlayer = null;
+        this.lastDestination = null;
+
+        this.btnBack = new Button(this.scene, {x: this.pos.x, y: this.pos.y}, "sprLcarsBtnLong64", "BACK", false, () => {
+            this.listview = this.list.locations;
+            for(let d of this.destinations){
+                d.btn.destroy();
+            }
+            this.destinations = [];
+            for (let p of this.players) {
+                p.destroy();
+            }
+            this.players = [];
+            this.listNameTxt.setText("Locations");
+        });
+
+        this.locations = [];
+        this.destinations = [];
         this.players = [];
         socket.on("getPlayersAtLocation", (_data) => {
-            console.log(_data);
             //remove old images
             for(let p of this.players){
-                //p.txt.destroy();
-                //p.pip.destroy();
                 p.destroy();
             }
             this.players = [];
             //fill new players
             for(let [i, p] of _data.entries()){
-                /*this.players.push({
-                    pip: this.scene.add.sprite(0, i * 18, "sprLcarsPipLeft16").setTintFill(LCARSCOLOR.gold),
-                    txt: this.scene.add.bitmapText(0, i * 18, "pixelmix", p.id, 8, 1).setOrigin(0, 0.5)
-                });*/
-                this.players.push(new ListButton(this.scene, { x: this.pos.x - 168, y: this.pos.y - 116 + (i * 18) }, p.id, false, () => {}));
+                //x: this.pos.x - 168, y: this.pos.y - 80 + (i * 18)
+                this.players.push(new ListButton(this.scene, { x: this.pos.x - 64, y: this.pos.y - 80 + (i * 18) }, p.id, true, () => {
+                    this.showDestinations = true;
+                    this.lastPlayer = p;
+                }));
+                
             }
         });
 
@@ -37,6 +69,9 @@ export default class Transporter {
             socket.emit("requestPlayersAtLocation", {
                 id: this.scene.locationData.id
             });
+        });
+        this.btnTest = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "TEST", false, () => {
+            
         });
 
         //HEADING fo transporter beam
@@ -46,27 +81,26 @@ export default class Transporter {
             z: 0
         }
         this.headingXTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", this.headingCoords.x, true, () => {
-            //this.numpad.setForInput(this.headingXTxt, this.headingCoords.x);
             this.crossPad.setForInput(this.headingXTxt, this.headingCoords.x);
             this.headingYTxt.active = false;
         });
         this.headingYTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", this.headingCoords.y, true, () => {
-            //this.numpad.setForInput(this.headingYTxt, this.headingCoords.y);
             this.crossPad.setForInput(this.headingYTxt, this.headingCoords.y);
             this.headingXTxt.active = false;
         });
-        this.numpad = new Numpad(this.scene, { x: this.pos.x, y: this.pos.y });
-        /*this.numpad.setFunc = () => {
+
+        this.crossPad = new CrossPad(this.scene, {x: 0, y: 0});
+        /*this.crossPad.setFunc = () => {
             this.heading = Phaser.Math.Angle.Between(0, 0, this.headingCoords.x, this.headingCoords.y);
             this.setCourse();
-        };*/
-        this.numpad.clrFunc = () => {
+        };
+        this.crossPad.clrFunc = () => {
             this.headingCoords.x = 0;
             this.headingCoords.y = 0;
             this.headingCoords.z = 0;
         }
-        this.numpad.pointFunc = () => {
-            this.numpad.setFunc();
+        this.crossPad.pointFunc = () => {
+            this.crossPad.setFunc();
             if (this.headingXTxt.active === true) {
                 this.headingXTxt.active = false;
                 this.headingYTxt.simulateClick();
@@ -74,26 +108,37 @@ export default class Transporter {
                 this.headingYTxt.active = false;
                 this.headingXTxt.simulateClick();
             }
+        }*/
+
+        this.slider = new SliderVertical(this.scene, {x: this.pos.x, y: this.pos.y}, 0, 106);
+        this.slider.autoReturn = true;
+        this.slider.maxFunc = () => {
+            if((this.lastPlayer !== null && this.lastDestination !== null) && this.listview === this.list.players){
+                if (Phaser.Math.Distance.Between(this.beamAlignTarget.outerX.x, 0, this.beamAlignTarget.innerX.x, 0) < 1 && Phaser.Math.Distance.Between(0, this.beamAlignTarget.outerY.y, 0, this.beamAlignTarget.innerY.y) < 1){
+                    this.btnBack.simulateClick();
+                    console.log(this.lastPlayer.id + " > " + this.lastDestination.id);
+                    socket.emit("beamPlayer", {
+                        playerId: this.lastPlayer.id,
+                        locationId: this.lastDestination.id
+                    });
+                }
+            }
         }
 
-        this.crossPad = new CrossPad(this.scene, {x: 0, y: 0});
-
+        this.beamAlignBase = this.scene.add.sprite(this.pos.x, this.pos.y, "sprBlueRect52");
+        this.beamAlignTarget = {
+            outerX: this.scene.add.sprite(this.pos.x, this.pos.y, "sprBeamAlignTargetOuter52"),
+            innerX: this.scene.add.sprite(this.pos.x, this.pos.y, "sprBeamAlignTargetInner52"),
+            outerY: this.scene.add.sprite(this.pos.x, this.pos.y, "sprBeamAlignTargetOuter52").setAngle(90),
+            innerY: this.scene.add.sprite(this.pos.x, this.pos.y, "sprBeamAlignTargetInner52").setAngle(90),
+            x: 0,
+            y: 0
+        }
     }
 
     update() {
         this.btnScanSector.update();
-
-        this.numpad.update();
-        /*switch (this.numpad.currentField) {
-            case this.headingXTxt:
-                this.headingCoords.x = this.numpad.input;
-                break;
-            case this.headingYTxt:
-                this.headingCoords.y = this.numpad.input;
-                break;
-            default:
-                break;
-        }*/
+        this.btnTest.update();
 
         this.crossPad.update();
         switch (this.crossPad.currentField) {
@@ -107,54 +152,206 @@ export default class Transporter {
                 break;
         }
 
+        this.slider.update();
+
         this.headingXTxt.txt.setText(this.headingCoords.x);
         this.headingYTxt.txt.setText(this.headingCoords.y);
         this.headingXTxt.update();
         this.headingYTxt.update();
 
-        for(let [i, p] of this.players.entries()){
-            /*p.pip.x = this.pos.x - 168;
-            p.pip.y = this.pos.y - 116 + (i * 18);
-            p.txt.x = this.pos.x - 158;
-            p.txt.y = this.pos.y -116 + (i * 18);*/
-            p.update();
+        if(this.lastDestination !== null){
+            this.beamAlignTarget.outerX.x = this.beamAlignBase.x + Math.floor(this.lastDestination.coords.x * 25);
+            this.beamAlignTarget.outerY.y = this.beamAlignBase.y + Math.floor(this.lastDestination.coords.y * 25);
+
+            this.beamAlignTarget.innerX.x = this.beamAlignBase.x + (this.headingCoords.x);
+            this.beamAlignTarget.innerY.y = this.beamAlignBase.y + (this.headingCoords.y);
+        }
+
+        this.pipListNameRight.x = this.listNameTxt.x + this.listNameTxt.getTextBounds().local.width + 24;
+        this.pipListNameRight.y = this.pos.y - 116;
+
+        if(this.listview === this.list.players){
+            for (let [i, p] of this.players.entries()) {
+                p.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
+                p.update();
+            }
+            for (let [i, l] of this.locations.entries()) {
+                l.btn.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
+            }
+            for (let [i, d] of this.destinations.entries()) {
+                d.btn.move(this.pos.x, this.pos.y - 80 + (i * 18));
+                d.btn.update();
+            }
+            this.btnBack.move(this.pos.x - 144, this.pos.y - 80 + ((this.players.length+1) * 18));
+            this.btnBack.update();
+        }else{
+            for (let [i, p] of this.players.entries()) {
+                p.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
+            }
+            for (let [i, l] of this.locations.entries()) {
+                l.btn.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
+                l.btn.update();
+            }
+            for (let [i, d] of this.destinations.entries()) {
+                d.btn.move(this.pos.x + 1000, this.pos.y - 80 + (i * 18));
+            }
+            this.btnBack.move(this.pos.x + 1000, this.pos.y);
         }
     }
 
     move(){
         this.btnScanSector.move(this.pos.x + 222, this.pos.y - 116);
+        this.btnTest.move(this.pos.x + 222, this.pos.y - 98);
 
-        this.numpad.move(this.pos.x - 100, this.pos.y + 114);
         this.crossPad.move(this.pos.x + 32, this.pos.y + 105);
+        this.slider.move(this.pos.x + 132, this.pos.y + 105);
+
+        this.beamAlignBase.x = this.pos.x - 100;
+        this.beamAlignBase.y = this.pos.y + 105;
+        this.beamAlignTarget.outerX.x = this.beamAlignBase.x;
+        this.beamAlignTarget.outerX.y = this.beamAlignBase.y;
+        this.beamAlignTarget.innerX.x = this.beamAlignBase.x;
+        this.beamAlignTarget.innerX.y = this.beamAlignBase.y;
+        this.beamAlignTarget.outerY.x = this.beamAlignBase.x;
+        this.beamAlignTarget.outerY.y = this.beamAlignBase.y;
+        this.beamAlignTarget.innerY.x = this.beamAlignBase.x;
+        this.beamAlignTarget.innerY.y = this.beamAlignBase.y;
 
         this.headingXTxt.move(this.pos.x - 100, this.pos.y + 60);
         this.headingYTxt.move(this.pos.x - 48, this.pos.y + 60);
 
-        for (let [i, p] of this.players.entries()) {
-            /*p.pip.x = this.pos.x - 168;
-            p.pip.y = this.pos.y - 116 + (i * 18);
-            p.txt.x = this.pos.x - 158;
-            p.txt.y = this.pos.y -116 + (i * 18);*/
-            p.move(this.pos.x - 168, this.pos.y - 116 + (i * 18));
+        this.pipListNameLeft.x = this.pos.x - 168;
+        this.pipListNameLeft.y = this.pos.y - 116;
+        this.listNameTxt.x = this.pos.x - 152;
+        this.listNameTxt.y = this.pos.y - 116;
+        this.pipListNameRight.x = this.listNameTxt.x + this.listNameTxt.getTextBounds().local.width + 24;
+        this.pipListNameRight.y = this.pos.y - 116;
+
+        if (this.listview === this.list.players) {
+            for (let [i, p] of this.players.entries()) {
+                p.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
+            }
+            for (let [i, l] of this.locations.entries()) {
+                l.btn.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
+            }
+            for (let [i, d] of this.destinations.entries()) {
+                d.btn.move(this.pos.x, this.pos.y - 80 + (i * 18));
+            }
+            this.btnBack.move(this.pos.x - 144, this.pos.y - 80 + (this.players.length * 18));
+        } else {
+            for (let [i, p] of this.players.entries()) {
+                p.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
+            }
+            for (let [i, l] of this.locations.entries()) {
+                l.btn.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
+            }
+            for (let [i, d] of this.destinations.entries()) {
+                d.btn.move(this.pos.x + 1000, this.pos.y - 80 + (i * 18));
+            }
+            this.btnBack.move(this.pos.x + 1000, this.pos.y);
         }
     }
 
     synchronize(){
-        
+        if (this.scene.sectorData !== null) {
+            if(this.listview === this.list.locations){
+                //refresh location lsit
+                for (let ol of this.scene.sectorData.locations) {
+                    let found = false;
+                    for(let i = this.locations.length -1 ; i >= 0 ; i--){
+                        if (ol.id === this.locations[i].data.id) {
+                            this.locations[i].data = ol;
+                            found = true;
+                        }
+                        if (Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, this.locations[i].data.coords.x, this.locations[i].data.coords.y) > this.beamRange){
+                            this.locations[i].btn.destroy();
+                            this.locations.splice(i, 1);
+                        }
+                    }
+                    if (found === false && Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, ol.coords.x, ol.coords.y) <= this.beamRange) {
+                        this.locations.push({
+                            data: ol,
+                            btn: new ListButton(this.scene, { x: this.pos.x - 168, y: this.pos.y - 80 + (this.locations.length * 18) }, ol.id, false, () => {
+                                socket.emit("requestPlayersAtLocation", {
+                                    id: ol.id
+                                });
+                                this.listNameTxt.setText(ol.id);
+                                this.listview = this.list.players;
+                            })
+                        });
+                    }
+                }
+            }else{
+                if(this.showDestinations === true){
+                    for (let ol of this.scene.sectorData.locations) {
+                        let found = false;
+                        for (let d of this.destinations) {
+                            if (ol.id === d.data.id) {
+                                d.data = ol;
+                                found = true;
+                            }
+                        }
+                        if (found === false) {
+                            if (this.listNameTxt.text !== ol.id && Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, ol.coords.x, ol.coords.y) <= this.beamRange){
+                                let asset = "sprSymbolUnkown";
+                                switch (ol.type) {
+                                    case "ship":
+                                        asset = "sprSymbolFriendlyShip";
+                                        break;
+                                    case "station":
+                                        asset = "sprSymbolFriendlyStation";
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                this.destinations.push({
+                                    data: ol,
+                                    btn: new ListButton(this.scene, { x: this.pos.x - 168, y: this.pos.y - 80 + (this.locations.length * 18) }, ol.id, true, () => {
+                                        this.lastDestination = ol;
+                                    })
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     destroy() {
         this.btnScanSector.destroy();
-        this.numpad.destroy();
+        this.btnTest.destroy();
+
         this.crossPad.destroy();
+        this.slider.destroy();
+
         this.headingXTxt.destroy();
         this.headingYTxt.destroy();
 
-        for (let [i, p] of this.players.entries()) {
-            //p.pip.destroy();
-            //p.txt.destroy();
+        for (let p of this.players) {
             p.destroy();
         }
         this.players = [];
+        for (let l of this.locations) {
+            l.btn.destroy();
+        }
+        this.locations = [];
+        for (let d of this.destinations) {
+            d.btn.destroy();
+        }
+        this.destinations = [];
+        this.btnBack.destroy();
+
+        this.pipListNameLeft.destroy();
+        this.pipListNameRight.destroy();
+        this.listNameTxt.destroy();
+
+        this.beamAlignBase.destroy();
+        this.beamAlignTarget.outerX.destroy();
+        this.beamAlignTarget.outerY.destroy();
+        this.beamAlignTarget.innerX.destroy();
+        this.beamAlignTarget.innerY.destroy();
+
+        socket.off("getPlayersAtLocation");
     }
 }

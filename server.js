@@ -19,7 +19,7 @@ let tick = setInterval(() => {
     for(let p of gameData.players){
         //get sector update
         io.to(p.id).emit("sectorUpdate", {
-            sectorData: p.sector
+            sectorData: p.sector 
         });
     }
 }, 1000);
@@ -55,9 +55,7 @@ io.on("connection", socket => {
 
     socket.on("requestPlayersAtLocation", (_data) => {
         let players = getPlayersAtLocation(_data.id);
-        if(players.length > 0){
-            io.to(id).emit("getPlayersAtLocation", players);
-        }
+        io.to(id).emit("getPlayersAtLocation", players);
     });
 
     socket.on("requestSectorLocations", (_data) => {
@@ -77,6 +75,17 @@ io.on("connection", socket => {
             player.location.headingCoords = _data.headingCoords;
         }
     });
+
+    socket.on("beamPlayer", (_data) => {
+        let player = getPlayerById(_data.playerId);
+        let loc = getLocationById(_data.locationId)[0];
+        player.setLocation(loc);
+
+        io.to(_data.playerId).emit("getLocation", {
+            playerData: player,
+            locationData: loc
+        });
+    })
 
     //DISCONNECT
     socket.on("disconnect", () => {

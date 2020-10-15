@@ -56,6 +56,7 @@ export default class ScnMain extends Phaser.Scene {
         this.sectorData = null;
         this.stations = [];
         this.currentStation = null;
+        this.currentRoom = null;
         
         //console.log(socket);
         socket.on("pongTest", (_data) => {
@@ -71,8 +72,7 @@ export default class ScnMain extends Phaser.Scene {
             this.locationData = _data.locationData;
             this.playerData = _data.playerData;
 
-            this.createStations(_data.locationData.rooms[0].stations);
-            
+            this.createRoom(_data.locationData.rooms[0]);
 
             this.synchronize();
         });
@@ -86,19 +86,22 @@ export default class ScnMain extends Phaser.Scene {
 
         socket.emit("joinPlayer", {});
     }
+    
+    createRoom(_room){
+        this.currentRoom = _room;
 
-    createStations(_stations){
         for(let s of this.stations){
             s.destroy();
         }
         this.stations = [];
 
-        for (let [i, s] of _stations.entries()) {
+        for (let [i, s] of _room.stations.entries()) {
             this.stations.push(new GenericStation(this, s));
         }
 
         this.stations.push(new StationList(this, this.stations));
         this.currentStation = this.stations[this.stations.length - 1];
+        this.currentStation.buttons[0].simulateClick();
     }
 
     update() {

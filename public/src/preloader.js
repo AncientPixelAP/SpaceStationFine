@@ -26,7 +26,8 @@ export default function() {
             this.load.image("sprLcarsL64thin", "sprites/lcarsL64thin.png");
             this.load.image("sprLcarsL48", "sprites/lcarsL48.png");
             this.load.image("sprLcarsL64", "sprites/lcarsL64.png");
-            this.load.image("sprLcarsCrosspadBg", "sprites/lcarsCrosspadBg04.png")
+            this.load.image("sprLcarsCrosspadBg", "sprites/lcarsCrosspadBg03.png"); 
+            this.load.image("sprLcarsSlider16", "sprites/lcarsSlider16.png");
             
             this.load.image("sprLcarsBtnMono16", "sprites/lcarsBtnMono16.png");
             this.load.image("sprLcarsBtnLong64", "sprites/lcarsBtnLong64.png");
@@ -35,7 +36,12 @@ export default function() {
             this.load.image("sprLcarsBtnLeft32", "sprites/lcarsBtnLeft32.png");
             this.load.image("sprLcarsBtnLeft48", "sprites/lcarsBtnLeft48.png");
             this.load.image("sprLcarsBtnLeft64", "sprites/lcarsBtnLeft64.png");
+            this.load.image("sprLcarsBtnRight32", "sprites/lcarsBtnRight32.png");
             this.load.image("sprLcarsBtnRight48", "sprites/lcarsBtnRight48.png");
+
+            this.load.image("sprBlueRect52", "sprites/blueRect52.png");
+            this.load.image("sprBeamAlignTargetInner52", "sprites/beamAlignTargetInner52.png");
+            this.load.image("sprBeamAlignTargetOuter52", "sprites/beamAlignTargetOuter52.png");
 
             this.load.image("sprSectorGrid3d", "sprites/sectorGrid3d.png");
             this.load.image("sprGoldTarget", "sprites/goldTarget.png");
@@ -45,6 +51,10 @@ export default function() {
             this.load.image("sprSymbolUnknown", "sprites/symbolUnknown.png");
             this.load.image("sprSymbolFriendlyShip", "sprites/symbolFriendlyShip.png");
             this.load.image("sprSymbolFriendlyStation", "sprites/symbolFriendlyStation.png");
+
+            this.load.image("sprBlueprintShipGalaxyClass", "sprites/blueprintShipGalaxyClass.png");
+            this.load.image("sprBlueprintShipShuttle", "sprites/blueprintShipShuttle.png");
+            this.load.image("sprBlueprintStationDeepStation", "sprites/blueprintStationDeepStation.png");
 
             // Display loading progress
             var game_config = this.game.config
