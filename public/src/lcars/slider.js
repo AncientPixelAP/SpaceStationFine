@@ -32,6 +32,7 @@ export class SliderVertical {
         }
         this.state = this.states.out;
         this.active = false;
+        this.value = 0;
 
         this.releaseFunc = () => {};
         this.changeFunc = () => {};
@@ -127,6 +128,8 @@ export class SliderVertical {
                 this.slider.y = this.sliderPos.y;
             }
         }
+
+        this.value = Phaser.Math.Distance.Between(0, this.sliderPos.y, 0, this.sliderEndBottom.y - this.margin)/this.range;
     }
 
     switchState(_state) {

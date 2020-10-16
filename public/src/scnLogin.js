@@ -194,7 +194,8 @@ export default class ScnLogin extends Phaser.Scene {
             "Tilik",
             "O´Neill",
             "Orca",
-            "Parcel"
+            "Parcel",
+            "Aburch"
         ]
         return prefixes[Math.floor(Math.random() * prefixes.length)] + names[Math.floor(Math.random() * names.length)];
     }

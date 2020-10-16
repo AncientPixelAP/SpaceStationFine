@@ -15,6 +15,7 @@ export default class Transporter {
         }
 
         this.beamRange = 0.22;
+        this.beamRangeMax = 0.22;
 
         this.pipListNameLeft = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsPipLeft16");
         this.pipListNameLeft.setTintFill(LCARSCOLOR.offOrange);
@@ -135,6 +136,14 @@ export default class Transporter {
         }
 
         this.sliderIntensity = new SliderVertical(this.scene, { x: this.pos.x, y: this.pos.y }, 0, 106);
+        this.sliderIntensity.releaseFunc = () => {
+            console.log(this.slider.sliderPos.y, this.slider.sliderEndBottom.y);
+            //console.log(Phaser.Math.Distance.Between(0, this.slider.slider.y, 0, this.slider.sliderEndBottom.y - this.slider.margin));
+        }
+        this.sliderIntensity.changeFunc = () => {
+            //this.beamRange = this.beamRangeMax * this.slider.value;
+            console.log(this.beamRange);
+        }
 
         this.beamAlignBase = this.scene.add.sprite(this.pos.x, this.pos.y, "sprBlueRect52");
         this.beamAlignTarget = {
