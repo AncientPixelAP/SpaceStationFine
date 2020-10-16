@@ -30,6 +30,10 @@ class Location {
         }
 
         this.rooms = [];
+
+        this.isDocked = false;
+        this.dockingPortsMax = 0;
+        this.dockingPorts = [];
     }
 
     update(){

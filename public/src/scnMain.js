@@ -71,6 +71,10 @@ export default class ScnMain extends Phaser.Scene {
             console.log(_data);
             this.locationData = _data.locationData;
             this.playerData = _data.playerData;
+            localStorage.setItem(SAVEGAMENAME, JSON.stringify({
+                name: this.playerData.name,
+                lastLocationId: this.locationData.id
+            }));
 
             this.createRoom(_data.locationData.rooms[0]);
 
@@ -84,7 +88,11 @@ export default class ScnMain extends Phaser.Scene {
             this.synchronize();
         });
 
-        socket.emit("joinPlayer", {});
+        let save = JSON.parse(localStorage.getItem(SAVEGAMENAME));
+        socket.emit("joinPlayer", {
+            name: save.name,
+            locationId: save.lastLocationId
+        });
     }
     
     createRoom(_room){

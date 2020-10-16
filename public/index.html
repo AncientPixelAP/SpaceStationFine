@@ -8,6 +8,7 @@
 
 <body style="margin: 0px; background-color: black;">
     <script>
+        const SAVEGAMENAME = "mpStarStationFine00";
         const CONSTANT = {
             FOO: 0,
             BAR: 1
@@ -52,6 +53,7 @@
     </script>
     <script type="module">
         import Preloader from './src/preloader.js'; 
+        import ScnLogin from './src/scnLogin.js'; 
         import ScnMain from './src/scnMain.js'; 
         
         var config = { 
@@ -70,6 +72,7 @@
             seed: ["hugging"], 
             scene: [ 
                 Preloader(), 
+                ScnLogin,
                 ScnMain 
             ] 
         }; 

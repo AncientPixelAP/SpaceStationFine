@@ -4,6 +4,15 @@ const Sector = require("./sector");
 const Station = require("./station");
 const Room = require("./room");
 
+const ERACE = {
+    human: "human",
+    blingon: "blingon",
+    otherianen: "otherianen",
+    berengi: "berengi",
+    klongon: "klongon",
+    cardosian: "cardosian"
+}
+
 const ELOCATION = {
     ship: "ship",
     shuttle: "shuttle",
@@ -13,7 +22,8 @@ const ELOCATION = {
     planet: "planet",
     moon: "moon",
     nebula: "nebula",
-    resonanceTraces: "resonanceTraces"
+    resonanceTraces: "resonanceTraces",
+    warpcore: "warpcore"
 }
 
 const ESTATION = {
@@ -126,6 +136,16 @@ class GameData{
             this.createStation(ESTATION.science, "Science", "SCI", ["alpha"]),
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
             this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
+        ]);
+
+        //create ejected Warpcore
+        spawnLocation = this.createLocation("Ejected Warpcore", ELOCATION.warpcore, { x: 0.35, y: 0.15, z: 0.5 }, "sprBlueprintShipShuttle");
+        spawnSector.addLocations([spawnLocation]);
+        spawnRoom = this.createRoom("Control Module");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Map", "MAP", ["alpha"]), 
+            this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"])
         ]);
     }
 

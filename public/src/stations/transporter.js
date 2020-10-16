@@ -39,7 +39,7 @@ export default class Transporter {
             }
             this.destinations = [];
             for (let p of this.players) {
-                p.destroy();
+                p.btn.destroy();
             }
             this.players = [];
             this.listNameTxt.setText("Locations");
@@ -51,16 +51,19 @@ export default class Transporter {
         socket.on("getPlayersAtLocation", (_data) => {
             //remove old images
             for(let p of this.players){
-                p.destroy();
+                p.btn.destroy();
             }
             this.players = [];
             //fill new players
             for(let [i, p] of _data.entries()){
                 //x: this.pos.x - 168, y: this.pos.y - 80 + (i * 18)
-                this.players.push(new ListButton(this.scene, { x: this.pos.x - 64, y: this.pos.y - 80 + (i * 18) }, p.id, true, () => {
-                    this.showDestinations = true;
-                    this.lastPlayer = p;
-                }));
+                this.players.push({
+                    data: p,
+                    btn: new ListButton(this.scene, { x: this.pos.x - 64, y: this.pos.y - 80 + (i * 18) }, p.name, true, () => {
+                        this.showDestinations = true;
+                        this.lastPlayer = p;
+                    })
+                });
                 
             }
         });
@@ -87,6 +90,12 @@ export default class Transporter {
         this.headingYTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", this.headingCoords.y, true, () => {
             this.crossPad.setForInput(this.headingYTxt, this.headingCoords.y);
             this.headingXTxt.active = false;
+        });
+        this.rangeTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", "RNG", false, () => {
+            
+        });
+        this.intensityTxt = new Button(this.scene, { x: 0, y: 0 }, "sprLcarsBtnLong48", this.beamRange, false, () => {
+
         });
 
         this.crossPad = new CrossPad(this.scene, {x: 0, y: 0});
@@ -125,6 +134,8 @@ export default class Transporter {
             }
         }
 
+        this.sliderIntensity = new SliderVertical(this.scene, { x: this.pos.x, y: this.pos.y }, 0, 106);
+
         this.beamAlignBase = this.scene.add.sprite(this.pos.x, this.pos.y, "sprBlueRect52");
         this.beamAlignTarget = {
             outerX: this.scene.add.sprite(this.pos.x, this.pos.y, "sprBeamAlignTargetOuter52"),
@@ -134,6 +145,33 @@ export default class Transporter {
             x: 0,
             y: 0
         }
+
+        
+
+        this.headingLTopL = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48").setScale(1, -1);
+        this.headingLTopL.setTintFill(LCARSCOLOR.gold);
+        this.headingPillarL = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsPillar32");
+        this.headingPillarL.setTintFill(LCARSCOLOR.gold);
+        this.headingLBotL = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48").setScale(1, 1);
+        this.headingLBotL.setTintFill(LCARSCOLOR.gold);
+
+        this.headingPillarML = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsPillar32");
+        this.headingPillarML.setTintFill(LCARSCOLOR.gold);
+        this.headingLBotML = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL64").setScale(-1, 1);
+        this.headingLBotML.setTintFill(LCARSCOLOR.gold);
+
+        this.headingLTopMR = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48").setScale(1, -1);
+        this.headingLTopMR.setTintFill(LCARSCOLOR.gold);
+        this.headingPillarMR = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsPillar32");
+        this.headingPillarMR.setTintFill(LCARSCOLOR.gold);
+        this.headingLBotMR = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48").setScale(1, 1);
+        this.headingLBotMR.setTintFill(LCARSCOLOR.gold);
+
+        this.headingLTopR = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48");
+        this.headingLTopR.setTintFill(LCARSCOLOR.gold);
+        this.headingLBotR = this.scene.add.sprite(this.pos.x, this.pos.y, "sprLcarsL48").setScale(1, -1);
+        this.headingLBotR.setTintFill(LCARSCOLOR.gold);
+
     }
 
     update() {
@@ -153,6 +191,7 @@ export default class Transporter {
         }
 
         this.slider.update();
+        this.sliderIntensity.update();
 
         this.headingXTxt.txt.setText(this.headingCoords.x);
         this.headingYTxt.txt.setText(this.headingCoords.y);
@@ -172,8 +211,8 @@ export default class Transporter {
 
         if(this.listview === this.list.players){
             for (let [i, p] of this.players.entries()) {
-                p.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
-                p.update();
+                p.btn.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
+                p.btn.update();
             }
             for (let [i, l] of this.locations.entries()) {
                 l.btn.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
@@ -186,7 +225,7 @@ export default class Transporter {
             this.btnBack.update();
         }else{
             for (let [i, p] of this.players.entries()) {
-                p.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
+                p.btn.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
             }
             for (let [i, l] of this.locations.entries()) {
                 l.btn.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
@@ -204,7 +243,8 @@ export default class Transporter {
         this.btnTest.move(this.pos.x + 222, this.pos.y - 98);
 
         this.crossPad.move(this.pos.x + 32, this.pos.y + 105);
-        this.slider.move(this.pos.x + 132, this.pos.y + 105);
+        this.slider.move(this.pos.x + 147, this.pos.y + 105);
+        this.sliderIntensity.move(this.pos.x + 166, this.pos.y + 105);
 
         this.beamAlignBase.x = this.pos.x - 100;
         this.beamAlignBase.y = this.pos.y + 105;
@@ -219,6 +259,8 @@ export default class Transporter {
 
         this.headingXTxt.move(this.pos.x - 100, this.pos.y + 60);
         this.headingYTxt.move(this.pos.x - 48, this.pos.y + 60);
+        this.rangeTxt.move(this.pos.x + 200, this.pos.y + 96);
+        this.intensityTxt.move(this.pos.x + 200, this.pos.y + 114);
 
         this.pipListNameLeft.x = this.pos.x - 168;
         this.pipListNameLeft.y = this.pos.y - 116;
@@ -229,7 +271,7 @@ export default class Transporter {
 
         if (this.listview === this.list.players) {
             for (let [i, p] of this.players.entries()) {
-                p.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
+                p.btn.move(this.pos.x - 168, this.pos.y - 80 + (i * 18));
             }
             for (let [i, l] of this.locations.entries()) {
                 l.btn.move(this.pos.x + 1000 - 168, this.pos.y - 80 + (i * 18));
@@ -250,6 +292,30 @@ export default class Transporter {
             }
             this.btnBack.move(this.pos.x + 1000, this.pos.y);
         }
+        
+        this.headingLTopL.x = this.pos.x - 151;
+        this.headingLTopL.y = this.pos.y + 69;
+        this.headingPillarL.x = this.pos.x - 159;
+        this.headingPillarL.y = this.pos.y + 104;
+        this.headingLBotL.x = this.pos.x - 151;
+        this.headingLBotL.y = this.pos.y + 142;
+
+        this.headingPillarML.x = this.pos.x - 41;
+        this.headingPillarML.y = this.pos.y + 104;
+        this.headingLBotML.x = this.pos.x - 57;
+        this.headingLBotML.y = this.pos.y + 142;
+
+        this.headingLTopMR.x = this.pos.x + 112;
+        this.headingLTopMR.y = this.pos.y + 69;
+        this.headingPillarMR.x = this.pos.x + 104;
+        this.headingPillarMR.y = this.pos.y + 104;
+        this.headingLBotMR.x = this.pos.x + 112;
+        this.headingLBotMR.y = this.pos.y + 142;
+
+        this.headingLTopR.x = this.pos.x + 200;
+        this.headingLTopR.y = this.pos.y + 69;
+        this.headingLBotR.x = this.pos.x + 200;
+        this.headingLBotR.y = this.pos.y + 141;
     }
 
     synchronize(){
@@ -324,12 +390,15 @@ export default class Transporter {
 
         this.crossPad.destroy();
         this.slider.destroy();
+        this.sliderIntensity.destroy();
 
         this.headingXTxt.destroy();
         this.headingYTxt.destroy();
+        this.rangeTxt.destroy();
+        this.intensityTxt.destroy();
 
         for (let p of this.players) {
-            p.destroy();
+            p.btn.destroy();
         }
         this.players = [];
         for (let l of this.locations) {
@@ -351,6 +420,20 @@ export default class Transporter {
         this.beamAlignTarget.outerY.destroy();
         this.beamAlignTarget.innerX.destroy();
         this.beamAlignTarget.innerY.destroy();
+
+        this.headingLTopL.destroy();
+        this.headingPillarL.destroy();
+        this.headingLBotL.destroy();
+
+        this.headingPillarML.destroy();
+        this.headingLBotML.destroy();
+
+        this.headingLTopMR.destroy();
+        this.headingPillarMR.destroy();
+        this.headingLBotMR.destroy();
+
+        this.headingLTopR.destroy();
+        this.headingLBotR.destroy();
 
         socket.off("getPlayersAtLocation");
     }

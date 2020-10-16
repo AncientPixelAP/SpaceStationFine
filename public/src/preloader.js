@@ -20,6 +20,8 @@ export default function() {
 
             this.load.bitmapFont("pixelmix", "fonts/pixelmix.png", "fonts/pixelmix.xml");
 
+            this.load.image("sprHandOpen", "sprites/hands/handOpen.png");
+
             this.load.image("sprLcarsPipLeft16", "sprites/lcarsPipLeft16.png");
             this.load.image("sprLcarsPipRight16", "sprites/lcarsPipRight16.png");
             this.load.image("sprLcarsPillar32", "sprites/lcarsPillar32.png");
@@ -48,9 +50,11 @@ export default function() {
             this.load.image("sprPinkCircle", "sprites/pinkCircle.png");
             this.load.image("sprPinkSimpleHeading", "sprites/pinkSimpleHeading.png");
             this.load.image("sprPinkSimpleHeading01", "sprites/pinkSimpleHeading01.png");
+
             this.load.image("sprSymbolUnknown", "sprites/symbolUnknown.png");
             this.load.image("sprSymbolFriendlyShip", "sprites/symbolFriendlyShip.png");
             this.load.image("sprSymbolFriendlyStation", "sprites/symbolFriendlyStation.png");
+            this.load.image("sprSymbolWarpcore", "sprites/symbolWarpcore.png");
 
             this.load.image("sprBlueprintShipGalaxyClass", "sprites/blueprintShipGalaxyClass.png");
             this.load.image("sprBlueprintShipShuttle", "sprites/blueprintShipShuttle.png");
@@ -71,7 +75,7 @@ export default function() {
             this.load.off("progress", this.update_progress_display, this);
 
             this.cache.bitmapFont.get("pixelmix").data.lineHeight = 40;
-            this.scene.start("ScnMain");
+            this.scene.start("ScnLogin");
         },
 
         update_progress_display: function(pct) {

@@ -71,7 +71,7 @@ export default class Astronometry{
             this.locations = [];
             //fill new locations
             for(let l of _data.locations){
-                let asset = "sprSymbolUnkown";
+                let asset = "sprSymbolUnknown";
                 switch(l.type){
                     case "ship":
                         asset = "sprSymbolFriendlyShip";
@@ -190,13 +190,16 @@ export default class Astronometry{
                     }
                 }
                 if(found === false){
-                    let asset = "sprSymbolUnkown";
+                    let asset = "sprSymbolUnknown";
                     switch (ol.type) {
                         case "ship":
                             asset = "sprSymbolFriendlyShip";
                             break;
                         case "station":
                             asset = "sprSymbolFriendlyStation";
+                            break;
+                        case "warpcore":
+                            asset = "sprSymbolWarpcore";
                             break;
                         default:
                             break;

@@ -1,6 +1,8 @@
 class Player {
     constructor(_id) {
         this.id = _id;
+        this.name = "";
+        this.race = 0;
         
         this.sectorId = "";
         this.locationId = "";
@@ -23,6 +25,14 @@ class Player {
     setSector(_sector){
         this.sectorId = _sector.name;
         this.sector = _sector;
+    }
+
+    setName(_name){
+        this.name = _name;
+    }
+
+    setRace(_race){
+        this.race = _race;
     }
 }
 module.exports = Player;

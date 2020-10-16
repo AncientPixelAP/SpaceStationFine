@@ -19,7 +19,8 @@ let tick = setInterval(() => {
     for(let p of gameData.players){
         //get sector update
         io.to(p.id).emit("sectorUpdate", {
-            sectorData: p.sector 
+            sectorData: p.sector, 
+            playersAtLocation: getPlayersAtLocation(p.locationId)
         });
     }
 }, 1000);
@@ -44,12 +45,20 @@ io.on("connection", socket => {
     //PLAYERS
     socket.on("joinPlayer", (_data) => {
         gameData.spawnPlayer(id);
-        let loc = gameData.sectors[0].locations[0];
-        gameData.players[gameData.players.length-1].setLocation(loc);
-        gameData.players[gameData.players.length-1].setSector(gameData.sectors[0]);
+        let loc = getLocationById(_data.locationId);
+        if(loc.length <= 0){
+            loc = gameData.sectors[0].locations;
+        }
+        let sec = getSectorById(loc.sectorId);
+        if(sec.length <= 0){
+            sec = gameData.sectors;
+        }
+        gameData.players[gameData.players.length-1].setLocation(loc[0]);
+        gameData.players[gameData.players.length-1].setSector(sec[0]);
+        gameData.players[gameData.players.length-1].setName(_data.name);
         io.to(id).emit("getLocation", {
             playerData: gameData.players[gameData.players.length-1],
-            locationData: loc
+            locationData: loc[0]
         });
     });
 
@@ -132,7 +141,9 @@ function getPlayersAtLocation(_id) {
     return found;    
 }
 
-
+function getSectorById(_id){
+    return gameData.sectors.filter((s) => { return s.name === _id });
+}
 
 function getLocationsInSector(_sector){
     let arr = gameData.locations.filter((loc) => { return loc.sector.x === _sector.x && loc.sector.y === _sector.y && loc.sector.z === _sector.z });

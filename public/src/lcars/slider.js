@@ -106,18 +106,6 @@ export class SliderVertical {
             }
         }
 
-        /*let si = 0;
-        for (let i = this.sliderEndBottom.y - this.margin; i < this.sliderEndTop.y + this.margin; i -= 18) {
-            let l = this.sliderLights[si];
-            l.x = this.sliderEndBottom.x;
-            l.y = this.sliderEndBottom.y + i;
-            if (l.y < this.slider.y) {
-                l.setTintFill(LCARSCOLOR.gold);
-            } else {
-                l.setTintFill(0xffffff);
-                //l.setFillTint(0x000000);
-            }
-        }*/
         for(let l of this.sliderLights){
             if (l.y > this.slider.y) {
                 l.setTintFill(LCARSCOLOR.gold);
@@ -173,13 +161,6 @@ export class SliderVertical {
         this.sliderEndBottom.x = this.pos.x;
         this.sliderEndBottom.y = this.pos.y + (this.height * 0.5) - 8;
 
-        /*let si = 0;
-        for (let i = this.sliderEndBottom.y - this.margin; i < this.sliderEndTop.y + this.margin; i -= 18) {
-            this.sliderLights[si].x = this.sliderEndBottom.x;
-            this.sliderLights[si].y = this.sliderEndBottom.y + i;
-            si += 1;
-        } 
-        console.log(this.sliderLights);*/
         for(let [i, l] of this.sliderLights.entries()){
             l.x = this.sliderEndBottom.x;
             l.y = this.sliderEndBottom.y - this.margin - (i * 12);

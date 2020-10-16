@@ -25,6 +25,7 @@ export default class ListButton {
         this.txtBounds = new Phaser.Geom.Rectangle(0, 0, txtData.width + 8, txtData.height + 4);
         
         this.colorInState(this.state);
+        this.move(this.pos.x, this.pos.y);
     }
 
     update() {
@@ -115,5 +116,13 @@ export default class ListButton {
     destroy() {
         this.sprite.destroy();
         this.txt.destroy();
+    }
+
+    setText(_text){
+        this.txt.setText(_text);
+        let txtData = this.txt.getTextBounds().local;
+        let oX = this.txtBounds.x;
+        let oY = this.txtBounds.y;
+        this.txtBounds = new Phaser.Geom.Rectangle(oX, oY, txtData.width + 8, txtData.height + 4);
     }
 }
