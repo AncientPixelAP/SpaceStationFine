@@ -94,7 +94,7 @@ io.on("connection", socket => {
             playerData: player,
             locationData: loc
         });
-    })
+    });
 
     //DISCONNECT
     socket.on("disconnect", () => {

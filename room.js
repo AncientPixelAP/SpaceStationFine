@@ -12,6 +12,7 @@ class Room{
     addStations(_stations){
         for(let s of _stations){
             s.roomId = this.name;
+            s.locationId = this.locationId;
             this.stations.push(s);
         }
     }

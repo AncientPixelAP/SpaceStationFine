@@ -1,5 +1,5 @@
 class Location {
-    constructor(_id, _type, _coords, _blueprint) {
+    constructor(_id, _type, _coords, _blueprint, _relation) {
         this.sectorCoords = {
             x: 0,
             y: 0,
@@ -34,6 +34,10 @@ class Location {
         this.isDocked = false;
         this.dockingPortsMax = 0;
         this.dockingPorts = [];
+        this.dockingRange = 0.2;
+        this.hangarRange = 0.2;
+
+        this.relation = _relation;
     }
 
     update(){

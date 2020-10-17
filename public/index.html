@@ -30,7 +30,50 @@
             white: 0xffffff,
             black: 0x000000,
             deepBlue: 0x16009c
-        }
+        };
+        const ERACE = {
+            human: "human",
+            blingon: "blingon",
+            otherianen: "otherianen",
+            berengi: "berengi",
+            klongon: "klongon",
+            cardosian: "cardosian"
+        };
+        const ERELATION = {
+            neutral: "neutral",
+            allied: "allied",
+            hostile: "hostile",
+            friendly: "friendly"
+        };
+        const ELOCATION = {
+            ship: "ship",
+            shuttle: "shuttle",
+            evSuit: "EV-Suit",
+            station: "station",
+            asteroid: "asteroid",
+            planet: "planet",
+            moon: "moon",
+            nebula: "nebula",
+            resonanceTraces: "resonanceTraces",
+            warpcore: "warpcore"
+        };
+        const ESTATION = {
+            astronometry: "astronometry",
+            navigation: "navigation",
+            communications: "communications",
+            weapons: "weapons",
+            engineering: "engineering",
+            transporter: "transporter",
+            storage: "storage",
+            hangar: "hangar",
+            bar: "bar",
+            shop: "shop",
+            map: "map",
+            sickbay: "sickbay",
+            medical: "medical",
+            holodeck: "holodeck",
+            science: "science"
+        };
 
         function getNegDir(_dir) {
             let d = _dir + 2;
@@ -47,38 +90,12 @@
         }
         console.log(socket);*/
         var socket = io(window.location.href);
-        
+
         //io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
-        
     </script>
     <script type="module">
-        import Preloader from './src/preloader.js'; 
-        import ScnLoad from './src/scnLoad.js'; 
-        import ScnLogin from './src/scnLogin.js'; 
-        import ScnMain from './src/scnMain.js'; 
-        
-        var config = { 
-            type: Phaser.AUTO, 
-            width: 512, 
-            height: 320, 
-            render: { 
-                antialias: false, 
-                roundPixels: true, 
-                pixelArt: true 
-            }, 
-            scale: { 
-                autoCenter: true, 
-                mode: Phaser.Scale.FIT
-            }, 
-            seed: ["hugging"], 
-            scene: [ 
-                Preloader(), 
-                ScnLoad,
-                ScnLogin,
-                ScnMain 
-            ] 
-        }; 
-        var game = new Phaser.Game(config);
+        import Preloader from './src/preloader.js'; import ScnLoad from './src/scnLoad.js'; import ScnLogin from './src/scnLogin.js'; import ScnMain from './src/scnMain.js'; var config = { type: Phaser.AUTO, width: 512, height: 320, render: { antialias: false,
+        roundPixels: true, pixelArt: true }, scale: { autoCenter: true, mode: Phaser.Scale.FIT }, seed: ["hugging"], scene: [ Preloader(), ScnLoad, ScnLogin, ScnMain ] }; var game = new Phaser.Game(config);
 
     </script>
 </body>

@@ -13,13 +13,20 @@ const ERACE = {
     cardosian: "cardosian"
 }
 
+const ERELATION = {
+    neutral: "neutral",
+    allied: "allied",
+    hostile: "hostile",
+    friendly: "friendly"
+}
+
 const ELOCATION = {
     ship: "ship",
     shuttle: "shuttle",
     evSuit: "EV-Suit",
     station: "station",
-    asteroid: "asteroid",
     planet: "planet",
+    asteroid: "asteroid",
     moon: "moon",
     nebula: "nebula",
     resonanceTraces: "resonanceTraces",
@@ -54,7 +61,7 @@ class GameData{
         spawnSector.setName("Home");
         this.sectors.push(spawnSector);
         //create Enterprise
-        spawnLocation = this.createLocation("Enterprise", ELOCATION.ship, {x: 0.25,y: 0.6,z: 0.5}, "sprBlueprintShipGalaxyClass");
+        spawnLocation = this.createLocation("Enterprise", ELOCATION.ship, {x: 0.25,y: 0.6,z: 0.5}, "sprBlueprintShipGalaxyClass", ERELATION.allied);
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("Bridge");
         spawnLocation.addRooms([spawnRoom]);
@@ -88,9 +95,10 @@ class GameData{
             this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
+        spawnLocation.dockingPortsMax = 1;
 
         //create Deep Space Nine
-        spawnLocation = this.createLocation("Deep Space Fine", ELOCATION.station, { x: 0.25, y: 0.5, z: 0.5 }, "sprBlueprintStationDeepStation");
+        spawnLocation = this.createLocation("Deep Space Fine", ELOCATION.station, { x: 0.25, y: 0.5, z: 0.5 }, "sprBlueprintStationDeepStation", ERELATION.allied);
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("OPS");
         spawnLocation.addRooms([spawnRoom]);
@@ -116,9 +124,10 @@ class GameData{
             this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
+        spawnLocation.dockingPortsMax = 5;
 
         //create Shuttle Danube
-        spawnLocation = this.createLocation("Shuttle Danube", ELOCATION.ship, { x: -0.45, y: -0.35, z: 0.5 }, "sprBlueprintShipShuttle");
+        spawnLocation = this.createLocation("Shuttle Danube", ELOCATION.ship, { x: -0.45, y: -0.35, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.allied);
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("Cockpit");
         spawnLocation.addRooms([spawnRoom]);
@@ -137,9 +146,10 @@ class GameData{
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
             this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
         ]);
+        spawnLocation.dockingPortsMax = 1;
 
         //create ejected Warpcore
-        spawnLocation = this.createLocation("Ejected Warpcore", ELOCATION.warpcore, { x: 0.35, y: 0.15, z: 0.5 }, "sprBlueprintShipShuttle");
+        spawnLocation = this.createLocation("Ejected Warpcore", ELOCATION.warpcore, { x: 0.35, y: 0.15, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.neutral);
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("Control Module");
         spawnLocation.addRooms([spawnRoom]);
@@ -147,6 +157,7 @@ class GameData{
             this.createStation(ESTATION.map, "Map", "MAP", ["alpha"]), 
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"])
         ]);
+        spawnLocation.dockingPortsMax = 0;
     }
 
     update(){
