@@ -30,7 +30,8 @@ const ELOCATION = {
     moon: "moon",
     nebula: "nebula",
     resonanceTraces: "resonanceTraces",
-    warpcore: "warpcore"
+    warpcore: "warpcore",
+    topedo: "torpedo"
 }
 
 const ESTATION = {
@@ -48,11 +49,13 @@ const ESTATION = {
     sickbay: "sickbay",
     medical: "medical",
     holodeck: "holodeck",
-    science: "science"
+    science: "science",
+    airlock: "airlock"
 }
 
 class GameData{
     constructor(){
+        this.npcs = [];
         this.players = [];
         this.sectors = [];
 
@@ -60,8 +63,39 @@ class GameData{
         spawnSector = this.createSector(192, 168, 0);
         spawnSector.setName("Home");
         this.sectors.push(spawnSector);
+
+        //create Deep Station Nine
+        spawnLocation = this.createLocation("Deep Station Fine", ELOCATION.station, { x: 0, y: 0, z: 0.5 }, "sprBlueprintStationDeepStation", ERELATION.allied);
+        spawnSector.addLocations([spawnLocation]);
+        spawnRoom = this.createRoom("OPS");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.astronometry, "Astrometrics", "AST", ["dsfine"]),
+            this.createStation(ESTATION.communications, "Communications", "COM", ["dsfine"]),
+            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["dsfine"]),
+        ]);
+        spawnRoom = this.createRoom("Promenade");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.bar, "Quirks", "BAR", ["alpha"]),
+            this.createStation(ESTATION.shop, "Derrek", "SHP", ["alpha"]),
+            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"]),
+            this.createStation(ESTATION.airlock, "Airlock", "AIR", ["alpha"])
+        ]);
+        spawnRoom = this.createRoom("Machinery");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
+            this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
+            this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
+        ]);
+        spawnLocation.dockingPortsMax = 5;
+
         //create Enterprise
-        spawnLocation = this.createLocation("Enterprise", ELOCATION.ship, {x: 0.25,y: 0.6,z: 0.5}, "sprBlueprintShipGalaxyClass", ERELATION.allied);
+        spawnLocation = this.createLocation("Enterprise", ELOCATION.ship, {x: 0.01,y: -0.01,z: 0.5}, "sprBlueprintShipGalaxyClass", ERELATION.allied);
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("Bridge");
         spawnLocation.addRooms([spawnRoom]);
@@ -85,6 +119,7 @@ class GameData{
             this.createStation(ESTATION.bar, "Be Front", "FWD", ["alpha"]),
             this.createStation(ESTATION.holodeck, "HoloDeck", "HOL", ["alpha"]),
             this.createStation(ESTATION.sickbay, "Sickbay", "MED", ["alpha"]),
+            this.createStation(ESTATION.airlock, "Airlock", "AIR", ["alpha"])
         ]);
         spawnRoom = this.createRoom("Deck E");
         spawnLocation.addRooms([spawnRoom]);
@@ -96,35 +131,7 @@ class GameData{
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 1;
-
-        //create Deep Space Nine
-        spawnLocation = this.createLocation("Deep Space Fine", ELOCATION.station, { x: 0.25, y: 0.5, z: 0.5 }, "sprBlueprintStationDeepStation", ERELATION.allied);
-        spawnSector.addLocations([spawnLocation]);
-        spawnRoom = this.createRoom("OPS");
-        spawnLocation.addRooms([spawnRoom]);
-        spawnRoom.addStations([
-            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
-            this.createStation(ESTATION.astronometry, "Astrometrics", "AST", ["dsfine"]),
-            this.createStation(ESTATION.communications, "Communications", "COM", ["dsfine"]),
-            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["dsfine"]),
-        ]);
-        spawnRoom = this.createRoom("Promenade");
-        spawnLocation.addRooms([spawnRoom]);
-        spawnRoom.addStations([
-            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
-            this.createStation(ESTATION.bar, "Quirks", "BAR", ["alpha"]),
-            this.createStation(ESTATION.shop, "Derrek", "SHP", ["alpha"]),
-            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["dsfine"]),
-        ]);
-        spawnRoom = this.createRoom("Machinery");
-        spawnLocation.addRooms([spawnRoom]);
-        spawnRoom.addStations([
-            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
-            this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
-            this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
-            this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
-        ]);
-        spawnLocation.dockingPortsMax = 5;
+        spawnLocation.dockAt(spawnSector.locations[0]);
 
         //create Shuttle Danube
         spawnLocation = this.createLocation("Shuttle Danube", ELOCATION.ship, { x: -0.45, y: -0.35, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.allied);
@@ -138,13 +145,14 @@ class GameData{
             this.createStation(ESTATION.weapons, "Weapons", "WPN", ["alpha"]),
             this.createStation(ESTATION.communications, "Communications", "COM", ["alpha"])
         ]);
-        spawnRoom = this.createRoom("Back");
+        spawnRoom = this.createRoom("Cabin");
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
             this.createStation(ESTATION.map, "Map", "MAP", ["alpha"]),
             this.createStation(ESTATION.science, "Science", "SCI", ["alpha"]),
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
             this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
+            this.createStation(ESTATION.airlock, "Airlock", "AIR", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 1;
 

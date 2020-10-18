@@ -33,9 +33,10 @@ class Location {
 
         this.isDocked = false;
         this.dockingPortsMax = 0;
+        this.dockedAt = "";
         this.dockingPorts = [];
-        this.dockingRange = 0.2;
-        this.hangarRange = 0.2;
+        this.dockingRange = 0.1;
+        this.hangarRange = 0.1;
 
         this.relation = _relation;
     }
@@ -51,6 +52,30 @@ class Location {
         for(let r of this.rooms){
             r.update();
         }
+    }
+
+    dockAt(_location){
+        _location.dockingPorts.push(this);
+        this.isDocked = true;
+        this.dockedAt = _location.id;
+    }
+
+    undockFrom(_location){
+        for (let i = _location.dockingPorts.length - 1; i >= 0; i--) {
+            if (_location.dockingPorts[i].id === this.id) {
+                this.isDocked = false;
+                this.dockedAt = "";
+                _location.dockingPorts.splice(i, 1);
+            }
+        }
+    }
+
+    land(_location){
+
+    }
+
+    takeOff(_location){
+
     }
 
     addRooms(_rooms){

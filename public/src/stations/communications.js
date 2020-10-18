@@ -145,30 +145,39 @@ export default class Communications {
         this.btnOptions = [];
         
         this.btnOptions.push(new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "hail", false, () => {
-            console.log("TODO hail location");
+            this.answerTxt.setText("TODO hail location");
         }));
         if(this.commLocation.relation !== ERELATION.allied){
             this.btnOptions.push(new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "intimidate", false, () => {
-                console.log("TODO threat location and get response depending on ally status");
+                this.answerTxt.setText("TODO threat location and get response depending on ally status");
             }));
         }else{
             this.btnOptions.push(new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "any news?", false, () => {
-                console.log("TODO request news from location eg a quest or special sight");
+                this.answerTxt.setText("TODO request news from location eg a quest or special sight");
             }));
         }
-        if(this.commLocation.dockingPorts.length < this.commLocation.dockingPortsMax){
+        if(this.commLocation.dockingPorts.length < this.commLocation.dockingPortsMax && this.scene.locationData.dockedAt === ""){
             this.btnOptions.push(new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "request docking", false, () => {
-                console.log("TODO request docking at location");
-                if(Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, this.commLocation.coords.x, this.commLocation.coords.y) <= this.commLocation.hangarRange){
-                    this.answerTxt.setText("Docking granted!");
+                if(Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, this.commLocation.coords.x, this.commLocation.coords.y) <= this.commLocation.dockingRange){
+                    let vx = (this.scene.locationData.coords.x - this.commLocation.coords.x).toFixed(2);
+                    let vy = (this.scene.locationData.coords.y - this.commLocation.coords.y).toFixed(2);
+                    //this.answerTxt.setText("Docking granted!\n\nSet your docking computer to " + String(vx) + "," + String(vy));
+                    this.answerTxt.setText("Docking granted!\n\nWelcome aboard!");
+
+                    socket.emit("dockAt", {
+                        locationId: this.scene.locationData.id,
+                        otherId:this.commLocation.id
+                    });
                 }else{
-                    this.answerTxt.setText("Move closer to dock!");
+                    let vx = (this.scene.locationData.coords.x + this.commLocation.coords.x).toFixed(2) * 100;
+                    let vy = (this.scene.locationData.coords.y + this.commLocation.coords.y).toFixed(2) * 100;
+                    this.answerTxt.setText("Move closer to dock!\n\nSet course to " + String(vx) + "," + String(vy));
                 }
             }));
         }
         if(Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, this.commLocation.coords.x, this.commLocation.coords.y) <= this.commLocation.hangarRange){
             this.btnOptions.push(new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "request landing", false, () => {
-                console.log("TODO request landing in hangar at location");
+                this.answerTxt.setText("TODO request landing in hangar at location");
             }));
         }
     }

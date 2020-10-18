@@ -96,6 +96,18 @@ io.on("connection", socket => {
         });
     });
 
+    socket.on("dockAt", (_data) => {
+        let loc = getLocationById(_data.locationId);
+        let at = getLocationById(_data.otherId);
+        loc[0].dockAt(at[0]);
+    });
+
+    socket.on("undockFrom", (_data) => {
+        let loc = getLocationById(_data.locationId);
+        let from = getLocationById(_data.fromId);
+        loc[0].undockFrom(from[0]);
+    });
+
     //DISCONNECT
     socket.on("disconnect", () => {
         console.log("disconnected a client "+ id);

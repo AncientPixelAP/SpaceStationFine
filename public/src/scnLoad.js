@@ -29,9 +29,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprLcarsSlider16", "sprites/lcarsSlider16.png");
 
         this.load.image("sprLcarsBtnMono16", "sprites/lcarsBtnMono16.png");
-        this.load.image("sprLcarsBtnLong64", "sprites/lcarsBtnLong64.png");
         this.load.image("sprLcarsBtnLong32", "sprites/lcarsBtnLong32.png");
         this.load.image("sprLcarsBtnLong48", "sprites/lcarsBtnLong48.png");
+        this.load.image("sprLcarsBtnLong64", "sprites/lcarsBtnLong64.png");
         this.load.image("sprLcarsBtnLeft32", "sprites/lcarsBtnLeft32.png");
         this.load.image("sprLcarsBtnLeft48", "sprites/lcarsBtnLeft48.png");
         this.load.image("sprLcarsBtnLeft64", "sprites/lcarsBtnLeft64.png");
@@ -43,6 +43,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprBeamAlignTargetOuter52", "sprites/beamAlignTargetOuter52.png");
 
         this.load.image("sprSectorGrid3d", "sprites/sectorGrid3d.png");
+        this.load.image("sprPinkTarget", "sprites/pinkTarget.png");
         this.load.image("sprGoldTarget", "sprites/goldTarget.png");
         this.load.image("sprPinkCircle", "sprites/pinkCircle.png");
         this.load.image("sprPinkSimpleHeading", "sprites/pinkSimpleHeading.png");
@@ -51,7 +52,10 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSymbolUnknown", "sprites/symbolUnknown.png");
         this.load.image("sprSymbolFriendlyShip", "sprites/symbolFriendlyShip.png");
         this.load.image("sprSymbolFriendlyStation", "sprites/symbolFriendlyStation.png");
+        this.load.image("sprSymbolFriendlyPlanet", "sprites/symbolFriendlyPlanet.png");
         this.load.image("sprSymbolWarpcore", "sprites/symbolWarpcore.png");
+        this.load.image("sprSymbolTorpedo", "sprites/symbolTorpedo.png");
+        this.load.image("sprSymbolPhotonicTorpedo", "sprites/symbolPhotonicTorpedo.png");
 
         this.load.image("sprBlueprintShipGalaxyClass", "sprites/blueprintShipGalaxyClass.png");
         this.load.image("sprBlueprintShipShuttle", "sprites/blueprintShipShuttle.png");
