@@ -13,8 +13,10 @@ class Player {
         this.room = null;
         this.station = null;
 
-        this.conversationFile = "";
-        this.conversationTreePosition = 0;
+        this.conversation = {
+            file: "",
+            treePosition: 0
+        }
 
         this.passkeys = ["alpha"];
         this.inventory = [];

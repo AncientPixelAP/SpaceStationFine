@@ -50,7 +50,8 @@ const ESTATION = {
     medical: "medical",
     holodeck: "holodeck",
     science: "science",
-    airlock: "airlock"
+    airlock: "airlock",
+    npcquarter: "npcquarter"
 }
 
 class GameData{
@@ -74,15 +75,22 @@ class GameData{
             this.createStation(ESTATION.astronometry, "Astrometrics", "AST", ["dsfine"]),
             this.createStation(ESTATION.communications, "Communications", "COM", ["dsfine"]),
             this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["dsfine"]),
+            this.createStation(ESTATION.npcquarter, "Commander Circa", "CMD", ["dsfine"]),
         ]);
         spawnRoom = this.createRoom("Promenade");
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
-            this.createStation(ESTATION.bar, "Quirks", "BAR", ["alpha"]),
             this.createStation(ESTATION.shop, "Derrek", "SHP", ["alpha"]),
             this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"]),
             this.createStation(ESTATION.airlock, "Airlock", "AIR", ["alpha"])
+        ]);
+        spawnRoom = this.createRoom("Quirks Bar");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.bar, "Quirks", "BAR", ["alpha"]),
+            this.createStation(ESTATION.npcquarter, "Quirk", "QRK", ["dsfine"]),
         ]);
         spawnRoom = this.createRoom("Machinery");
         spawnLocation.addRooms([spawnRoom]);
@@ -104,7 +112,8 @@ class GameData{
             this.createStation(ESTATION.astronometry, "Astrometrics", "AST", ["alpha"]),
             this.createStation(ESTATION.communications, "Communications", "COM", ["alpha"]),
             this.createStation(ESTATION.bar, "Baja Beach", "BAR", ["alpha"]),
-            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"])
+            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"]),
+            this.createStation(ESTATION.npcquarter, "Ambassador", "AMB", ["alpha"]),
         ]);
         spawnLocation.spd = 0.001;
 
@@ -120,6 +129,7 @@ class GameData{
             this.createStation(ESTATION.weapons, "Weapons", "WPN", ["alpha"]),
             this.createStation(ESTATION.communications, "Communications", "COM", ["alpha"]),
             this.createStation(ESTATION.science, "Science", "SCI", ["alpha"]),
+            this.createStation(ESTATION.npcquarter, "Captain Pickert", "CPT", ["dsfine"]),
         ]);
         spawnRoom = this.createRoom("Conference Room");
         spawnLocation.addRooms([spawnRoom]);

@@ -1,0 +1,28 @@
+{
+    "title": "Knock knock",
+    "cards": [{
+        "id": 0,
+        "text": "",
+        "answers": [
+            {
+                "text": "Captain?",
+                "toId": 1
+            },{
+                "text": "Ill leave you to your work.",
+                "toId": 0
+            },{
+                "text": "[Reporting]",
+                "toId": 1
+            }
+        ]
+    },{
+        "id": 1,
+        "text": "I still feel space sick, but I am sure, the ship is in good hands with you. Don´t make a mess! Make it so!",
+        "answers": [
+            {
+                "text": "Yes, Sir.",
+                "toId": 0
+            }
+        ]
+    }]
+}

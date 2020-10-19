@@ -8,6 +8,7 @@ import Storage from "./storage.js";
 import Hangar from "./hangar.js";
 import Turbolift from "./turbolift.js";
 import Airlock from "./airlock.js";
+import NPCQuarter from "./npcQuarter.js";
 
 export default class GenericStation{
     constructor(_scene, _data) {
@@ -64,6 +65,9 @@ export default class GenericStation{
                 break;
             case "airlock":
                 this.station = new Airlock(this.scene, this.data);
+                break;
+            case "npcquarter":
+                this.station = new NPCQuarter(this.scene, this.data);
                 break;
             default:
             break;

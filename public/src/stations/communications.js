@@ -188,7 +188,7 @@ export default class Communications {
                         locationId: this.scene.locationData.id,
                         otherId:this.commLocation.id
                     });
-                    this.createOptions();
+                    this.clearOptions();
                 }else{
                     let vx = (this.scene.locationData.coords.x + this.commLocation.coords.x).toFixed(2) * 100;
                     let vy = (this.scene.locationData.coords.y + this.commLocation.coords.y).toFixed(2) * 100;
@@ -204,7 +204,7 @@ export default class Communications {
                     locationId: this.scene.locationData.id,
                     fromId: this.commLocation.id
                 });
-                this.createOptions();
+                this.clearOptions();
             }));
         }
         if(Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, this.commLocation.coords.x, this.commLocation.coords.y) <= this.commLocation.hangarRange){
@@ -212,6 +212,13 @@ export default class Communications {
                 this.answerTxt.setText("TODO request landing in hangar at location");
             }));
         }
+    }
+
+    clearOptions(){
+        for (let b of this.btnOptions) {
+            b.destroy();
+        }
+        this.btnOptions = [];
     }
 
     destroy() {

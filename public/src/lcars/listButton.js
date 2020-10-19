@@ -125,4 +125,9 @@ export default class ListButton {
         let oY = this.txtBounds.y;
         this.txtBounds = new Phaser.Geom.Rectangle(oX, oY, txtData.width + 8, txtData.height + 4);
     }
+    
+    setDepth(_depth) {
+        this.sprite.depth = _depth;
+        this.txt.depth = _depth;
+    }
 }

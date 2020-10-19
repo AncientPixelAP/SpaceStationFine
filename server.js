@@ -94,6 +94,25 @@ io.on("connection", socket => {
             playerData: player,
             locationData: loc
         });
+
+        io.to(_data.playerId).emit("quickMessage", {
+            txt: "you got beamed to " + loc.id
+        });
+    });
+
+    socket.on("movePlayer", (_data) => {
+        let player = getPlayerById(_data.playerId);
+        let loc = getLocationById(_data.locationId)[0];
+        player.setLocation(loc);
+
+        io.to(_data.playerId).emit("getLocation", {
+            playerData: player,
+            locationData: loc
+        });
+
+        io.to(_data.playerId).emit("quickMessage", {
+            txt: "you entered " + loc.id
+        });
     });
 
     socket.on("readyDockingAt", (_data) => {
@@ -106,17 +125,43 @@ io.on("connection", socket => {
         let loc = getLocationById(_data.locationId);
         let at = getLocationById(_data.otherId);
         loc[0].dockAt(at[0]);
+
+        for(let p of gameData.players){
+            if(p.locationId === _data.locationId){
+                io.to(p.id).emit("quickMessage", {
+                    txt: "docking at " + at[0].id
+                });
+            }
+        }
     });
 
     socket.on("undockFrom", (_data) => {
         let loc = getLocationById(_data.locationId);
         let from = getLocationById(_data.fromId);
         loc[0].undockFrom(from[0]);
+
+        for(let p of gameData.players){
+            if(p.locationId === _data.locationId){
+                io.to(p.id).emit("quickMessage", {
+                    txt: "undocked from " + from[0].id
+                });
+            }
+        }
     });
 
     socket.on("setAlert", (_data) => {
         getLocationById(_data.locationId)[0].alert = _data.alert;
-    })
+    });
+
+    socket.on("quickMessage", (_data) => {
+        for(let p of gameData.players){
+            if(p.locationId === _data.locationId){
+                io.to(p.id).emit("quickMessage", {
+                    txt: _data.txt
+                });
+            }
+        }
+    });
 
     //DISCONNECT
     socket.on("disconnect", () => {

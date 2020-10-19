@@ -112,4 +112,9 @@ export default class Button{
         this.sprite.destroy();
         this.txt.destroy();
     }
+
+    setDepth(_depth){
+        this.sprite.depth = _depth;
+        this.txt.depth = _depth;
+    }
 }
