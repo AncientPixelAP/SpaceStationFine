@@ -37,7 +37,7 @@ export default class Communications {
         this.answerTxt.maxWidth = 128;
         this.answerTxt.setLeftAlign();
 
-        this.btnAlert = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "ALERT", true, () => {
+        this.btnAlert = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "ALERT", false, () => {
             if(this.scene.locationData.alert === true){
                 this.scene.locationData.alert = false;
                 socket.emit("setAlert", {
