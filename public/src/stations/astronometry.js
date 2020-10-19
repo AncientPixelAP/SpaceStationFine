@@ -30,6 +30,7 @@ export default class Astronometry{
         this.shape = this.scene.add.graphics(0, 0);
         this.shape.fillStyle(0x000000);
         this.shape.fillRect(-128,-128,256,256);
+        this.shape.depth = -11000;
         //this.sectorMask = this.shape.createGeometryMask();
         //console.log(this.sectorMask);
 
@@ -93,6 +94,18 @@ export default class Astronometry{
         this.details.maxWidth = 128;
         this.details.setRightAlign();
 
+        let mask = this.shape.createGeometryMask();
+        this.sectorMapBg = this.scene.add.sprite(this.pos.x, this.pos.y, "sprSectorGridBg00");
+        this.sectorMapBg.alpha = 0;
+        this.sectorMapBg.depth = -100;
+        this.sectorMapBg.setMask(mask);
+        this.sectorMapFg = [];
+        for(let i = 0 ; i < 4 ; i++){
+            this.sectorMapFg.push(this.scene.add.sprite(this.pos.x, this.pos.y, "sprSectorGridBg00"));
+            this.sectorMapFg[i].alpha = 0;
+            this.sectorMapFg[i].setMask(mask);
+        }
+
         this.sectorMap = this.scene.add.sprite(this.pos.x, this.pos.y, "sprSectorGrid3d");
         this.sectorHeading = this.scene.add.sprite(this.pos.x, this.pos.y, "sprPinkSimpleHeading");
         this.target = {
@@ -102,6 +115,7 @@ export default class Astronometry{
             follow: null,
             txt: this.scene.add.bitmapText(99990, 0, "pixelmix", "0,0", 8, 1).setOrigin(0.5)
         }
+        this.target.sprite.setMask(mask);
 
         this.btnTitleWaypoint = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnLong64", "WAYPTS", false, () => { });
         this.btnTitleWaypoint.colors.out = LCARSCOLOR.gold;
@@ -137,7 +151,7 @@ export default class Astronometry{
         });
 
         this.sectorNameTxt = this.scene.add.bitmapText(99990, 0, "pixelmix", "sectorName", 8, 1).setOrigin(0, 0.5);
-        this.zoomFactorTxt = this.scene.add.bitmapText(99990, 0, "pixelmix", "1x", 8, 1).setOrigin(1, 0.5);
+        this.zoomFactorTxt = this.scene.add.bitmapText(99990, 0, "pixelmix", String(this.zoomFactor) + "x", 8, 1).setOrigin(1, 0.5);
         
         
         this.locations = [];
@@ -159,6 +173,9 @@ export default class Astronometry{
                     case "station":
                         asset = "sprSymbolFriendlyStation";
                     break;
+                    case "planet":
+                        asset = "sprSymbolFriendlyPlanet";
+                        break;
                     default:
                     break;
                 }
@@ -193,7 +210,7 @@ export default class Astronometry{
                     }
                 }
 
-                console.log(this.screenToCoords(this.target.sprite.x, this.target.sprite.y));
+                //console.log(this.screenToCoords(this.target.sprite.x, this.target.sprite.y));
 
                 if(this.mode === this.modes.waypointAdd){
                     this.waypoints.push({
@@ -261,6 +278,19 @@ export default class Astronometry{
                 l.sprite.x = this.sectorMap.x + ((xx * 128) * this.zoomFactor);
                 l.sprite.y = this.sectorMap.y + ((yy * 128) * this.zoomFactor);
             }
+
+            this.sectorMapFg[0].setScale(this.zoomFactor);
+            this.sectorMapFg[0].x = (myself.data.coords.x * -128) * this.zoomFactor;
+            this.sectorMapFg[0].y = (myself.data.coords.y * -128) * this.zoomFactor;
+            this.sectorMapFg[1].setScale(this.zoomFactor);
+            this.sectorMapFg[1].x = ((myself.data.coords.x >= 0 ? myself.data.coords.x - 2 : myself.data.coords.x + 2) * -128) * this.zoomFactor;
+            this.sectorMapFg[1].y = (myself.data.coords.y * -128) * this.zoomFactor;
+            this.sectorMapFg[2].setScale(this.zoomFactor);
+            this.sectorMapFg[2].x = (myself.data.coords.x * -128) * this.zoomFactor;
+            this.sectorMapFg[2].y = ((myself.data.coords.y >= 0 ? myself.data.coords.y - 2 : myself.data.coords.y + 2) * -128) * this.zoomFactor;
+            this.sectorMapFg[3].setScale(this.zoomFactor);
+            this.sectorMapFg[3].x = ((myself.data.coords.x >= 0 ? myself.data.coords.x - 2 : myself.data.coords.x + 2) * -128) * this.zoomFactor;
+            this.sectorMapFg[3].y = ((myself.data.coords.y >= 0 ? myself.data.coords.y - 2 : myself.data.coords.y + 2) * -128) * this.zoomFactor;
         }
 
         this.sectorHeading.setRotation(this.scene.locationData.heading);
@@ -290,10 +320,14 @@ export default class Astronometry{
 
         this.sectorMap.x = this.pos.x;
         this.sectorMap.y = this.pos.y + 4;
+        this.sectorMapBg.x = this.sectorMap.x;
+        this.sectorMapBg.y = this.sectorMap.y;
+        for (let s of this.sectorMapFg) {
+            s.x = this.sectorMap.x;
+            s.y = this.sectorMap.y;
+        }
         this.shape.x = this.sectorMap.x;
         this.shape.y = this.sectorMap.y;
-        //this.sectorMask.x = this.sectorMap.x;
-        //this.sectorMask.y = this.sectorMap.y;
         this.sectorHeading.x = this.pos.x;
         this.sectorHeading.y = this.pos.y + 4;
         this.target.sprite.x = this.sectorMap.x + this.target.x;
@@ -319,6 +353,14 @@ export default class Astronometry{
             if(this.target.follow === null){
                 this.sectorNameTxt.setText(this.scene.sectorData.name);
             }
+            if(this.sectorMapBg.alpha === 0){
+                this.sectorMapBg.alpha = 0.5;
+                this.sectorMapBg.setTint(this.scene.sectorData.bgColor);
+                for (let s of this.sectorMapFg) {
+                    s.alpha = 0.75;
+                    s.setTint(this.scene.sectorData.fgColor);
+                }
+            }
 
             for(let ol of this.scene.sectorData.locations){
 
@@ -337,6 +379,9 @@ export default class Astronometry{
                             break;
                         case "station":
                             asset = "sprSymbolFriendlyStation";
+                            break;
+                        case "planet":
+                            asset = "sprSymbolFriendlyPlanet";
                             break;
                         case "warpcore":
                             asset = "sprSymbolWarpcore";
@@ -372,6 +417,11 @@ export default class Astronometry{
         this.zoomFactorTxt.destroy();
 
         this.sectorMap.destroy();
+        this.sectorMapBg.destroy();
+        for(let s of this.sectorMapFg){
+            s.destroy();
+        }
+
         this.shape.destroy();
         //this.sectorMask.destroy();
         this.sectorHeading.destroy();

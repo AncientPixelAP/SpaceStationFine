@@ -21,6 +21,8 @@ class Location {
         }
         this.blueprint = _blueprint;
 
+        this.alert = false;
+
         this.shields = {
             up: false,
             /*power: 1,
@@ -34,6 +36,7 @@ class Location {
         this.isDocked = false;
         this.dockingPortsMax = 0;
         this.dockedAt = "";
+        this.toDockId = "";
         this.dockingPorts = [];
         this.dockingRange = 0.1;
         this.hangarRange = 0.1;
@@ -52,6 +55,10 @@ class Location {
         for(let r of this.rooms){
             r.update();
         }
+    }
+
+    readyDockingAt(_location){
+        this.toDockId = _location.id;
     }
 
     dockAt(_location){

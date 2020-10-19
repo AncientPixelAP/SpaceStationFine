@@ -1,5 +1,6 @@
 import Button from "../lcars/button.js";
 import Numpad from "../lcars/numpad.js";
+import ListButton from "../lcars/listButton.js";
 
 export default class Navigation{
     constructor(_scene, _data) {
@@ -139,6 +140,17 @@ export default class Navigation{
 
         this.headingCoordsTxt = this.scene.add.bitmapText(0, 0, "pixelmix", this.heading, 8, 1).setOrigin(0.5);
         this.currentCoord = "x"
+
+        //DOCKING
+        this.dockedTxt = new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "docked Location", false, () => {});
+        this.btnDock = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "DOCK", false, () => {
+            if(this.scene.locationData.docketAt !== ""){
+                socket.emit("undockFrom", {
+                    locationId: this.scene.locationData.id,
+                    fromId: this.scene.locationData.dockedAt
+                })
+            }
+        });
         
     }
 
@@ -184,6 +196,16 @@ export default class Navigation{
         this.headingCoordsTxt.setText(String(this.headingCoords.x) + "," + String(this.headingCoords.y));
 
         this.simpleHeading.setRotation(this.scene.locationData.heading);
+
+        if (this.scene.locationData.dockedAt !== "") {
+            this.dockedTxt.move(this.pos.x + 62, this.pos.y + 28);
+            this.dockedTxt.txt.setText(this.scene.locationData.dockedAt);
+            this.btnDock.txt.setText("UNDOCK");
+            this.btnDock.update();
+        } else {
+            this.dockedTxt.move(this.pos.x + 1000, this.pos.y);
+            this.btnDock.txt.setText("");
+        }
     }
 
     move(){
@@ -192,6 +214,10 @@ export default class Navigation{
         this.btnsImpulse[2].move(this.pos.x + 222, this.pos.y - 44);
         this.btnsImpulse[3].move(this.pos.x + 222, this.pos.y - 62);
         this.btnsImpulse[4].move(this.pos.x + 222, this.pos.y - 80);
+
+        //this.dockedTxt.move(this.pos.x + 222 - this.dockedTxt.txt.getTextBounds().local.width - 64, this.pos.y + 28);
+        this.dockedTxt.move(this.pos.x + 62, this.pos.y + 28);
+        this.btnDock.move(this.pos.x + 222, this.pos.y + 28);
 
         this.btnWarp.move(this.pos.x + 222, this.pos.y - 116);
         this.pipWarpLeft.x = this.pos.x - 110;
@@ -232,13 +258,17 @@ export default class Navigation{
     }
 
     setCourse(){
-        socket.emit("setCourse", {
-            id: this.scene.locationData.id,
-            spd: this.spd,
-            impulseFactor: this.impulseFactor,
-            heading: this.heading,
-            headingCoords: this.headingCoords
-        });
+        if (this.scene.locationData.dockedAt === ""){ 
+            socket.emit("setCourse", {
+                id: this.scene.locationData.id,
+                spd: this.spd,
+                impulseFactor: this.impulseFactor,
+                heading: this.heading,
+                headingCoords: this.headingCoords
+            });
+        }else{
+            this.btnsImpulse[0].simulateClick();
+        }
     }
 
     synchronize(){

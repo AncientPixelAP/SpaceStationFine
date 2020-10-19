@@ -96,6 +96,12 @@ io.on("connection", socket => {
         });
     });
 
+    socket.on("readyDockingAt", (_data) => {
+        let loc = getLocationById(_data.locationId);
+        let at = getLocationById(_data.otherId);
+        loc[0].readyDockingAt(at[0]);
+    });
+
     socket.on("dockAt", (_data) => {
         let loc = getLocationById(_data.locationId);
         let at = getLocationById(_data.otherId);
@@ -107,6 +113,10 @@ io.on("connection", socket => {
         let from = getLocationById(_data.fromId);
         loc[0].undockFrom(from[0]);
     });
+
+    socket.on("setAlert", (_data) => {
+        getLocationById(_data.locationId)[0].alert = _data.alert;
+    })
 
     //DISCONNECT
     socket.on("disconnect", () => {

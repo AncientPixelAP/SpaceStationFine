@@ -61,7 +61,7 @@ class GameData{
 
         let spawnSector, spawnLocation, spawnRoom;
         spawnSector = this.createSector(192, 168, 0);
-        spawnSector.setName("Home");
+        spawnSector.setName("Baja");
         this.sectors.push(spawnSector);
 
         //create Deep Station Nine
@@ -93,6 +93,20 @@ class GameData{
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 5;
+
+        //create planet Baja
+        spawnLocation = this.createLocation("Baja Prime", ELOCATION.planet, { x: -0.21, y: 0.45, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.allied);
+        spawnSector.addLocations([spawnLocation]);
+        spawnRoom = this.createRoom("Ambassy");
+        spawnLocation.addRooms([spawnRoom]);
+        spawnRoom.addStations([
+            this.createStation(ESTATION.map, "Map", "MAP", ["alpha"]),
+            this.createStation(ESTATION.astronometry, "Astrometrics", "AST", ["alpha"]),
+            this.createStation(ESTATION.communications, "Communications", "COM", ["alpha"]),
+            this.createStation(ESTATION.bar, "Baja Beach", "BAR", ["alpha"]),
+            this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"])
+        ]);
+        spawnLocation.spd = 0.001;
 
         //create Enterprise
         spawnLocation = this.createLocation("Enterprise", ELOCATION.ship, {x: 0.01,y: -0.01,z: 0.5}, "sprBlueprintShipGalaxyClass", ERELATION.allied);
@@ -155,6 +169,7 @@ class GameData{
             this.createStation(ESTATION.airlock, "Airlock", "AIR", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 1;
+        spawnLocation.alert = true;
 
         //create ejected Warpcore
         spawnLocation = this.createLocation("Ejected Warpcore", ELOCATION.warpcore, { x: 0.35, y: 0.15, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.neutral);

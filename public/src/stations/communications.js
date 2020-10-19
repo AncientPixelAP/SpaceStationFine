@@ -36,9 +36,27 @@ export default class Communications {
         this.answerTxt = this.scene.add.bitmapText(99990, 0, "pixelmix", "no answers yet", 8, 1).setOrigin(0);
         this.answerTxt.maxWidth = 128;
         this.answerTxt.setLeftAlign();
+
+        this.btnAlert = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "ALERT", true, () => {
+            if(this.scene.locationData.alert === true){
+                this.scene.locationData.alert = false;
+                socket.emit("setAlert", {
+                    locationId: this.scene.locationData.id,
+                    alert: false
+                });
+            }else{
+                this.scene.locationData.alert = true;
+                socket.emit("setAlert", {
+                    locationId: this.scene.locationData.id,
+                    alert: true
+                });
+            }
+        });
     }
 
     update() {
+        this.btnAlert.update();
+
         this.pipListNameRight.x = this.listNameTxt.x + this.listNameTxt.getTextBounds().local.width + 24;
         this.pipListNameRight.y = this.pos.y - 116;
 
@@ -74,6 +92,8 @@ export default class Communications {
     }
 
     move(){
+        this.btnAlert.move(this.pos.x + 222, this.pos.y - 116);
+
         this.pipListNameLeft.x = this.pos.x - 168;
         this.pipListNameLeft.y = this.pos.y - 116;
         this.listNameTxt.x = this.pos.x - 152;
@@ -161,18 +181,30 @@ export default class Communications {
                 if(Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, this.commLocation.coords.x, this.commLocation.coords.y) <= this.commLocation.dockingRange){
                     let vx = (this.scene.locationData.coords.x - this.commLocation.coords.x).toFixed(2);
                     let vy = (this.scene.locationData.coords.y - this.commLocation.coords.y).toFixed(2);
-                    //this.answerTxt.setText("Docking granted!\n\nSet your docking computer to " + String(vx) + "," + String(vy));
-                    this.answerTxt.setText("Docking granted!\n\nWelcome aboard!");
+                    this.answerTxt.setText("Docking granted!\n\nSet your docking computer to " + String(vx) + "," + String(vy));
+                    //this.answerTxt.setText("Docking granted!\n\nWelcome aboard!");
 
                     socket.emit("dockAt", {
                         locationId: this.scene.locationData.id,
                         otherId:this.commLocation.id
                     });
+                    this.createOptions();
                 }else{
                     let vx = (this.scene.locationData.coords.x + this.commLocation.coords.x).toFixed(2) * 100;
                     let vy = (this.scene.locationData.coords.y + this.commLocation.coords.y).toFixed(2) * 100;
                     this.answerTxt.setText("Move closer to dock!\n\nSet course to " + String(vx) + "," + String(vy));
                 }
+            }));
+        }
+        if(this.scene.locationData.dockedAt === this.commLocation.id){
+            this.btnOptions.push(new ListButton(this.scene, { x: this.pos.x, y: this.pos.y }, "undock", false, () => {
+                this.answerTxt.setText("Have a nice fly!");
+                
+                socket.emit("undockFrom", {
+                    locationId: this.scene.locationData.id,
+                    fromId: this.commLocation.id
+                });
+                this.createOptions();
             }));
         }
         if(Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, this.commLocation.coords.x, this.commLocation.coords.y) <= this.commLocation.hangarRange){
@@ -183,6 +215,8 @@ export default class Communications {
     }
 
     destroy() {
+        this.btnAlert.destroy();
+
         this.pipListNameLeft.destroy();
         this.listNameTxt.destroy();
         this.pipListNameRight.destroy();

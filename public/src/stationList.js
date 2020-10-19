@@ -61,6 +61,12 @@ export default class StationList {
 
         this.locationTxt = this.scene.add.bitmapText(this.scene.left + 16, (this.leftPillar.y+this.leftLLower.y) * 0.5, "pixelmix", this.scene.locationData.id, 8, 1).setOrigin(0.5);
         this.locationTxt.angle = -90;
+
+        this.alert = {
+            on: false,
+            pulse: false,
+            timer: null
+        }
     }
 
     update() {
@@ -68,7 +74,61 @@ export default class StationList {
             b.update();
         }
 
+        if(this.scene.locationData.alert === true && this.alert.on === false){
+            this.setAlert(true);
+        } else if (this.scene.locationData.alert === false && this.alert.on === true){
+            this.setAlert(false);
+        }
+
         this.station.update();
+    }
+
+    setAlert(_bool){
+        this.alert.on = _bool;
+        if(_bool === true){
+            this.alert.timer = setInterval(() => {
+                if(this.alert.pulse === false){
+                    this.alert.pulse = true;
+                    this.leftLTop.setTintFill(LCARSCOLOR.red);
+                    this.rightLTop.setTintFill(LCARSCOLOR.red);
+                    this.leftLLower.setTintFill(LCARSCOLOR.red);
+                    this.leftPillar.setTintFill(LCARSCOLOR.red);
+
+                    this.leftPillarMid.clear();
+                    this.leftPillarMid.fillStyle(LCARSCOLOR.red);
+                    let h = this.leftPillar.y - this.leftLLower.y;
+                    this.leftPillarMid.fillRect(this.leftLLower.x, this.leftLLower.y, 32, h);
+
+                    this.locationTxt.setTintFill(LCARSCOLOR.red);
+                }else{
+                    this.alert.pulse = false;
+                    this.leftLTop.setTintFill(LCARSCOLOR.gold);
+                    this.rightLTop.setTintFill(LCARSCOLOR.gold);
+                    this.leftLLower.setTintFill(LCARSCOLOR.gold);
+                    this.leftPillar.setTintFill(LCARSCOLOR.gold);
+
+                    this.leftPillarMid.clear();
+                    this.leftPillarMid.fillStyle(LCARSCOLOR.gold);
+                    let h = this.leftPillar.y - this.leftLLower.y;
+                    this.leftPillarMid.fillRect(this.leftLLower.x, this.leftLLower.y, 32, h);
+
+                    this.locationTxt.setTintFill(0xffffff);
+                }
+            }, 250);
+        }else{
+            clearInterval(this.alert.timer);
+            this.leftLTop.setTintFill(LCARSCOLOR.gold);
+            this.rightLTop.setTintFill(LCARSCOLOR.gold);
+            this.leftLLower.setTintFill(LCARSCOLOR.gold);
+            this.leftPillar.setTintFill(LCARSCOLOR.gold);
+
+            this.leftPillarMid.clear();
+            this.leftPillarMid.fillStyle(LCARSCOLOR.gold);
+            let h = this.leftPillar.y - this.leftLLower.y;
+            this.leftPillarMid.fillRect(this.leftLLower.x, this.leftLLower.y, 32, h);
+
+            this.locationTxt.setTintFill(0xffffff);
+        }
     }
 
     moveIn() {

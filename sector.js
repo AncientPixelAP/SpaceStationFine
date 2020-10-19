@@ -7,6 +7,9 @@ class Sector{
         }
         this.name = String(this.pos.x)+","+String(this.pos.y)+","+String(this.pos.z);
 
+        this.bgColor = 0x16009c;
+        this.fgColor = 0x16009c;
+
         this.locations = [];
     }
 

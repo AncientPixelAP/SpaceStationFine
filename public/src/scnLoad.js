@@ -42,6 +42,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprBeamAlignTargetInner52", "sprites/beamAlignTargetInner52.png");
         this.load.image("sprBeamAlignTargetOuter52", "sprites/beamAlignTargetOuter52.png");
 
+        this.load.image("sprSectorGridBg00", "sprites/sectorGridBg00.png");
         this.load.image("sprSectorGrid3d", "sprites/sectorGrid3d.png");
         this.load.image("sprPinkTarget", "sprites/pinkTarget.png");
         this.load.image("sprGoldTarget", "sprites/goldTarget.png");
