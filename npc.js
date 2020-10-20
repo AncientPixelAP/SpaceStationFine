@@ -15,7 +15,10 @@ class NPC {
         this.conversation = {
             file: _file,
             treePosition: 0,
-            speakingTo: ""
+            speakingTo: {
+                name: null,
+                id: null
+            }
         }
 
         this.passkeys = ["alpha"];

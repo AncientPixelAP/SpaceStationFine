@@ -165,19 +165,50 @@ io.on("connection", socket => {
     });
 
     socket.on("talkToNPC", (_data) => {
-        let npc = getNPCByName(_data.name);
+        let npc = getNPCByName(_data.npcName);
         if(npc !== null){
-            npc.conversation.treePosition = _data.treePosition;
+            if (npc.conversation.speakingTo.id === null || npc.conversation.speakingTo.id === id){
+                npc.conversation.treePosition = _data.npcTreePosition;
+                npc.conversation.speakingTo = {
+                    name: _data.playerName,
+                    id: _data.playerId
+                }
+            }
+            io.to(id).emit("npcUpdate", {
+                npc: npc
+            });
         }
-        io.to(id).emit("npcUpdate", {
-            file: npc.conversation.file,
-            treePosition: npc.conversation.treePosition
-        });
+    });
+
+    socket.on("stopTalkToNPC", (_data) => {
+        let npc = getNPCByName(_data.npcName);
+        if(npc !== null){
+            //if (npc.conversation.speakingTo.id === null || npc.conversation.speakingTo.id === id) {
+                npc.conversation.speakingTo = {
+                    name: null,
+                    id: null
+                }
+            //}
+            io.to(id).emit("npcUpdate", {
+                npc: npc
+            });
+        }
     });
 
     //DISCONNECT
     socket.on("disconnect", () => {
         console.log("disconnected a client "+ id);
+
+        //remove player id from npc if talking while connected
+        for(let n of gameData.npcs){
+            if(n.conversation.speakingTo.id === id){
+                n.conversation.speakingTo = {
+                    name: null,
+                    id: null
+                }
+            }
+        }
+
         gameData.removePlayer(id);
         io.emit("kickPlayer", {
             id: id

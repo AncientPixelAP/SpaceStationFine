@@ -16,18 +16,31 @@ export default class NPCQuarter {
             treePosition: -1
         }
 
-        this.npcText = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "npcText", 8, 1).setOrigin(0.5);
+        this.npcNameTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "Name speaking to Player", 8, 1).setOrigin(0.5, 0);
+
+        this.npcText = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "npcText", 8, 1).setOrigin(0.5, 0);
         this.npcText.maxWidth = 336;
 
         this.npcName = "";
+        this.npc = null;
 
         this.btnOptions = [];
-        //this.setConversation("bajaCaptain00", 0);
     }
 
     update() {
         for(let b of this.btnOptions){
-            b.btn.update();
+            if (this.npc.conversation.speakingTo.id === null || this.npc.conversation.speakingTo.id === this.scene.playerData.id) {
+                if (b.btn.colors.out !== LCARSCOLOR.offBlue) {
+                    b.btn.colors.out = LCARSCOLOR.offBlue;
+                    b.btn.colorInState(b.btn.state.out);
+                }
+                b.btn.update();
+            }else{
+                if (b.btn.colors.out !== LCARSCOLOR.offOrange){
+                    b.btn.colors.out = LCARSCOLOR.offOrange;
+                    b.btn.colorInState(b.btn.state.out);
+                }
+            }
         }
     }
 
@@ -43,9 +56,11 @@ export default class NPCQuarter {
                 btn: new ListButton(this.scene, { x: this.pos.x - 150, y: this.pos.y - 8 + (i * 18)}, a.text, false, () => {
                     this.goto(a.toId);
                     socket.emit("talkToNPC", {
-                        name: this.npcName,
-                        treePosition: this.conversation.treePosition
-                    })
+                        npcName: this.npcName,
+                        npcTreePosition: this.conversation.treePosition,
+                        playerId: this.scene.playerData.id,
+                        playerName: this.scene.playerData.name
+                    });
                 })
             });
         }
@@ -54,21 +69,41 @@ export default class NPCQuarter {
     goto(_id){
         this.conversation.treePosition = _id;
         this.npcText.setText(this.conversation.file.cards[this.conversation.treePosition].text);
+        if (_id === 0 && this.npc.conversation.speakingTo.id !== null){
+            socket.emit("stopTalkToNPC", {
+                npcName: this.npc.name
+            })
+        }
         this.createOptions();
     }
 
     setConversation(_fileName, _startId){
-        this.conversation.file = this.scene.cache.json.get(_fileName)/*_fileName*/;
+        this.conversation.file = this.scene.cache.json.get(_fileName);
         this.conversation.treePosition = _startId;
         this.goto(_startId);
     }
 
     move() {
+        this.npcNameTxt.x = this.pos.x;
+        this.npcNameTxt.y = this.pos.y - 98;
+
         this.npcText.x = this.pos.x;
         this.npcText.y = this.pos.y - 80;
 
         for(let [i, b] of this.btnOptions.entries()){
             b.btn.move(this.pos.x - 150, this.pos.y - 8 + (i * 18));
+        }
+
+        if(this.pos.x > 0){
+            if(this.npc !== null){
+                if(this.npc.conversation.speakingTo.name === this.scene.playerData.name){
+                    console.log("releaseing player speaking to")
+                    socket.emit("stopTalkToNPC", {
+                        npcName: this.npc.name
+                    })
+                }
+                console.log(this.npc);
+            }
         }
     }
 
@@ -77,16 +112,26 @@ export default class NPCQuarter {
             let arr = this.scene.npcsData.filter((n) => {return n.stationId === this.data.name})
             if(arr.length > 0){
                 this.npcName = arr[0].name;
-                if(this.conversation.treePosition === -1){
-                    this.setConversation(arr[0].conversation.file, arr[0].conversation.treePosition);
+                this.npc = arr[0];
+                if (this.npc.conversation.speakingTo.id === null || this.npc.conversation.speakingTo.id === this.scene.playerData.id){
+                    if(this.conversation.treePosition === -1){
+                        this.setConversation(this.npc.conversation.file, this.npc.conversation.treePosition);
+                    }
+                    this.npcNameTxt.setText("You are speaking to " + this.npc.name);
                 }else{
-                    this.goto(arr[0].conversation.treePosition);
+                    if (this.conversation.treePosition === -1) {
+                        this.setConversation(this.npc.conversation.file, this.npc.conversation.treePosition);
+                    }else{
+                        this.goto(this.npc.conversation.treePosition);
+                    }
+                    this.npcNameTxt.setText(this.npc.conversation.speakingTo.name + " is speaking to " + this.npc.name);
                 }
             }
         }
     }
 
     destroy() {
+        this.npcNameTxt.destroy();
         this.npcText.destroy();
 
         for (let b of this.btnOptions) {

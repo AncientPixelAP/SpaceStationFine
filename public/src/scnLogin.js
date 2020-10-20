@@ -94,6 +94,14 @@ export default class ScnLogin extends Phaser.Scene {
             this.gotoMain();
         });
 
+        this.btnFullscreen = new Button(this, { x: this.right - 34, y: this.top + 44 }, "sprLcarsBtnLong64", "FULLSCRN", false, () => {
+            if(this.scale.isFullscreen){
+                this.scale.stopFullscreen();
+            }else{
+                this.scale.startFullscreen();
+            }
+        })
+
         //start withoout editing
         this.editing = false;
         this.name.colors.out = LCARSCOLOR.offOrange;
@@ -105,6 +113,7 @@ export default class ScnLogin extends Phaser.Scene {
         for (let b of this.buttons) {
             b.update();
         }
+        this.btnFullscreen.update();
 
         if(this.editing === true){
             this.name.update();
