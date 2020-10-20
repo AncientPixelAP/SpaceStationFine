@@ -20,7 +20,8 @@ let tick = setInterval(() => {
         //get sector update
         io.to(p.id).emit("sectorUpdate", {
             sectorData: p.sector, 
-            playersAtLocation: getPlayersAtLocation(p.locationId)
+            playersAtLocation: getPlayersAtLocation(p.locationId),
+            npcsAtLocation: getNPCsAtLocation(p.locationId)
         });
     }
 }, 1000);
@@ -163,6 +164,17 @@ io.on("connection", socket => {
         }
     });
 
+    socket.on("talkToNPC", (_data) => {
+        let npc = getNPCByName(_data.name);
+        if(npc !== null){
+            npc.conversation.treePosition = _data.treePosition;
+        }
+        io.to(id).emit("npcUpdate", {
+            file: npc.conversation.file,
+            treePosition: npc.conversation.treePosition
+        });
+    });
+
     //DISCONNECT
     socket.on("disconnect", () => {
         console.log("disconnected a client "+ id);
@@ -206,6 +218,29 @@ function getPlayersAtLocation(_id) {
         }
     }
     return found;    
+}
+
+function getNPCByName(_name) {
+    let arr = gameData.npcs.filter((p) => { return p.name === _name });
+    if (arr.length > 0) {
+        return arr[0];
+    } else {
+        return null;
+    }
+}
+
+function getNPCsAtLocation(_id) {
+    let found = [];
+    let loc = getLocationById(_id);
+    if (loc.length > 0) {
+        let arr = gameData.npcs.filter((p) => { return p.locationId === _id });
+        if (arr.length > 0) {
+            for (let a of arr) {
+                found.push(a);
+            }
+        }
+    }
+    return found;
 }
 
 function getSectorById(_id){

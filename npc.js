@@ -1,21 +1,21 @@
-class Player {
-    constructor(_id) {
-        this.id = _id;
-        this.name = "";
+class NPC {
+    constructor(_name, _file, _sectorId, _locationId, _roomId, _stationId) {
+        this.name = _name;
         this.race = 0;
         
-        this.sectorId = "";
-        this.locationId = "";
-        this.rooomId = "";
-        this.stationId = "";
+        this.sectorId = _sectorId;
+        this.locationId = _locationId;
+        this.rooomId = _roomId;
+        this.stationId = _stationId;
         this.sector = null;
         this.location = null;
         this.room = null;
         this.station = null;
 
         this.conversation = {
-            file: "",
-            treePosition: 0
+            file: _file,
+            treePosition: 0,
+            speakingTo: ""
         }
 
         this.passkeys = ["alpha"];
@@ -40,4 +40,4 @@ class Player {
         this.race = _race;
     }
 }
-module.exports = Player;
+module.exports = NPC;

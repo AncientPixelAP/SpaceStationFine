@@ -245,8 +245,8 @@ export default class Astronometry{
             this.target.sprite.x = this.target.follow.sprite.x;
             this.target.sprite.y = this.target.follow.sprite.y;
         }
-        let vx = this.sectorMap.x + (this.target.sprite.x / this.zoomFactor);
-        let vy = this.sectorMap.y + (this.target.sprite.y / this.zoomFactor);
+        let vx = (this.target.sprite.x / this.zoomFactor);//this.sectorMap.x + (this.target.sprite.x / this.zoomFactor);
+        let vy = (this.target.sprite.y / this.zoomFactor);//this.sectorMap.y + (this.target.sprite.y / this.zoomFactor);
         this.target.txt.setText(String(vx.toFixed(0)) + "," + String(vy.toFixed(0)));
         this.target.txt.x = this.target.sprite.x < this.sectorMap.x ? this.target.sprite.x + 26 : this.target.sprite.x - 26;
         this.target.txt.setOrigin(this.target.sprite.x < this.sectorMap.x ? 0 : 1, 0.5);

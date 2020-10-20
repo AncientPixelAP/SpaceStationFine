@@ -15,6 +15,7 @@ class Player {
 
         this.passkeys = ["alpha"];
         this.inventory = [];
+        this.hiddenInventory = []; // <- for story clues or logs
     }
 
     setLocation(_location){

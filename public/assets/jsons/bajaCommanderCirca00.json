@@ -1,0 +1,28 @@
+{
+    "title": "Knock knock",
+    "cards": [{
+        "id": 0,
+        "text": "What can I do for you?",
+        "answers": [
+            {
+                "text": "The question is: What can I do for you?",
+                "toId": 1
+            },{
+                "text": "Ill leave you to your work.",
+                "toId": 0
+            },{
+                "text": "[Reporting]",
+                "toId": 1
+            }
+        ]
+    },{
+        "id": 1,
+        "text": "I could give you a mission... I suppose, but its not yet supported...",
+        "answers": [
+            {
+                "text": "Yes, Sir.",
+                "toId": 0
+            }
+        ]
+    }]
+}

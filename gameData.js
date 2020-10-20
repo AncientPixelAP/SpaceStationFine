@@ -3,6 +3,7 @@ let Location = require("./location");
 const Sector = require("./sector");
 const Station = require("./station");
 const Room = require("./room");
+const NPC = require("./npc");
 
 const ERACE = {
     human: "human",
@@ -75,8 +76,9 @@ class GameData{
             this.createStation(ESTATION.astronometry, "Astrometrics", "AST", ["dsfine"]),
             this.createStation(ESTATION.communications, "Communications", "COM", ["dsfine"]),
             this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["dsfine"]),
-            this.createStation(ESTATION.npcquarter, "Commander Circa", "CMD", ["dsfine"]),
+            this.createStation(ESTATION.npcquarter, "Commander´s Office", "CMD", ["dsfine"]),
         ]);
+        this.spawnNPC("Commander Bernhardette Circa", "bajaCommanderCirca00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Commander´s Office");
         spawnRoom = this.createRoom("Promenade");
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
@@ -90,8 +92,9 @@ class GameData{
         spawnRoom.addStations([
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
             this.createStation(ESTATION.bar, "Quirks", "BAR", ["alpha"]),
-            this.createStation(ESTATION.npcquarter, "Quirk", "QRK", ["dsfine"]),
+            this.createStation(ESTATION.npcquarter, "Bar Counter", "QRK", ["dsfine"]),
         ]);
+        this.spawnNPC("Quirk", "bajaQuirk00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Bar Counter");
         spawnRoom = this.createRoom("Machinery");
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
@@ -113,8 +116,9 @@ class GameData{
             this.createStation(ESTATION.communications, "Communications", "COM", ["alpha"]),
             this.createStation(ESTATION.bar, "Baja Beach", "BAR", ["alpha"]),
             this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"]),
-            this.createStation(ESTATION.npcquarter, "Ambassador", "AMB", ["alpha"]),
+            this.createStation(ESTATION.npcquarter, "Conference Room", "AMB", ["alpha"]),
         ]);
+        this.spawnNPC("Ambassador Veyn", "bajaCaptain00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Conference Room");
         spawnLocation.spd = 0.001;
 
         //create Enterprise
@@ -129,8 +133,9 @@ class GameData{
             this.createStation(ESTATION.weapons, "Weapons", "WPN", ["alpha"]),
             this.createStation(ESTATION.communications, "Communications", "COM", ["alpha"]),
             this.createStation(ESTATION.science, "Science", "SCI", ["alpha"]),
-            this.createStation(ESTATION.npcquarter, "Captain Pickert", "CPT", ["dsfine"]),
+            this.createStation(ESTATION.npcquarter, "Captain Quarters", "CPT", ["alpha"]),
         ]);
+        this.spawnNPC("Captain John Pickert", "bajaCaptain00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Captain Quarters");
         spawnRoom = this.createRoom("Conference Room");
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
@@ -217,20 +222,22 @@ class GameData{
         this.players.push(new Player(_id));
     }
 
-    /*addPlayer(_id, _start){
-        this.players.push(new Player(_id));
-        let start = null
-        let arr = this.locations.filter((loc) => { return loc.id === _start });
-        if (arr.length > 0) {
-            start = arr[0];
-            this.players[this.players.length-1].setLocation(start);
-        }
-    }*/
-
     removePlayer(_id) {
         for (let i = this.players.length - 1; i >= 0; i--) {
             if (this.players[i].id === _id) {
                 this.players.splice(i, 1);
+            }
+        }
+    }
+
+    spawnNPC(_name, _file, _sectorId, _locationId, _roomId, _stationId){
+        this.npcs.push(new NPC(_name, _file, _sectorId, _locationId, _roomId, _stationId));
+    }
+
+    removeNPC(_name){
+        for(let i = this.npcs.length-1 ; i >= 0 ; i--){
+            if(this.npcs[i].name === _name){
+                this.npcs.splice(i, 1);
             }
         }
     }

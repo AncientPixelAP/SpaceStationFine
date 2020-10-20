@@ -54,6 +54,8 @@ export default class ScnMain extends Phaser.Scene {
         this.playerData = null;
         this.locationData = null;
         this.sectorData = null;
+        this.playersData = null;
+        this.npcsData = null;
         this.stations = [];
         this.currentStation = null;
         this.currentRoom = null;
@@ -84,6 +86,8 @@ export default class ScnMain extends Phaser.Scene {
         socket.on("sectorUpdate", (_data) => {
             this.sectorData = _data.sectorData;
             this.locationData = this.sectorData.locations.filter((l) => l.id === this.playerData.location.id)[0];
+            this.playersData = _data.playersAtLocation;
+            this.npcsData = _data.npcsAtLocation;
 
             this.synchronize();
         });
