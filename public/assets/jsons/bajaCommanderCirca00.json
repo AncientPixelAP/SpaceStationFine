@@ -3,6 +3,7 @@
     "cards": [{
         "id": 0,
         "text": "What can I do for you?",
+        "sprite": "sprCommanderCirca00",
         "answers": [
             {
                 "text": "The question is: What can I do for you?",
@@ -18,6 +19,7 @@
     },{
         "id": 1,
         "text": "I could give you a mission... I suppose, but its not yet supported...",
+        "sprite": "sprCommanderCirca00",
         "answers": [
             {
                 "text": "Yes, Sir.",

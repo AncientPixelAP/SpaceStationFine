@@ -16,10 +16,13 @@ export default class NPCQuarter {
             treePosition: -1
         }
 
-        this.npcNameTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "Name speaking to Player", 8, 1).setOrigin(0.5, 0);
+        this.npcNameTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "Name speaking to Player", 8, 1).setOrigin(0, 0);
 
-        this.npcText = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "npcText", 8, 1).setOrigin(0.5, 0);
-        this.npcText.maxWidth = 336;
+        this.npcText = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "npcText", 8, 1).setOrigin(0, 0);
+        this.npcText.maxWidth = 276;
+        this.npcText.setLeftAlign();
+        
+        this.npcSprite = null;
 
         this.npcName = "";
         this.npc = null;
@@ -69,6 +72,12 @@ export default class NPCQuarter {
     goto(_id){
         this.conversation.treePosition = _id;
         this.npcText.setText(this.conversation.file.cards[this.conversation.treePosition].text);
+
+        if(this.npcSprite !== null){
+            this.npcSprite.destroy();
+        }
+        this.npcSprite = this.scene.add.sprite(this.pos.x - 142, this.pos.y - 85, this.conversation.file.cards[this.conversation.treePosition].sprite);
+
         if (_id === 0 && this.npc.conversation.speakingTo.id !== null){
             socket.emit("stopTalkToNPC", {
                 npcName: this.npc.name
@@ -84,11 +93,16 @@ export default class NPCQuarter {
     }
 
     move() {
-        this.npcNameTxt.x = this.pos.x;
-        this.npcNameTxt.y = this.pos.y - 98;
+        this.npcNameTxt.x = this.pos.x - 98;
+        this.npcNameTxt.y = this.pos.y - 116;
 
-        this.npcText.x = this.pos.x;
-        this.npcText.y = this.pos.y - 80;
+        this.npcText.x = this.pos.x - 98;
+        this.npcText.y = this.pos.y - 98;
+
+        if(this.npcSprite !== null){
+            this.npcSprite.x = this.pos.x - 142;
+            this.npcSprite.y = this.pos.y - 85;
+        }
 
         for(let [i, b] of this.btnOptions.entries()){
             b.btn.move(this.pos.x - 150, this.pos.y - 8 + (i * 18));
@@ -97,12 +111,10 @@ export default class NPCQuarter {
         if(this.pos.x > 0){
             if(this.npc !== null){
                 if(this.npc.conversation.speakingTo.name === this.scene.playerData.name){
-                    console.log("releaseing player speaking to")
                     socket.emit("stopTalkToNPC", {
                         npcName: this.npc.name
                     })
                 }
-                console.log(this.npc);
             }
         }
     }
@@ -133,6 +145,9 @@ export default class NPCQuarter {
     destroy() {
         this.npcNameTxt.destroy();
         this.npcText.destroy();
+        if(this.npcSprite !== null){
+            this.npcSprite.destroy();
+        }
 
         for (let b of this.btnOptions) {
             b.btn.destroy();

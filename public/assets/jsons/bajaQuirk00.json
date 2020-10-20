@@ -2,7 +2,8 @@
     "title": "Knock knock",
     "cards": [{
         "id": 0,
-        "text": "Welcome to Quirks! We offer fair drinks and fair games to fair prices.",
+        "text": "Welcome to Quirks! We offer fair drinks and fair games with fair prices.",
+        "sprite": "sprQuirk00",
         "answers": [
             {
                 "text": "Games?",
@@ -18,6 +19,7 @@
     },{
         "id": 1,
         "text": "This is not yet supported unfortunately...",
+        "sprite": "sprQuirk00",
         "answers": [
             {
                 "text": "Aha.",
@@ -27,6 +29,7 @@
     },{
         "id": 2,
         "text": "No but someone used the whole hangar explosion debacle to steal my Gumcrystals. It´s probably the same defector, that stole that shuttle craft. It wouldnt hurt to look out for them, eh?",
+        "sprite": "sprQuirk00",
         "answers": [
             {
                 "text": "Sure do!",

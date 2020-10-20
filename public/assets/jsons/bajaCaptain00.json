@@ -3,6 +3,7 @@
     "cards": [{
         "id": 0,
         "text": "",
+        "sprite": "sprCaptainPickert00",
         "answers": [
             {
                 "text": "Captain?",
@@ -18,6 +19,7 @@
     },{
         "id": 1,
         "text": "I still feel space sick, but I am sure, the ship is in good hands with you. Don´t make a mess! Make it so!",
+        "sprite": "sprCaptainPickert00",
         "answers": [
             {
                 "text": "Yes, Sir.",
