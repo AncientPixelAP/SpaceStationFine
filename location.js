@@ -42,6 +42,8 @@ class Location {
         this.hangarRange = 0.1;
 
         this.relation = _relation;
+
+        this.systems = [];
     }
 
     update(){
@@ -104,6 +106,18 @@ class Location {
 
     setSector(_sector){
         this.sector = _sector;
+    }
+
+    addSystem(_system){
+        this.systems.push(_system);
+    }
+
+    removeSystem(_systemName){
+        for(let i = this.systems.length - 1 ; i >= 0 ; i--){
+            if(_systemName === this.systems[i].name){
+                this.systems.splice(i, 1);
+            }
+        }
     }
 }
 module.exports = Location;

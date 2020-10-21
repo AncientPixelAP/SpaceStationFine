@@ -1,11 +1,12 @@
 class Station{
     constructor(_type, _name, _short, _passkeys) {
         this.roomId = "";
-        this.name = _name, //arbitrary name
-        this.short = _short, //arbitrary short hand for map screen
-        this.type = _type, //eg Astronometry, Navigation, 
-        this.passkeys = _passkeys, //array of keys valid for use
-        this.power = 1,
+        this.name = _name; //arbitrary name
+        this.short = _short; //arbitrary short hand for map screen
+        this.type = _type; //eg Astronometry, Navigation, 
+        this.passkeys = _passkeys; //array of keys valid for use
+        this.power = 1;
+        this.hp = 1;
         this.inventory = [];
         //this.players = [];
     }

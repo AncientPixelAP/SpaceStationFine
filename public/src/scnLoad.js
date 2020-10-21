@@ -21,6 +21,9 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.image("sprLcarsPipLeft16", "sprites/lcarsPipLeft16.png");
         this.load.image("sprLcarsPipRight16", "sprites/lcarsPipRight16.png");
+        this.load.image("sprLcarsPipLong32", "sprites/lcarsPipLong32.png");
+        this.load.image("sprLcarsPipLong48", "sprites/lcarsPipLong48.png");
+        this.load.image("sprLcarsPipLong64", "sprites/lcarsPipLong64.png");
         this.load.image("sprLcarsPillar32", "sprites/lcarsPillar32.png");
         this.load.image("sprLcarsL64thin", "sprites/lcarsL64thin.png");
         this.load.image("sprLcarsL48", "sprites/lcarsL48.png");

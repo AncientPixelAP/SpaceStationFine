@@ -52,7 +52,20 @@ const ESTATION = {
     holodeck: "holodeck",
     science: "science",
     airlock: "airlock",
-    npcquarter: "npcquarter"
+    npcquarter: "npcquarter",
+    warpcore: "warpcore"
+}
+
+const ESYSTEM = {
+    warpcore: "warpcore",
+    impulseDrive: "impulseDrive",
+    shieldGenerator: "shieldGenerator",
+    target: "target",
+    airlock: "airlock",
+    transporter: "transporter",
+    phaserBank: "phaserBank",
+    deflectorShield: "deflectorShield",
+    sensors: "sensors"
 }
 
 class GameData{
@@ -104,6 +117,11 @@ class GameData{
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 5;
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.shieldGenerator, "Shield Generator", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.deflectorShield, "Deflector Shield", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.airlock, "Docking Computer", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.transporter, "Transporter", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.sensors, "Sensor Array", 1, 1));
 
         //create planet Baja
         spawnLocation = this.createLocation("Baja Prime", ELOCATION.planet, { x: -0.21, y: 0.45, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.allied);
@@ -120,6 +138,9 @@ class GameData{
         ]);
         this.spawnNPC("Ambassador Veyn", "bajaCaptain00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Conference Room");
         spawnLocation.spd = 0.001;
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.shieldGenerator, "Shield Generator", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.transporter, "Transporter", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.sensors, "Sensor Array", 1, 1));
 
         //create Enterprise
         spawnLocation = this.createLocation("Enterprise", ELOCATION.ship, {x: 0.01,y: -0.01,z: 0.5}, "sprBlueprintShipGalaxyClass", ERELATION.allied);
@@ -161,6 +182,13 @@ class GameData{
         ]);
         spawnLocation.dockingPortsMax = 1;
         spawnLocation.dockAt(spawnSector.locations[0]);
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.warpcore, "Welpcore", 0, 0));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.impulseDrive, "Impulse Drive", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.shieldGenerator, "Shield Generator", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.deflectorShield, "Deflector Shield", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.airlock, "Docking Computer", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.transporter, "Transporter", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.sensors, "Sensor Array", 1, 1));
 
         //create Shuttle Danube
         spawnLocation = this.createLocation("Shuttle Danube", ELOCATION.ship, { x: -0.45, y: -0.35, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.allied);
@@ -185,9 +213,14 @@ class GameData{
         ]);
         spawnLocation.dockingPortsMax = 1;
         spawnLocation.alert = true;
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.impulseDrive, "Impulse Drive", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.shieldGenerator, "Shield Generator", 0, 0));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.deflectorShield, "Deflector Shield", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.airlock, "Docking Computer", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.sensors, "Sensor Array", 1, 1));
 
         //create ejected Warpcore
-        spawnLocation = this.createLocation("Ejected Warpcore", ELOCATION.warpcore, { x: 0.35, y: 0.15, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.neutral);
+        spawnLocation = this.createLocation("Ejected Welpcore", ELOCATION.warpcore, { x: 0.35, y: 0.15, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.neutral);
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("Control Module");
         spawnLocation.addRooms([spawnRoom]);
@@ -196,6 +229,7 @@ class GameData{
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 0;
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.warpcore, "Welpcore", 0, 0));
     }
 
     update(){
@@ -256,6 +290,15 @@ class GameData{
 
     createStation(_type, _name, _short, _passkeys){
         return new Station(_type, _name, _short, _passkeys);
+    }
+
+    createSystem(_type, _name, _power, _hp){
+        return {
+            type: _type,
+            name: _name,
+            power: _power,
+            hp: _hp
+        }
     }
     
 }
