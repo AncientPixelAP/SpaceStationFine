@@ -135,14 +135,14 @@ export default class Transporter {
             }
         }
 
-        this.sliderIntensity = new SliderVertical(this.scene, { x: this.pos.x, y: this.pos.y }, 0, 106);
+        this.sliderIntensity = new SliderVertical(this.scene, { x: this.pos.x, y: this.pos.y }, 1, 106);
         this.sliderIntensity.releaseFunc = () => {
-            console.log(this.slider.sliderPos.y, this.slider.sliderEndBottom.y);
-            //console.log(Phaser.Math.Distance.Between(0, this.slider.slider.y, 0, this.slider.sliderEndBottom.y - this.slider.margin));
+            this.beamRange = (this.beamRangeMax * this.sliderIntensity.value);
+            this.intensityTxt.txt.setText(this.beamRange.toFixed(2));
         }
         this.sliderIntensity.changeFunc = () => {
-            //this.beamRange = this.beamRangeMax * this.slider.value;
-            console.log(this.beamRange);
+            this.beamRange = (this.beamRangeMax * this.sliderIntensity.value);
+            this.intensityTxt.txt.setText(this.beamRange.toFixed(2));
         }
 
         this.beamAlignBase = this.scene.add.sprite(this.pos.x, this.pos.y, "sprBlueRect52");

@@ -5,7 +5,7 @@ export class SliderHorizontal{
         this.start = _start;
         this.width = _width;
         this.autoReturn = false;
-        this.margin = 14;
+        this.margin = 15;
 
         this.colors = {
             out: LCARSCOLOR.offBlue,
@@ -182,7 +182,7 @@ export class SliderVertical {
         this.start = _start;
         this.height = _height;
         this.autoReturn = false;
-        this.margin = 14;
+        this.margin = 15;
 
         this.colors = {
             out: LCARSCOLOR.offBlue,
