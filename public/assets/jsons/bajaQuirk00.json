@@ -7,13 +7,13 @@
         "answers": [
             {
                 "text": "Games?",
-                "toId": 1
+                "actions": "GOTO 1"
             },{
                 "text": "Drinks?",
-                "toId": 1
+                "actions":"GOTO  1"
             },{
                 "text": "Any rumours?",
-                "toId": 2
+                "actions": "GOTO 2"
             }
         ]
     },{
@@ -23,7 +23,7 @@
         "answers": [
             {
                 "text": "Aha.",
-                "toId": 0
+                "actions": "GOTO 0"
             }
         ]
     },{
@@ -33,7 +33,7 @@
         "answers": [
             {
                 "text": "Sure do!",
-                "toId": 0
+                "actions": "GOTO 0"
             }
         ]
     }]

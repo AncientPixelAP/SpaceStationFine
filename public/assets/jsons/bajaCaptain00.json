@@ -7,13 +7,13 @@
         "answers": [
             {
                 "text": "Captain?",
-                "toId": 1
+                "actions": "GOTO 1"
             },{
                 "text": "Ill leave you to your work.",
-                "toId": 0
+                "actions": "GOTO 0"
             },{
                 "text": "[Reporting]",
-                "toId": 1
+                "actions": "GOTO 1"
             }
         ]
     },{
@@ -23,7 +23,7 @@
         "answers": [
             {
                 "text": "Yes, Sir.",
-                "toId": 0
+                "actions": "GOTO 0"
             }
         ]
     }]

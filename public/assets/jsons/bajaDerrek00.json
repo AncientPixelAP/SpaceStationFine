@@ -1,0 +1,184 @@
+{
+    "title": "Knock knock",
+    "cards": [{
+        "id": 0,
+        "text": "",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Did you hear any rumours?",
+                "actions": "GOTO 1"
+            }
+        ]
+    },{
+        "id": 1,
+        "text": "Ahh, PLAYERNAME, i want to welcome you to my little shop! I would be very happy to take measure on your feet, to gift you some fine cardosian shoes!",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Who are you?",
+                "actions": "GOTO 2"
+            },{
+                "text": "Yeah I already know.",
+                "actions": "GOTO 0"
+            }
+        ]
+    },{
+        "id": 2,
+        "text": "I am Derrek, the cardosian Shoemaker. Didnt you hear about my craftsmanship?",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Frankly not.",
+                "actions": "GOTO 3"
+            }
+        ]
+    },{
+        "id": 3,
+        "text": "Well then let me tell you PLAYERNAME, I see a good foot when I look at one and you Sir have an excellent standing.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Sure do!",
+                "actions": "GOTO 4"
+            }
+        ]
+    },{
+        "id": 4,
+        "text": "If you ask me PLAYERNAME, I wouldnt trust those klongons one bit. They all look the same!",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Thats racist Derrek.",
+                "actions": "GOTO 5"
+            }
+        ]
+    },{
+        "id": 5,
+        "text": "I am not saying they ALL look the same. Just these ones.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "What makes you say that?",
+                "actions": "GOTO 6"
+            }
+        ]
+    },{
+        "id": 6,
+        "text": "Look at their feet, PLAYERNAME, their FEET!",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "What about them?",
+                "actions": "GOTO 7"
+            }
+        ]
+    },{
+        "id": 7,
+        "text": "Are you familiar with the story about the two pillars in front of the Riverpalace?",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Not particularly.",
+                "actions": "GOTO 8"
+            }
+        ]
+    },{
+        "id": 8,
+        "text": "It is an old cardosian bedtime story. Would you like to hear it?",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Go ahead.",
+                "actions": "GOTO 9"
+            },{
+                "text": "Actually, could we just: Shoes.",
+                "actions": "GOTO 26"
+            }
+        ]
+    },{
+        "id": 9,
+        "text": "Well, t´was many lightyears ago in space, when a young girl stood before the riverpalace Knuaq in the providence of Knuaq.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Lightyears are a measure of distance.",
+                "actions": "GOTO 20"
+            },
+            {
+                "text": "Mhm.",
+                "actions": "GOTO 22"
+            }
+        ]
+    },{
+        "id": 20,
+        "text": "Back then they werent, PLAYERNAME.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Sure, if you say so.",
+                "actions": "GOTO 22"
+            }
+        ]
+    },{
+        "id": 22,
+        "text": "That young girl had the shiniest scales in all of Cardosia, or as it was called back then Knuaq, the large Knuaq.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Ok.",
+                "actions": "GOTO 23"
+            }
+        ]
+    },{
+        "id": 23,
+        "text": "You see PLAYERNAME, having especially shiny scales is a symbol of great disgrace for my people.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Interesting.",
+                "actions": "GOTO 24"
+            }
+        ]
+    },{
+        "id": 24,
+        "text": "Just as the two pillars next to the river, the girl knew she was nothing more than the mere reflection of a cardosian rat next to the palaces marble walls, shining light on itself through the cracks.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "Im sorry, what?",
+                "actions": "GOTO 25"
+            }
+        ]
+    },{
+        "id": 25,
+        "text": "Dont you understand? Those klongon feet are just like the pillars in the story, dont you think?",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "I see, very helpful, Derrek.",
+                "actions": "GOTO 27"
+            }
+        ]
+    },{
+        "id": 26,
+        "text": "The Klongon´s feet look identical.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "I see, very helpful, Derrek.",
+                "actions": "GOTO 27"
+            }
+        ]
+    },{
+        "id": 27,
+        "text": "I will let you know when your boots are ready, PLAYERNAME.",
+        "sprite": "sprDerrek00",
+        "answers": [
+            {
+                "text": "You can reach me through the COM-lines, but stay out of the emergency ones.",
+                "actions": "GOTO 0"
+            }
+        ]
+    }]
+}

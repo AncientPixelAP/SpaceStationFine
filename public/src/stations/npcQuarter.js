@@ -57,7 +57,7 @@ export default class NPCQuarter {
             this.btnOptions.push({
                 data: a,
                 btn: new ListButton(this.scene, { x: this.pos.x - 150, y: this.pos.y - 8 + (i * 18)}, a.text, false, () => {
-                    this.goto(a.toId);
+                    this.interpret(a.actions.split(" "));
                     socket.emit("talkToNPC", {
                         npcName: this.npcName,
                         npcTreePosition: this.conversation.treePosition,
@@ -69,9 +69,24 @@ export default class NPCQuarter {
         }
     }
 
+    interpret(_actions){
+        let arr = _actions;
+        switch(arr[0]){
+            case "GOTO":
+                this.goto(Number(arr[1]));
+                arr.splice(0, 2);
+                break;
+            default:
+                break;
+        }
+        if(_actions.length > 0){
+            this.interpret(arr);
+        }
+    }
+
     goto(_id){
         this.conversation.treePosition = _id;
-        this.npcText.setText(this.conversation.file.cards[this.conversation.treePosition].text);
+        this.npcText.setText(this.replaceCheck(this.conversation.file.cards[this.conversation.treePosition].text));
 
         if(this.npcSprite !== null){
             this.npcSprite.destroy();
@@ -84,6 +99,15 @@ export default class NPCQuarter {
             })
         }
         this.createOptions();
+    }
+
+    replaceCheck(_str){
+        if(this.npc !== null){
+            _str = _str.replace("PLAYERNAME", this.npc.conversation.speakingTo.name !== null ? this.npc.conversation.speakingTo.name : this.scene.playerData.name);
+        }else{
+            _str = _str.replace("PLAYERNAME", this.scene.playerData.name);
+        }
+        return _str;
     }
 
     setConversation(_fileName, _startId){

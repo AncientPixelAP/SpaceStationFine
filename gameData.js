@@ -96,10 +96,11 @@ class GameData{
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
-            this.createStation(ESTATION.shop, "Derrek", "SHP", ["alpha"]),
+            this.createStation(ESTATION.npcquarter, "Derrek´s Cardosiann Shoes", "DRK", ["alpha"]),
             this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"]),
             this.createStation(ESTATION.airlock, "Airlock", "AIR", ["alpha"])
         ]);
+        this.spawnNPC("Derrek", "bajaDerrek00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Derrek´s Cardosiann Shoes");
         spawnRoom = this.createRoom("Quirks Bar");
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
