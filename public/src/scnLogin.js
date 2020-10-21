@@ -157,7 +157,6 @@ export default class ScnLogin extends Phaser.Scene {
 
         let names = [
             "Hugh",
-            "O`Bran",
             "Wax",
             "Repaer",
             "Everyone",

@@ -7,13 +7,13 @@
         "answers": [
             {
                 "text": "The question is: What can I do for you?",
-                "actions": "GOTO 1"
+                "actions": "GOTO 2"
             },{
                 "text": "Ill leave you to your work.",
-                "actions": "GOTO 0"
+                "actions": "GOTO 1"
             },{
                 "text": "[Reporting]",
-                "actions": "GOTO 1"
+                "actions": "GOTO 2"
             }
         ]
     },{
@@ -24,6 +24,39 @@
             {
                 "text": "Yes, Sir.",
                 "actions": "GOTO 0"
+            }
+        ]
+    },{
+        "id": 2,
+        "text": "I know, I know, the Enterprise is in bad shape. Talk to Chef O´Bran for repairs. We need this ship up and running ASAP.",
+        "sprite": "sprCommanderCirca00",
+        "answers": [
+            {
+                "text": "Where do I find Ched O´Bran?",
+                "actions": "GOTO 3"
+            },{
+                "text": "What´s so urgent?",
+                "actions": "GOTO 4"
+            }
+        ]
+    },{
+        "id": 3,
+        "text": "He is in the lower levels of DS Fine. You´ll find him in Engineering, fixing up our broken hangar.",
+        "sprite": "sprCommanderCirca00",
+        "answers": [
+            {
+                "text": "Ok.",
+                "actions": "GOTO 0 ADDFLAG SentByCmd"
+            }
+        ]
+    },{
+        "id": 4,
+        "text": "We had a terrible Explosion at the lower decks, a shuttle got stolen and our stuff is floating around the station! This will be a pain in the ass to fix again.",
+        "sprite": "sprCommanderCirca00",
+        "answers": [
+            {
+                "text": "On it!",
+                "actions": "GOTO 0 ADDFLAG SentByCmd"
             }
         ]
     }]

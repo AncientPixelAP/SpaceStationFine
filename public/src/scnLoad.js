@@ -69,11 +69,13 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprCommanderCirca00", "sprites/characters/commanderCirca00.png");
         this.load.image("sprQuirk00", "sprites/characters/quirk01.png");
         this.load.image("sprDerrek00", "sprites/characters/derrek00.png");
+        this.load.image("sprChefOBran00", "sprites/characters/chefOBran00.png");
 
         this.load.json("bajaCaptain00", "jsons/bajaCaptain00.json");
         this.load.json("bajaCommanderCirca00", "jsons/bajaCommanderCirca00.json");
         this.load.json("bajaQuirk00", "jsons/bajaQuirk00.json");
         this.load.json("bajaDerrek00", "jsons/bajaDerrek00.json");
+        this.load.json("bajaChefOBran00", "jsons/bajaChefOBran00.json");
 
         this.loadTxt = this.add.bitmapText(0, 0, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
 

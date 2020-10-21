@@ -1,0 +1,81 @@
+{
+    "title": "Knock knock",
+    "cards": [{
+        "id": 0,
+        "text": "",
+        "sprite": "sprChefOBran00",
+        "answers": [
+            {
+                "text": "Excuse me?",
+                "actions": "GOTO 1"
+            },{
+                "text": "Commander Circa sent me.",
+                "actions": "GOTO 2",
+                "showon": "SentByCmd"
+            }
+        ]
+    },{
+        "id": 1,
+        "text": "Hey, I am working here. Look for Commander Circa, if you know what I mean.",
+        "sprite": "sprChefOBran00",
+        "answers": [
+            {
+                "text": "Sure.",
+                "actions": "GOTO 0"
+            }
+        ]
+    },{
+        "id": 2,
+        "text": "Yah? There is something I can send you, if you know what I mean.",
+        "sprite": "sprChefOBran00",
+        "answers": [
+            {
+                "text": "Aha. Well, we need you to make some repairs on the Enterprise.",
+                "actions": "GOTO 2"
+            }
+        ]
+    },{
+        "id": 3,
+        "text": "What´s wrong with the old lady?",
+        "sprite": "sprChefOBran00",
+        "answers": [
+            {
+                "text": "Our Welpcore and Impulse Drive is blown.",
+                "actions": "GOTO 3"
+            }
+        ]
+    },{
+        "id": 4,
+        "text": "Well, I can blow something up too, if you know what I mean!",
+        "sprite": "sprChefOBran00",
+        "answers": [
+            {
+                "text": "No thank you!",
+                "actions": "GOTO 4"
+            }
+        ]
+    },{
+        "id": 5,
+        "text": "You can easly fix up your Impulse Drive with this here, but we are out of Welpcore Spools. Somewhere out there in the vastness of space, there should be floating one around.",
+        "sprite": "sprChefOBran00",
+        "answers": [
+            {
+                "text": "Thx.",
+                "actions": "GOTO 0"
+            },{
+                "text": "What?",
+                "actions": "GOTO 5"
+            }
+        ]
+    },{
+        "id": 6,
+        "text": "During the explosion it apparently got thrown out of the stations Storage and better yet, our shuttle got stolen. So yeah. We are fucked, if you know what I mean?",
+        "sprite": "sprChefOBran00",
+        "answers": [
+            {
+                "text": "Ill try and get it back, thx again!",
+                "actions": "GOTO 0"
+            }
+        ]
+    }]
+}

@@ -116,9 +116,11 @@ class GameData{
         spawnRoom.addStations([
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
+            this.createStation(ESTATION.npcquarter, "Chef Engineering", "COB", ["dsfine"]),
             this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
+        this.spawnNPC("Chef O´Bran", "bajaChefOBran00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Chef Engineering");
         spawnLocation.dockingPortsMax = 5;
         spawnLocation.addSystem(this.createSystem(ESYSTEM.shieldGenerator, "Shield Generator", 1, 1));
         spawnLocation.addSystem(this.createSystem(ESYSTEM.deflectorShield, "Deflector Shield", 1, 1));
@@ -187,7 +189,7 @@ class GameData{
         spawnLocation.dockingPortsMax = 1;
         spawnLocation.dockAt(spawnSector.locations[0]);
         spawnLocation.addSystem(this.createSystem(ESYSTEM.warpcore, "Welpcore", 0, 0));
-        spawnLocation.addSystem(this.createSystem(ESYSTEM.impulseDrive, "Impulse Drive", 1, 1));
+        spawnLocation.addSystem(this.createSystem(ESYSTEM.impulseDrive, "Impulse Drive", 0, 0));
         spawnLocation.addSystem(this.createSystem(ESYSTEM.shieldGenerator, "Shield Generator", 1, 1));
         spawnLocation.addSystem(this.createSystem(ESYSTEM.deflectorShield, "Deflector Shield", 1, 1));
         spawnLocation.addSystem(this.createSystem(ESYSTEM.airlock, "Docking Computer", 1, 1));

@@ -79,7 +79,7 @@ export default class NPCQuarter {
             default:
                 break;
         }
-        if(_actions.length > 0){
+        if(arr.length > 0){
             this.interpret(arr);
         }
     }
@@ -118,7 +118,7 @@ export default class NPCQuarter {
 
     move() {
         this.npcNameTxt.x = this.pos.x - 98;
-        this.npcNameTxt.y = this.pos.y - 116;
+        this.npcNameTxt.y = this.pos.y + 116;
 
         this.npcText.x = this.pos.x - 98;
         this.npcText.y = this.pos.y - 98;
