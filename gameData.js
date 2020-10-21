@@ -53,7 +53,8 @@ const ESTATION = {
     science: "science",
     airlock: "airlock",
     npcquarter: "npcquarter",
-    warpcore: "warpcore"
+    warpcore: "warpcore",
+    table: "table"
 }
 
 const ESYSTEM = {
@@ -106,6 +107,7 @@ class GameData{
         spawnRoom.addStations([
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
             this.createStation(ESTATION.bar, "Quirks", "BAR", ["alpha"]),
+            this.createStation(ESTATION.table, "Table 01", "TBL", ["alpha"]),
             this.createStation(ESTATION.npcquarter, "Bar Counter", "QRK", ["dsfine"]),
         ]);
         this.spawnNPC("Quirk", "bajaQuirk00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Bar Counter");
@@ -162,6 +164,7 @@ class GameData{
         spawnLocation.addRooms([spawnRoom]);
         spawnRoom.addStations([
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
+            this.createStation(ESTATION.table, "Conference Table", "TBL", ["alpha"])
         ]);
         spawnRoom = this.createRoom("Deck B");
         spawnLocation.addRooms([spawnRoom]);
