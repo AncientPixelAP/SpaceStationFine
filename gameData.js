@@ -74,6 +74,10 @@ class GameData{
         this.npcs = [];
         this.players = [];
         this.sectors = [];
+        this.group = {
+            flags: [],
+            inentory: []
+        }
 
         let spawnSector, spawnLocation, spawnRoom;
         spawnSector = this.createSector(192, 168, 0);

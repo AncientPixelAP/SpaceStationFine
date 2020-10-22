@@ -77,6 +77,7 @@ export default class NPCQuarter {
                 arr.splice(0, 2);
                 break;
             default:
+                arr.splice(0, 1);
                 break;
         }
         if(arr.length > 0){

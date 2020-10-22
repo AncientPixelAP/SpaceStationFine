@@ -21,7 +21,8 @@ let tick = setInterval(() => {
         io.to(p.id).emit("sectorUpdate", {
             sectorData: p.sector, 
             playersAtLocation: getPlayersAtLocation(p.locationId),
-            npcsAtLocation: getNPCsAtLocation(p.locationId)
+            npcsAtLocation: getNPCsAtLocation(p.locationId),
+            groupData: gameData.group
         });
     }
 }, 1000);
