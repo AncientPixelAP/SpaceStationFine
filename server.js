@@ -77,6 +77,16 @@ io.on("connection", socket => {
         }
     });
 
+    socket.on("revealSectorLocations", (_data) => {
+        for(let l of _data.locationIds){
+            let loc = getLocationById(l);
+            if(loc.length > 0){
+                loc[0].unknown = false;
+                loc[0].hidden = false;
+            }
+        }
+    });
+
     socket.on("setCourse", (_data) => {
         let player = getPlayerById(id);
         if(player !== null){

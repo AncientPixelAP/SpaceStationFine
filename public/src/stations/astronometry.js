@@ -12,6 +12,8 @@ export default class Astronometry{
 
         this.zoomFactor = 16;
         this.zoomFactorMax = 16;
+        this.shortRange = 1;
+        this.longRange = 2;
 
         this.views = {
             fight: 0,
@@ -34,13 +36,31 @@ export default class Astronometry{
         //this.sectorMask = this.shape.createGeometryMask();
         //console.log(this.sectorMask);
 
-        this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "PRNT", false, () => {
+        this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "SCAN", false, () => {
             /*socket.emit("requestSectorLocations", {
                 player: this.scene.playerData,
                 id: this.scene.locationData.id,
                 sector: this.scene.locationData.sector
             });*/
-            if(this.target.follow !== null){
+
+            let toScanIds = [];
+            for(let l of this.scene.sectorData.locations){
+                if(Phaser.Math.Distance.Between(l.coords.x, l.coords.y, this.scene.locationData.coords.x, this.scene.locationData.coords.y) <= this.shortRange){
+                    toScanIds.push(l.id);
+                }
+            }
+            socket.emit("revealSectorLocations", {
+                locationIds: toScanIds,
+                sector: this.scene.locationData.sector
+            });
+        } );
+
+        this.btnVector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "PRNT", false, () => {
+            /*let vx = this.sectorMap.x + (this.target.sprite.x / this.zoomFactor);
+            let vy = this.sectorMap.y + (this.target.sprite.y / this.zoomFactor);
+            this.details.setText("target: " + String(vx.toFixed(0)) + "," + String(vy.toFixed(0)));*/
+
+            if (this.target.follow !== null) {
                 console.log(this.target.follow.data);
 
                 socket.emit("addToPlayerInventory", {
@@ -54,12 +74,6 @@ export default class Astronometry{
                     unique: true
                 });
             }
-        } );
-
-        this.btnVector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "PLOT", false, () => {
-            let vx = this.sectorMap.x + (this.target.sprite.x / this.zoomFactor);
-            let vy = this.sectorMap.y + (this.target.sprite.y / this.zoomFactor);
-            this.details.setText("target: " + String(vx.toFixed(0)) + "," + String(vy.toFixed(0)));
         });
 
         this.btnTitleZoom = new Button(this.scene, { x: this.pos.x, y: this.pos.y }, "sprLcarsBtnLong64", "ZOOM", false, () => { });
@@ -188,6 +202,9 @@ export default class Astronometry{
                     break;
                     case "planet":
                         asset = "sprSymbolFriendlyPlanet";
+                        break;
+                    case "resonanceTraces":
+                        asset = "sprSymbolResonanceTraces"
                         break;
                     default:
                     break;
@@ -386,28 +403,35 @@ export default class Astronometry{
                 }
                 if(found === false){
                     let asset = "sprSymbolUnknown";
-                    switch (ol.type) {
-                        case "ship":
-                            asset = "sprSymbolFriendlyShip";
-                            break;
-                        case "station":
-                            asset = "sprSymbolFriendlyStation";
-                            break;
-                        case "planet":
-                            asset = "sprSymbolFriendlyPlanet";
-                            break;
-                        case "warpcore":
-                            asset = "sprSymbolWarpcore";
-                            break;
-                        default:
-                            break;
+                    if(ol.unknown === false){
+                        switch (ol.type) {
+                            case "ship":
+                                asset = "sprSymbolFriendlyShip";
+                                break;
+                            case "station":
+                                asset = "sprSymbolFriendlyStation";
+                                break;
+                            case "planet":
+                                asset = "sprSymbolFriendlyPlanet";
+                                break;
+                            case "warpcore":
+                                asset = "sprSymbolWarpcore";
+                                break;
+                            case "resonanceTraces":
+                                asset = "sprSymbolResonanceTraces"
+                                break;
+                            default:
+                                break;
+                        }
                     }
-                    this.locations.push({
-                        data: ol,
-                        sprite: this.scene.add.sprite(this.sectorMap.x + (ol.coords.x * 128), this.sectorMap.y + (ol.coords.y * 128), asset)
-                    });
-                    let mask = this.shape.createGeometryMask();
-                    this.locations[this.locations.length - 1].sprite.setMask(mask);
+                    if(ol.hidden === false){
+                        this.locations.push({
+                            data: ol,
+                            sprite: this.scene.add.sprite(this.sectorMap.x + (ol.coords.x * 128), this.sectorMap.y + (ol.coords.y * 128), asset)
+                        });
+                        let mask = this.shape.createGeometryMask();
+                        this.locations[this.locations.length - 1].sprite.setMask(mask);
+                    }
                 }
             }
         }

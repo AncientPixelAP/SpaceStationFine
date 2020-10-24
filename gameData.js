@@ -202,6 +202,7 @@ class GameData{
 
         //create Shuttle Danube
         spawnLocation = this.createLocation("Shuttle Danube", ELOCATION.ship, { x: -0.45, y: -0.35, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.allied);
+        spawnLocation.unknow = true;
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("Cockpit");
         spawnLocation.addRooms([spawnRoom]);
@@ -223,6 +224,8 @@ class GameData{
         ]);
         spawnLocation.dockingPortsMax = 1;
         spawnLocation.alert = true;
+        spawnLocation.headingCoords.x = -200;
+        spawnLocation.headingCoords.y = -75;
         spawnLocation.addSystem(this.createSystem(ESYSTEM.impulseDrive, "Impulse Drive", 1, 1));
         spawnLocation.addSystem(this.createSystem(ESYSTEM.shieldGenerator, "Shield Generator", 0, 0));
         spawnLocation.addSystem(this.createSystem(ESYSTEM.deflectorShield, "Deflector Shield", 1, 1));
@@ -231,6 +234,7 @@ class GameData{
 
         //create ejected Warpcore
         spawnLocation = this.createLocation("Ejected Welpcore", ELOCATION.warpcore, { x: 0.35, y: 0.15, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.neutral);
+        spawnLocation.unknow = true;
         spawnSector.addLocations([spawnLocation]);
         spawnRoom = this.createRoom("Control Module");
         spawnLocation.addRooms([spawnRoom]);
@@ -238,8 +242,15 @@ class GameData{
             this.createStation(ESTATION.map, "Map", "MAP", ["alpha"]), 
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"])
         ]);
-        spawnLocation.dockingPortsMax = 0;
         spawnLocation.addSystem(this.createSystem(ESYSTEM.warpcore, "Welpcore", 0, 0));
+
+        //create klongoin wepcore traces
+        spawnLocation = this.createLocation("Klongon Welptraces", ELOCATION.resonanceTraces, { x: -0.44, y: -0.38, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.neutral);
+        spawnLocation.unknow = true;
+        spawnLocation.hidden = true;
+        spawnSector.addLocations([spawnLocation]);
+        spawnLocation.headingCoords.x = 10;
+        spawnLocation.headingCoords.y = -9;
     }
 
     update(){

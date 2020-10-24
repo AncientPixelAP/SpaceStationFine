@@ -32,6 +32,7 @@ class Location {
         }
 
         this.rooms = [];
+        this.systems = [];
 
         this.isDocked = false;
         this.dockingPortsMax = 0;
@@ -42,8 +43,8 @@ class Location {
         this.hangarRange = 0.1;
 
         this.relation = _relation;
-
-        this.systems = [];
+        this.hidden = false;
+        this.unknown = false;
     }
 
     update(){

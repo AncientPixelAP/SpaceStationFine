@@ -60,6 +60,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSymbolWarpcore", "sprites/symbolWarpcore.png");
         this.load.image("sprSymbolTorpedo", "sprites/symbolTorpedo.png");
         this.load.image("sprSymbolPhotonicTorpedo", "sprites/symbolPhotonicTorpedo.png");
+        this.load.image("sprSymbolResonanceTraces", "sprites/symbolResonanceTraces.png");
 
         this.load.image("sprBlueprintShipGalaxyClass", "sprites/blueprintShipGalaxyClass.png");
         this.load.image("sprBlueprintShipShuttle", "sprites/blueprintShipShuttle.png");

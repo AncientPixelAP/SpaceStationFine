@@ -153,6 +153,7 @@ export default class NPCQuarter {
 
         if(this.pos.x > 0){
             if(this.npc !== null){
+                this.goto(this.npc.conversation.treePosition);
                 if(this.npc.conversation.speakingTo.name === this.scene.playerData.name){
                     socket.emit("stopTalkToNPC", {
                         npcName: this.npc.name
