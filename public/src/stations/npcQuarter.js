@@ -54,18 +54,36 @@ export default class NPCQuarter {
         this.btnOptions = [];
 
         for (let [i, a] of this.conversation.file.cards[this.conversation.treePosition].answers.entries()){
-            this.btnOptions.push({
-                data: a,
-                btn: new ListButton(this.scene, { x: this.pos.x - 150, y: this.pos.y - 8 + (i * 18)}, a.text, false, () => {
-                    this.interpret(a.actions.split(" "));
-                    socket.emit("talkToNPC", {
-                        npcName: this.npcName,
-                        npcTreePosition: this.conversation.treePosition,
-                        playerId: this.scene.playerData.id,
-                        playerName: this.scene.playerData.name
-                    });
-                })
-            });
+            let valid = true;
+            //check if option is valid
+            if(a.checkFlag !== undefined){
+                valid = false;
+                //todo check if flag is set
+                    valid = true;
+            }
+            if(a.checkPlayerInventory !== undefined){
+                valid = false;
+                for(let i of this.scene.playerData.inventory){
+                    if(i.type === a.checkPlayerInventory.type && i.data.id === a.checkPlayerInventory.dataId){
+                        valid = true;
+                    }
+                }
+            }
+            //push conversation option
+            if(valid === true){
+                this.btnOptions.push({
+                    data: a,
+                    btn: new ListButton(this.scene, { x: this.pos.x - 150, y: this.pos.y - 8 + (i * 18)}, a.text, false, () => {
+                        this.interpret(a.actions.split(" "));
+                        socket.emit("talkToNPC", {
+                            npcName: this.npcName,
+                            npcTreePosition: this.conversation.treePosition,
+                            playerId: this.scene.playerData.id,
+                            playerName: this.scene.playerData.name
+                        });
+                    })
+                });
+            }
         }
     }
 

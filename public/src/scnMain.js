@@ -89,6 +89,12 @@ export default class ScnMain extends Phaser.Scene {
             this.playersData = _data.playersAtLocation;
             this.npcsData = _data.npcsAtLocation;
 
+            for(let p of this.playersData){
+                if(p.id === this.playerData.id){
+                    this.playerData = p;
+                }
+            }
+
             this.synchronize();
         });
 

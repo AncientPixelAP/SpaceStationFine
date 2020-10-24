@@ -13,7 +13,13 @@
                 "actions": "GOTO 1"
             },{
                 "text": "[Reporting]",
-                "actions": "GOTO 2"
+                "actions": "REMOVEFROMPLAYERINVENTORY locationData Shuttle%Danube%1 GOTO 5",
+                "checkPlayerInventory": {
+                    "type": "locationData",
+                    "dataId": "Shuttle Danube",
+                    "amountGreater": 0,
+                    "amountSmaller": 2
+                }
             }
         ]
     },{
@@ -57,6 +63,16 @@
             {
                 "text": "On it!",
                 "actions": "GOTO 0 ADDFLAG SentByCmd"
+            }
+        ]
+    },{
+        "id": 5,
+        "text": "So, this is the scan of the shuttle? Nothing really special about it. Maybe you have to search the area...",
+        "sprite": "sprCommanderCirca00",
+        "answers": [
+            {
+                "text": "On it!",
+                "actions": "GOTO 0"
             }
         ]
     }]

@@ -34,13 +34,26 @@ export default class Astronometry{
         //this.sectorMask = this.shape.createGeometryMask();
         //console.log(this.sectorMask);
 
-        this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "SCAN", false, () => {
-            console.log("scanning");
-            socket.emit("requestSectorLocations", {
+        this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "PRNT", false, () => {
+            /*socket.emit("requestSectorLocations", {
                 player: this.scene.playerData,
                 id: this.scene.locationData.id,
                 sector: this.scene.locationData.sector
-            });
+            });*/
+            if(this.target.follow !== null){
+                console.log(this.target.follow.data);
+
+                socket.emit("addToPlayerInventory", {
+                    playerId: this.scene.playerData.id,
+                    item: {
+                        id: "sensorData",
+                        type: "locationData",
+                        data: this.target.follow.data
+                    },
+                    amount: 1,
+                    unique: true
+                });
+            }
         } );
 
         this.btnVector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "PLOT", false, () => {

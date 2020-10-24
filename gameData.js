@@ -76,7 +76,7 @@ class GameData{
         this.sectors = [];
         this.group = {
             flags: [],
-            inentory: []
+            inventory: []
         }
 
         let spawnSector, spawnLocation, spawnRoom;

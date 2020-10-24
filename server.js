@@ -165,6 +165,14 @@ io.on("connection", socket => {
         }
     });
 
+    socket.on("addToPlayerInventory", (_data) => {
+        let player = getPlayerById(_data.playerId);
+        if(player !== null){
+            player.addInventory(_data.item, _data.amount, _data.unique);
+            //item must has a name, type, and data object
+        }
+    });
+
     socket.on("talkToNPC", (_data) => {
         let npc = getNPCByName(_data.npcName);
         if(npc !== null){
