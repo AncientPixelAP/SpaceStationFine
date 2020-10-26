@@ -110,7 +110,7 @@ export default class Airlock {
             }
             if(found === false){
                 this.btnDocked.push(new ListButton(this.scene, { x: 1000, y: 0 }, this.scene.locationData.dockedAt, false, () => {
-                    socket.emit("beamPlayer", {
+                    socket.emit("movePlayer", {
                         playerId: this.scene.playerData.id,
                         locationId: this.scene.locationData.dockedAt
                     });
