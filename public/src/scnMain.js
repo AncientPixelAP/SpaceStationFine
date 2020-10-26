@@ -1,6 +1,7 @@
 import Hand from "./hand.js";
 import GenericStation from "./stations/genericStation.js";
 import StationList from "./stationList.js";
+import GeneralUI from "./generalUI.js";
 
 export default class ScnMain extends Phaser.Scene {
 
@@ -44,6 +45,7 @@ export default class ScnMain extends Phaser.Scene {
         }, this);
 
         this.hand = new Hand(this);
+        this.generalUI = new GeneralUI(this);
         
         //Phaser.Math.RND.sow(["seed"]);
         //console.log(Phaser.Math.RND);

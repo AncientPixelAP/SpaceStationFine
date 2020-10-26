@@ -121,7 +121,7 @@ class GameData{
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
             this.createStation(ESTATION.npcquarter, "Chef Engineering", "COB", ["dsfine"]),
-            this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
+            this.createStation(ESTATION.storage, "Cargo Bay", "STG", ["alpha"]),
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
         this.spawnNPC("Chef O´Bran", "bajaChefOBran00", spawnSector.name, spawnLocation.id, spawnRoom.id, "Chef Engineering");
@@ -187,7 +187,7 @@ class GameData{
             this.createStation(ESTATION.map, "Turbolift", "MAP", ["alpha"]),
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
             this.createStation(ESTATION.transporter, "Transporter Room", "TRS", ["alpha"]),
-            this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
+            this.createStation(ESTATION.storage, "Cargo Bay", "STG", ["alpha"]),
             this.createStation(ESTATION.hangar, "Hangar", "HNG", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 1;
@@ -219,7 +219,7 @@ class GameData{
             this.createStation(ESTATION.map, "Map", "MAP", ["alpha"]),
             this.createStation(ESTATION.science, "Science", "SCI", ["alpha"]),
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"]),
-            this.createStation(ESTATION.storage, "Storage Room", "STG", ["alpha"]),
+            this.createStation(ESTATION.storage, "Storage Locker", "STG", ["alpha"]),
             this.createStation(ESTATION.airlock, "Airlock", "AIR", ["alpha"])
         ]);
         spawnLocation.dockingPortsMax = 1;

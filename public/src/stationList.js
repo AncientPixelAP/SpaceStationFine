@@ -1,6 +1,5 @@
 import Button from "./lcars/button.js";
 import Welcome from "./stations/welcomeScreen.js";
-import OverlayMessage from "./lcars/overlayMessage.js";
 
 export default class StationList {
     constructor(_scene, _stations) {
@@ -68,20 +67,6 @@ export default class StationList {
             pulse: false,
             timer: null
         }
-
-        this.overlayMessage = new OverlayMessage(this.scene, { x: this.offset.x + 1000, y: this.offset.y}, "");
-        this.quickTxt = this.scene.add.bitmapText(this.scene.right - 40, this.scene.top + 13, "pixelmix", "", 8, 1).setOrigin(1, 0.5);
-        this.quickTextCleaner = setTimeout(() => {
-            this.quickTxt.setText("");
-        }, 1);
-
-        socket.on("quickMessage", (_data) => {
-            this.quickTxt.setText(_data.txt);
-
-            this.quickTextCleaner = setTimeout(() => {
-                this.quickTxt.setText("");
-            }, this.quickTxt.getTextBounds().local.width * 20);
-        });
     }
 
     update() {
@@ -96,12 +81,6 @@ export default class StationList {
         }
 
         this.station.update();
-        
-        this.overlayMessage.update();
-    }
-
-    showOverlayMessage(_txt){
-        this.overlayMessage.move(this.offset.x, this.offset.y);
     }
 
     setAlert(_bool){
@@ -158,7 +137,6 @@ export default class StationList {
             y: 0
         }
         this.move();
-        this.overlayMessage.move(this.offset.x, this.offset.y);
     }
 
     moveOut() {
@@ -167,7 +145,6 @@ export default class StationList {
             y: 0
         }
         this.move();
-        this.overlayMessage.move(this.offset.x, this.offset.y);
     }
 
     move() {
@@ -186,11 +163,5 @@ export default class StationList {
         for(let b of this.buttons){
             b.destroy();
         }
-
-        this.overlayMessage.destroy();
-        this.quickTxt.destroy();
-
-        clearTimeout(this.quickTextCleaner);
-        socket.off("quickMessage");
     }
 }
