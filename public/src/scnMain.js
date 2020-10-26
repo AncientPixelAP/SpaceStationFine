@@ -50,6 +50,17 @@ export default class ScnMain extends Phaser.Scene {
         
         this.bsp = this.add.bitmapText(-124, -124, "pixelmix", "", 8, 1);//.setOrigin(0.5);
         this.bsp.alpha = 1;
+
+        this.beamParticles = this.add.particles("sprParticleLong00");
+        this.beamParticlesEmitter = this.beamParticles.createEmitter({
+            x: { min: this.game.config.width * -0.5, max: this.game.config.width * 0.5 },
+            y: this.game.config.height * 0.5,
+            lifespan: 1000,
+            speedY: { min: -512, max: -800 },
+            scale: { start: 1, end: 0 },
+            quantity: 0,
+            blendMode: 'ADD'
+        }).pause();
         
         this.playerData = null;
         this.locationData = null;
@@ -70,32 +81,66 @@ export default class ScnMain extends Phaser.Scene {
         });
 
         socket.on("getLocation", (_data) => {
-            console.log(_data);
-            this.locationData = _data.locationData;
-            this.playerData = _data.playerData;
-            localStorage.setItem(SAVEGAMENAME, JSON.stringify({
-                name: this.playerData.name,
-                lastLocationId: this.locationData.id
-            }));
+            let col = {r: 0, g: 0, b: 0};
+            let time = {in: 1500, out: 1500};
+            switch(_data.effect){
+                case "none":
+                    time.in = 0;
+                    time.out = 0;
+                    break;
+                case "moved":
+                    time.in = 250;
+                    time.out = 500;
+                    break;
+                case "beamed":
+                    col.b = 255;
+                    time.in = 500;
+                    time.out = 1000;
+                    this.beamParticlesEmitter.setQuantity(8);
+                    this.beamParticlesEmitter.resume();
+                    break;
+                default:
+                    break;
+            }
+            this.cameras.main.fade(time.in, col.r, col.g, col.b, false, (_cam, _dur) => {
+                if(_dur >= 1){
+                    console.log(_data);
+                    this.locationData = _data.locationData;
+                    this.playerData = _data.playerData;
+                    localStorage.setItem(SAVEGAMENAME, JSON.stringify({
+                        name: this.playerData.name,
+                        lastLocationId: this.locationData.id
+                    }));
 
-            this.createRoom(_data.locationData.rooms[0]);
+                    this.createRoom(_data.locationData.rooms[0]);
 
-            this.synchronize();
+                    this.synchronize();
+
+                    this.beamParticlesEmitter.setQuantity(0);
+                    _cam.fadeFrom(time.out, col.r, col.g, col.b, true, (_c, _d) => {
+                        if(_d >= 1){
+                            this.beamParticlesEmitter.pause();
+                        }
+                    }, this);
+                }
+            }, this);
         });
 
         socket.on("sectorUpdate", (_data) => {
-            this.sectorData = _data.sectorData;
-            this.locationData = this.sectorData.locations.filter((l) => l.id === this.playerData.location.id)[0];
-            this.playersData = _data.playersAtLocation;
-            this.npcsData = _data.npcsAtLocation;
+            if(this.playerData !== null){
+                this.sectorData = _data.sectorData;
+                this.locationData = this.sectorData.locations.filter((l) => l.id === this.playerData.location.id)[0];
+                this.playersData = _data.playersAtLocation;
+                this.npcsData = _data.npcsAtLocation;
 
-            for(let p of this.playersData){
-                if(p.id === this.playerData.id){
-                    this.playerData = p;
+                for(let p of this.playersData){
+                    if(p.id === this.playerData.id){
+                        this.playerData = p;
+                    }
                 }
-            }
 
-            this.synchronize();
+                this.synchronize();
+            }
         });
 
         let save = JSON.parse(localStorage.getItem(SAVEGAMENAME));

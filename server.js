@@ -60,7 +60,8 @@ io.on("connection", socket => {
         gameData.players[gameData.players.length-1].setName(_data.name);
         io.to(id).emit("getLocation", {
             playerData: gameData.players[gameData.players.length-1],
-            locationData: loc[0]
+            locationData: loc[0],
+            effect: "none"
         });
     });
 
@@ -104,7 +105,8 @@ io.on("connection", socket => {
 
         io.to(_data.playerId).emit("getLocation", {
             playerData: player,
-            locationData: loc
+            locationData: loc,
+            effect: "beamed"
         });
 
         io.to(_data.playerId).emit("quickMessage", {
@@ -119,7 +121,8 @@ io.on("connection", socket => {
 
         io.to(_data.playerId).emit("getLocation", {
             playerData: player,
-            locationData: loc
+            locationData: loc,
+            effect: "moved"
         });
 
         io.to(_data.playerId).emit("quickMessage", {
