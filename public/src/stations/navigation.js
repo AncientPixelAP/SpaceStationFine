@@ -137,9 +137,10 @@ export default class Navigation{
         this.headingLBotL.setTintFill(LCARSCOLOR.gold);
 
         this.simpleHeading = this.scene.add.sprite(this.pos.x, this.pos.y, "sprPinkSimpleHeading01");
+        this.simpleHeadingTarget = this.scene.add.sprite(this.pos.x, this.pos.y, "sprWhiteSimpleHeading02");
 
         this.headingCoordsTxt = this.scene.add.bitmapText(0, 0, "pixelmix", this.heading, 8, 1).setOrigin(0.5);
-        this.currentCoord = "x"
+        this.currentCoord = "x";
 
         //DOCKING
         this.dockedTxt = new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "docked Location", false, () => {});
@@ -196,6 +197,7 @@ export default class Navigation{
         this.headingCoordsTxt.setText(String(this.headingCoords.x) + "," + String(this.headingCoords.y));
 
         this.simpleHeading.setRotation(this.scene.locationData.heading);
+        this.simpleHeadingTarget.setRotation(this.scene.locationData.target.heading);
 
         if (this.scene.locationData.dockedAt !== "") {
             this.dockedTxt.move(this.pos.x + 62, this.pos.y + 28);
@@ -245,7 +247,9 @@ export default class Navigation{
         this.headingLBotL.y = this.pos.y - 17;
 
         this.simpleHeading.x = this.pos.x - 62;
-        this.simpleHeading.y = this.pos.y - 35;
+        this.simpleHeading.y = this.pos.y - 35; 
+        this.simpleHeadingTarget.x = this.pos.x - 62;
+        this.simpleHeadingTarget.y = this.pos.y - 35; 
 
         this.headingXTxt.move(this.pos.x - 28, this.pos.y - 80);
         this.headingYTxt.move(this.pos.x + 30, this.pos.y - 80);
@@ -335,6 +339,7 @@ export default class Navigation{
         this.headingLBotL.destroy();
 
         this.simpleHeading.destroy();
+        this.simpleHeadingTarget.destroy();
 
         this.headingXTxt.destroy();
         this.headingYTxt.destroy();

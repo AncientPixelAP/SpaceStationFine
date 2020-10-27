@@ -52,6 +52,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprPinkCircle", "sprites/pinkCircle.png");
         this.load.image("sprPinkSimpleHeading", "sprites/pinkSimpleHeading.png");
         this.load.image("sprPinkSimpleHeading01", "sprites/pinkSimpleHeading01.png");
+        this.load.image("sprWhiteSimpleHeading02", "sprites/whiteSimpleHeading02.png");
 
         this.load.image("sprSymbolUnknown", "sprites/symbolUnknown.png");
         this.load.image("sprSymbolFriendlyShip", "sprites/symbolFriendlyShip.png");

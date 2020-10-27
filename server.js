@@ -93,7 +93,8 @@ io.on("connection", socket => {
         if(player !== null){
             player.location.impulseFactor = _data.impulseFactor;
             player.location.spd = _data.spd;
-            player.location.heading = _data.heading;
+            //player.location.heading = _data.heading;
+            player.location.target.heading = _data.heading;
             player.location.headingCoords = _data.headingCoords;
         }
     });

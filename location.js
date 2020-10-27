@@ -11,14 +11,25 @@ class Location {
         this.coords = _coords;
         
         this.spd = 0;
+        this.turnSpd = 0.1;
         this.warping = false,
         this.impulseFactor = 0;
+
         this.heading = Math.PI * -0.5;
         this.headingCoords = {
             x: 0,
             y: 0,
             z: 0
         }
+        this.target = {
+            heading: this.heading,
+            headingCoords: {
+                x: this.headingCoords.x,
+                y: this.headingCoords.y,
+                z: this.headingCoords.z
+            }
+        }
+
         this.blueprint = _blueprint;
 
         this.alert = false;
@@ -41,8 +52,8 @@ class Location {
         this.dockedAt = "";
         this.toDockId = "";
         this.dockingPorts = [];
-        this.dockingRange = 0.1;
-        this.hangarRange = 0.1;
+        this.dockingRange = 0.02;
+        this.hangarRange = 0.02;
 
         this.relation = _relation;
         this.hidden = false;
@@ -50,6 +61,28 @@ class Location {
     }
 
     update(){
+        let myA = this.heading;
+        let toA = this.target.heading;
+        let dif = toA - myA;
+        if(dif !== 0){
+            if(dif < 0){
+                dif += Math.PI * 2;
+            }
+            if(dif > Math.PI){
+                myA -= Math.min(this.turnSpd, Math.abs(dif));
+            }else{
+                myA += Math.min(this.turnSpd, Math.abs(dif));
+            }
+            
+            if(myA > Math.PI){
+                myA -= Math.PI * 2;
+            }
+            if(myA < Math.PI * -1){
+                myA += Math.PI * 2;
+            }
+            this.heading = myA;
+        }
+
         this.coords.x += Math.cos(this.heading) * this.spd;
         if(this.coords.x < -1){this.coords.x += 2};
         if (this.coords.x > 1) { this.coords.x -= 2 };
