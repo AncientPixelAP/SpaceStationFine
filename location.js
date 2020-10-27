@@ -31,9 +31,11 @@ class Location {
             health: 100*/
         }
 
+        this.inventory = [];
         this.rooms = [];
         this.systems = [];
 
+        this.isCargo = false;
         this.isDocked = false;
         this.dockingPortsMax = 0;
         this.dockedAt = "";

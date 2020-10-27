@@ -130,6 +130,15 @@ io.on("connection", socket => {
         });
     });
 
+    socket.on("moveCargoToLocation", (_data) => {
+        let loc = getLocationById(_data.locationId)[0];
+        loc.addInventory(_data.cargo);
+    });
+
+    socket.on("removeLocation", (_data) => {
+        /*todo remove location from sector*/
+    });
+
     socket.on("readyDockingAt", (_data) => {
         let loc = getLocationById(_data.locationId);
         let at = getLocationById(_data.otherId);

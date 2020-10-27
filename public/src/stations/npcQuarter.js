@@ -47,13 +47,13 @@ export default class NPCQuarter {
         }
     }
 
-    createOptions(){
+    createOptions(_elem){
         for(let b of this.btnOptions){
             b.btn.destroy();
         }
         this.btnOptions = [];
 
-        for (let [i, a] of this.conversation.file.cards[this.conversation.treePosition].answers.entries()){
+        for (let [i, a] of _elem.answers.entries()){
             let valid = true;
             //check if option is valid
             if(a.checkFlag !== undefined){
@@ -105,19 +105,23 @@ export default class NPCQuarter {
 
     goto(_id){
         this.conversation.treePosition = _id;
-        this.npcText.setText(this.replaceCheck(this.conversation.file.cards[this.conversation.treePosition].text));
+        let elem = this.conversation.file.cards.filter((e) => e.id === _id)[0];
+        if(elem === undefined){
+            elem = this.conversation.file.cards[0];
+        }
+        this.npcText.setText(this.replaceCheck(elem.text));
 
         if(this.npcSprite !== null){
             this.npcSprite.destroy();
         }
-        this.npcSprite = this.scene.add.sprite(this.pos.x - 142, this.pos.y - 85, this.conversation.file.cards[this.conversation.treePosition].sprite);
+        this.npcSprite = this.scene.add.sprite(this.pos.x - 142, this.pos.y - 85, elem.sprite);
 
         if (_id === 0 && this.npc.conversation.speakingTo.id !== null){
             socket.emit("stopTalkToNPC", {
                 npcName: this.npc.name
             })
         }
-        this.createOptions();
+        this.createOptions(elem);
     }
 
     replaceCheck(_str){

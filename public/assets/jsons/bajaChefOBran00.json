@@ -31,7 +31,7 @@
         "answers": [
             {
                 "text": "Aha. Well, we need you to make some repairs on the Enterprise.",
-                "actions": "GOTO 2"
+                "actions": "GOTO 3"
             }
         ]
     },{
@@ -41,7 +41,7 @@
         "answers": [
             {
                 "text": "Our Welpcore and Impulse Drive is blown.",
-                "actions": "GOTO 3"
+                "actions": "GOTO 4"
             }
         ]
     },{
@@ -51,7 +51,7 @@
         "answers": [
             {
                 "text": "No thank you!",
-                "actions": "GOTO 4"
+                "actions": "GOTO 5"
             }
         ]
     },{
@@ -64,7 +64,7 @@
                 "actions": "GOTO 0"
             },{
                 "text": "What?",
-                "actions": "GOTO 5"
+                "actions": "GOTO 6"
             }
         ]
     },{

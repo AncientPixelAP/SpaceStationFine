@@ -30,6 +30,7 @@ export default class Transporter {
         this.listview = this.list.locations;
         this.showDestinations = false;
 
+        this.lastLocation = null;
         this.lastPlayer = null;
         this.lastDestination = null;
 
@@ -44,6 +45,9 @@ export default class Transporter {
             }
             this.players = [];
             this.listNameTxt.setText("Locations");
+            this.lastPlayer = null;
+            this.lastDestination = null;
+            this.lastLocation = null;
         });
 
         this.locations = [];
@@ -65,7 +69,10 @@ export default class Transporter {
                         this.lastPlayer = p;
                     })
                 });
-                
+            }
+            //if no players are there and the whole thing is beamable
+            if(this.players.length === 0){
+                this.showDestinations = true;
             }
         });
 
@@ -75,7 +82,7 @@ export default class Transporter {
             });
         });
         this.btnTest = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "TEST", false, () => {
-            
+
         });
 
         //HEADING fo transporter beam
@@ -123,6 +130,7 @@ export default class Transporter {
         this.slider = new SliderVertical(this.scene, {x: this.pos.x, y: this.pos.y}, 0, 106);
         this.slider.autoReturn = true;
         this.slider.maxFunc = () => {
+            //beam a player to destination
             if((this.lastPlayer !== null && this.lastDestination !== null) && this.listview === this.list.players){
                 if (Phaser.Math.Distance.Between(this.beamAlignTarget.outerX.x, 0, this.beamAlignTarget.innerX.x, 0) < 1 && Phaser.Math.Distance.Between(0, this.beamAlignTarget.outerY.y, 0, this.beamAlignTarget.innerY.y) < 1){
                     this.btnBack.simulateClick();
@@ -131,6 +139,13 @@ export default class Transporter {
                         playerId: this.lastPlayer.id,
                         locationId: this.lastDestination.id
                     });
+                }
+            }
+            //beam cargo on board
+            if ((this.lastPlayer === null && this.lastDestination !== null) && this.listview === this.list.players && this.lastLocation.isCargo === true) {
+                if (Phaser.Math.Distance.Between(this.beamAlignTarget.outerX.x, 0, this.beamAlignTarget.innerX.x, 0) < 1 && Phaser.Math.Distance.Between(0, this.beamAlignTarget.outerY.y, 0, this.beamAlignTarget.innerY.y) < 1) {
+                    this.btnBack.simulateClick();
+                    console.log("beaming " + this.lastLocation.id + " aboard!");
                 }
             }
         }
@@ -347,6 +362,7 @@ export default class Transporter {
                         this.locations.push({
                             data: ol,
                             btn: new ListButton(this.scene, { x: this.pos.x - 168, y: this.pos.y - 80 + (this.locations.length * 18) }, ol.id, false, () => {
+                                this.lastLocation = ol;
                                 socket.emit("requestPlayersAtLocation", {
                                     id: ol.id
                                 });

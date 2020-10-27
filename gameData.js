@@ -32,7 +32,7 @@ const ELOCATION = {
     nebula: "nebula",
     resonanceTraces: "resonanceTraces",
     warpcore: "warpcore",
-    topedo: "torpedo"
+    torpedo: "torpedo"
 }
 
 const ESTATION = {
@@ -243,6 +243,7 @@ class GameData{
             this.createStation(ESTATION.engineering, "Engineering", "ENG", ["alpha"])
         ]);
         spawnLocation.addSystem(this.createSystem(ESYSTEM.warpcore, "Welpcore", 0, 0));
+        spawnLocation.isCargo = true;
 
         //create klongoin wepcore traces
         spawnLocation = this.createLocation("Klongon Welptraces", ELOCATION.resonanceTraces, { x: -0.44, y: -0.38, z: 0.5 }, "sprBlueprintShipShuttle", ERELATION.neutral);

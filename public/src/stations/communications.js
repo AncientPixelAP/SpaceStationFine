@@ -141,17 +141,25 @@ export default class Communications {
                         }
                     }
                     if (found === false && Phaser.Math.Distance.Between(this.scene.locationData.coords.x, this.scene.locationData.coords.y, ol.coords.x, ol.coords.y) <= this.commRange) {
-                        this.locations.push({
-                            data: ol,
-                            btn: new ListButton(this.scene, { x: this.pos.x - 168, y: this.pos.y - 80 + (this.locations.length * 18) }, ol.id, false, () => {
-                                if(this.listview === this.list.locations){
-                                    this.commLocation = ol;
-                                    this.listview = this.list.options;
-                                    this.listNameTxt.setText(ol.id);
-                                    this.createOptions();
-                                }
-                            })
-                        });
+                        let talkable = false;
+                        if (ol.type === ELOCATION.ship || ol.type === ELOCATION.shuttle || ol.type === ELOCATION.station || ol.type === ELOCATION.planet) {
+                            if(ol.hidden === false){
+                                talkable = true;
+                            }
+                        }
+                        if(talkable === true){
+                            this.locations.push({
+                                data: ol,
+                                btn: new ListButton(this.scene, { x: this.pos.x - 168, y: this.pos.y - 80 + (this.locations.length * 18) }, ol.id, false, () => {
+                                    if(this.listview === this.list.locations){
+                                        this.commLocation = ol;
+                                        this.listview = this.list.options;
+                                        this.listNameTxt.setText(ol.id);
+                                        this.createOptions();
+                                    }
+                                })
+                            });
+                        }
                     }
                 }
             }
@@ -164,6 +172,13 @@ export default class Communications {
         }
         this.btnOptions = [];
         
+        /*let talkable = false;
+        if(this.commLocation.type === ELOCATION.ship || this.commLocation.type === ELOCATION.shuttle || this.commLocation.type === ELOCATION.station || this.commLocation.type === ELOCATION.planet){
+            talkable = true;
+        }
+        let cargo = false;*/
+
+        //HAILING
         this.btnOptions.push(new ListButton(this.scene, {x: this.pos.x, y: this.pos.y}, "hail", false, () => {
             this.answerTxt.setText("TODO hail location");
         }));
