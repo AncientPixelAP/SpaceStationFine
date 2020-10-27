@@ -37,12 +37,6 @@ export default class Astronometry{
         //console.log(this.sectorMask);
 
         this.btnScanSector = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "SCAN", false, () => {
-            /*socket.emit("requestSectorLocations", {
-                player: this.scene.playerData,
-                id: this.scene.locationData.id,
-                sector: this.scene.locationData.sector
-            });*/
-
             let toScanIds = [];
             for(let l of this.scene.sectorData.locations){
                 if(Phaser.Math.Distance.Between(l.coords.x, l.coords.y, this.scene.locationData.coords.x, this.scene.locationData.coords.y) <= this.shortRange){
@@ -83,34 +77,27 @@ export default class Astronometry{
         this.btnZoomIn = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "+", false, () => {
             this.zoomFactor = Math.min(this.zoomFactorMax, this.zoomFactor * 2);
             this.zoomFactorTxt.setText(String(this.zoomFactor) + "x");
-
-            for(let w of this.waypoints){
-                w.sprite.x *= this.zoomFactor;
-                w.sprite.y *= this.zoomFactor;
-                w.txt.x *= this.zoomFactor;
-                w.txt.y *= this.zoomFactor;
-            }
+            //this.refreshWaypointConnection();
+            this.waypointConnection.clear();
         });
 
         this.btnZoomOut = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "-", false, () => {
             this.zoomFactor = Math.max(1, this.zoomFactor / 2);
             this.zoomFactorTxt.setText(String(this.zoomFactor) + "x");
-            for (let w of this.waypoints) {
-                w.sprite.x /= this.zoomFactor;
-                w.sprite.y /= this.zoomFactor;
-                w.txt.x /= this.zoomFactor;
-                w.txt.y /= this.zoomFactor;
-            }
+            //this.refreshWaypointConnection();
+            this.waypointConnection.clear();
         });
 
         this.btnDetails = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "DETL", false, () => {
             if(this.target.follow !== null){
                 let txt = this.target.follow.data.type;
                 txt += "\nid: " + this.target.follow.data.id;
-                txt += "\ncourse: " + this.target.follow.data.headingCoords.x + "," + this.target.follow.data.headingCoords.y + "\nat " + this.target.follow.data.spd + "km/s";
-                txt += "\nshields: " + (this.target.follow.data.shields.up ? "up" : "down");
-                if(this.target.follow.data.dockedAt !== ""){
-                    txt += "\ndocked at: " + this.target.follow.data.dockedAt;
+                if(this.target.follow.data.type !== ELOCATION.waypoint){
+                    txt += "\ncourse: " + this.target.follow.data.headingCoords.x + "," + this.target.follow.data.headingCoords.y + "\nat " + this.target.follow.data.spd + "km/s";
+                    txt += "\nshields: " + (this.target.follow.data.shields.up ? "up" : "down");
+                    if(this.target.follow.data.dockedAt !== ""){
+                        txt += "\ndocked at: " + this.target.follow.data.dockedAt;
+                    }
                 }
                 this.details.setText(txt);
             }else{
@@ -148,7 +135,8 @@ export default class Astronometry{
         this.btnTitleWaypoint.colors.out = LCARSCOLOR.gold;
         this.btnTitleWaypoint.colorInState(this.btnTitleWaypoint.states.out);
 
-        this.waypoints = [];
+        this.waypointNo = 0;
+        this.waypointConnection = this.scene.add.graphics(this.pos.x, this.pos.y);
         this.btnWaypointAdd = new Button(this.scene, { x: this.pos.x, y: this.pos.y + 0 }, "sprLcarsBtnLong64", "WPT ADD", true, () => {
             this.btnWaypointDel.active = false;
             if(this.mode !== this.modes.default){
@@ -170,11 +158,14 @@ export default class Astronometry{
             this.btnWaypointAdd.active = false;
             this.btnWaypointDel.active = false;
 
-            for(let w of this.waypoints){
-                w.sprite.destroy();
-                w.txt.destroy();
+            for(let i = this.locations.length-1 ; i >= 0 ; i--){
+                if(this.locations[i].data.type === ELOCATION.waypoint){
+                    this.locations[i].sprite.destroy();
+                    this.locations.splice(i, 1);
+                }
             }
-            this.waypoints = [];
+            this.waypointNo = 0;
+            this.refreshWaypointConnection();
         });
 
         this.sectorNameTxt = this.scene.add.bitmapText(99990, 0, "pixelmix", "sectorName", 8, 1).setOrigin(0, 0.5);
@@ -182,43 +173,6 @@ export default class Astronometry{
         
         
         this.locations = [];
-        socket.on("getSectorLocations", (_data) => {
-            console.log(_data);
-
-            //remove old images
-            for (let l of this.locations) {
-                l.sprite.destroy();
-            }
-            this.locations = [];
-            //fill new locations
-            for(let l of _data.locations){
-                let asset = "sprSymbolUnknown";
-                switch(l.type){
-                    case "ship":
-                        asset = "sprSymbolFriendlyShip";
-                    break;
-                    case "station":
-                        asset = "sprSymbolFriendlyStation";
-                    break;
-                    case "planet":
-                        asset = "sprSymbolFriendlyPlanet";
-                        break;
-                    case "resonanceTraces":
-                        asset = "sprSymbolResonanceTraces"
-                        break;
-                    default:
-                    break;
-                }
-                this.locations.push({
-                    data: l,
-                    sprite: this.scene.add.sprite(this.sectorMap.x + (l.coords.x * 128), this.sectorMap.y + (l.coords.y * 128), asset)
-                });
-                //this.locations[this.locations.length-1].sprite.setMask(this.sectorMask);
-                //this.locations[this.locations.length - 1].sprite.mask = new Phaser.Display.Masks.GeometryMask(this.scene, this.shape);
-                let mask = this.shape.createGeometryMask();
-                this.locations[this.locations.length - 1].sprite.setMask(mask);
-            }
-        });
     }
 
     update(){
@@ -243,18 +197,25 @@ export default class Astronometry{
                 //console.log(this.screenToCoords(this.target.sprite.x, this.target.sprite.y));
 
                 if(this.mode === this.modes.waypointAdd){
-                    this.waypoints.push({
-                        x: (this.sectorMap.x - this.target.sprite.x) / 128,
-                        y: (this.sectorMap.y - this.target.sprite.y) / 128,
-                        txt: this.scene.add.bitmapText(99990, 0, "pixelmix", "0,0", 8, 1).setOrigin(0.5),
-                        sprite: this.scene.add.sprite(this.target.sprite.x, this.target.sprite.y, "sprPinkTarget")
+                    let vx = ((this.target.sprite.x - this.sectorMap.x) / this.zoomFactor) / 128;
+                    let vy = ((this.target.sprite.y - this.sectorMap.y) / this.zoomFactor) / 128;
+                    this.locations.push({
+                        data: {
+                            type: ELOCATION.waypoint,
+                            coords: {
+                                x: vx,
+                                y: vy,
+                                z: 0.5
+                            },
+                            number: this.waypointNo,
+                            id: "Waypoint " + this.waypointNo
+                        },
+                        sprite: this.scene.add.sprite(this.sectorMap.x + (vx * 128), this.sectorMap.y + (vy * 128), "sprSymbolWaypoint")
                     });
-                    let vx = this.sectorMap.x + (this.target.sprite.x / this.zoomFactor);
-                    let vy = this.sectorMap.y + (this.target.sprite.y / this.zoomFactor);
-                    this.waypoints[this.waypoints.length - 1].txt.setText(String(vx.toFixed(0)) + "," + String(vy.toFixed(0)));
-                    this.waypoints[this.waypoints.length - 1].txt.x = this.target.sprite.x < this.sectorMap.x ? this.target.sprite.x + 26 : this.target.sprite.x - 26;
-                    this.waypoints[this.waypoints.length - 1].txt.setOrigin(this.target.sprite.x < this.sectorMap.x ? 0 : 1, 0.5);
-                    this.waypoints[this.waypoints.length - 1].txt.y = this.target.sprite.y;
+                    let mask = this.shape.createGeometryMask();
+                    this.locations[this.locations.length - 1].sprite.setMask(mask);
+                    this.waypointNo += 1;
+                    this.refreshWaypointConnection();
                 }
             }
         }
@@ -275,8 +236,8 @@ export default class Astronometry{
             this.target.sprite.x = this.target.follow.sprite.x;
             this.target.sprite.y = this.target.follow.sprite.y;
         }
-        let vx = (this.target.sprite.x / this.zoomFactor);//this.sectorMap.x + (this.target.sprite.x / this.zoomFactor);
-        let vy = (this.target.sprite.y / this.zoomFactor);//this.sectorMap.y + (this.target.sprite.y / this.zoomFactor);
+        let vx = (this.target.sprite.x - this.sectorMap.x) / this.zoomFactor;//this.sectorMap.x + (this.target.sprite.x / this.zoomFactor);
+        let vy = (this.target.sprite.y - this.sectorMap.y) / this.zoomFactor;//this.sectorMap.y + (this.target.sprite.y / this.zoomFactor);
         this.target.txt.setText(String(vx.toFixed(0)) + "," + String(vy.toFixed(0)));
         this.target.txt.x = this.target.sprite.x < this.sectorMap.x ? this.target.sprite.x + 26 : this.target.sprite.x - 26;
         this.target.txt.setOrigin(this.target.sprite.x < this.sectorMap.x ? 0 : 1, 0.5);
@@ -333,6 +294,27 @@ export default class Astronometry{
         }
     }
 
+    refreshWaypointConnection(){
+        this.waypointConnection.clear();
+        //this.waypointConnection.moveTo(this.sectorMap.x, this.sectorMap.y);
+        this.waypointConnection.lineStyle(1.5, 0xffffff);
+        this.waypointConnection.beginPath();
+        this.waypointConnection.lineTo(this.sectorMap.x, this.sectorMap.y);
+        for(let i = 0 ; i < this.waypointNo ; i++){
+            for(let l of this.locations){
+                if(l.data.type === ELOCATION.waypoint){
+                    if(l.data.number === i){
+                        this.waypointConnection.lineTo(l.sprite.x, l.sprite.y);
+                    }
+                }
+            }
+        }
+        this.waypointConnection.strokePath();
+
+        let mask = this.shape.createGeometryMask();
+        this.waypointConnection.setMask(mask);
+    }
+
     move(){
         this.btnScanSector.move(this.pos.x + 222, this.pos.y -116);
         this.btnDetails.move(this.pos.x + 222, this.pos.y - 98);
@@ -371,6 +353,9 @@ export default class Astronometry{
             l.sprite.y = this.pos.y;
         }
 
+        this.waypointConnection.x = this.pos.x;
+        this.waypointConnection.y = this.pos.y;
+
         this.sectorNameTxt.x = this.sectorMap.x - 120;
         this.sectorNameTxt.y = this.sectorMap.y + 136;
 
@@ -405,20 +390,23 @@ export default class Astronometry{
                     let asset = "sprSymbolUnknown";
                     if(ol.unknown === false){
                         switch (ol.type) {
-                            case "ship":
+                            case ELOCATION.ship:
                                 asset = "sprSymbolFriendlyShip";
                                 break;
-                            case "station":
+                            case ELOCATION.station:
                                 asset = "sprSymbolFriendlyStation";
                                 break;
-                            case "planet":
+                            case ELOCATION.planet:
                                 asset = "sprSymbolFriendlyPlanet";
                                 break;
-                            case "warpcore":
+                            case ELOCATION.warpcore:
                                 asset = "sprSymbolWarpcore";
                                 break;
-                            case "resonanceTraces":
+                            case ELOCATION.resonanceTraces:
                                 asset = "sprSymbolResonanceTraces"
+                                break;
+                            case ELOCATION.waypoint:
+                                asset = "sprSymbolWaypoint";
                                 break;
                             default:
                                 break;
@@ -434,6 +422,8 @@ export default class Astronometry{
                     }
                 }
             }
+
+            this.refreshWaypointConnection();
         }
     }
 
@@ -465,16 +455,10 @@ export default class Astronometry{
         this.target.sprite.destroy();
         this.target.txt.destroy();
 
+        this.waypointConnection.destroy();
+
         for (let l of this.locations) {
             l.sprite.destroy();
         }
-
-        for (let w of this.waypoints) {
-            w.sprite.destroy();
-            w.txt.destroy();
-        }
-        this.waypoints = [];
-
-        socket.off("getSectorLocations");
     }
 }
